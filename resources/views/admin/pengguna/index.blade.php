@@ -4,52 +4,187 @@
 
 @section('content')
 
-<div class="mb-8">
+<div class="flex justify-between items-center mb-8">
 
-    <h1 class="text-3xl font-bold">
-        Manajemen Pengguna
-    </h1>
+    <div>
+
+        <h1
+            class="text-3xl font-bold"
+            style="color: var(--color-hitam);">
+
+            Manajemen Pengguna
+
+        </h1>
+
+        <p
+            class="mt-2"
+            style="color: var(--color-coklat);">
+
+            Kelola admin, relawan, donatur, dan member.
+
+        </p>
+
+    </div>
+
+    <button
+        class="px-5 py-3 rounded-xl text-white font-semibold"
+        style="background-color: var(--color-merah);">
+
+        + Tambah Pengguna
+
+    </button>
 
 </div>
 
-<div class="flex gap-3 mb-6">
+<div class="grid md:grid-cols-4 gap-6 mb-8">
 
-    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg">
-        Semua
-    </button>
+    <div class="admin-card p-6">
 
-    <button class="bg-slate-200 px-4 py-2 rounded-lg">
-        Admin
-    </button>
+        <p class="admin-muted">
+            Total Pengguna
+        </p>
 
-    <button class="bg-slate-200 px-4 py-2 rounded-lg">
-        Relawan
-    </button>
+        <h2 class="text-3xl font-bold mt-2">
+            356
+        </h2>
 
-    <button class="bg-slate-200 px-4 py-2 rounded-lg">
-        Donatur
-    </button>
+    </div>
+
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Relawan
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color:#16a34a;">
+
+            145
+
+        </h2>
+
+    </div>
+
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Donatur
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-merah);">
+
+            98
+
+        </h2>
+
+    </div>
+
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Member Aktif
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-kuning);">
+
+            113
+
+        </h2>
+
+    </div>
 
 </div>
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+<<div class="admin-card p-5 mb-6">
 
-<table class="w-full">
+    <div class="flex flex-wrap gap-3">
 
-<thead class="bg-slate-50">
+        <button
+            class="px-5 py-2 rounded-xl text-white"
+            style="background-color: var(--color-merah);">
 
-<tr>
+            Semua
 
-    <th class="p-4">Nama</th>
-    <th class="p-4">Role</th>
-    <th class="p-4">Poin</th>
-    <th class="p-4">Tier</th>
-    <th class="p-4">Status</th>
-    <th class="p-4">Aksi</th>
+        </button>
 
-</tr>
+        <button
+            class="px-5 py-2 rounded-xl"
+            style="
+                background: rgba(139,94,42,.1);
+                color: var(--color-coklat);
+            ">
 
-</thead>
+            Admin
+
+        </button>
+
+        <button
+            class="px-5 py-2 rounded-xl"
+            style="
+                background: rgba(22,163,74,.1);
+                color:#16a34a;
+            ">
+
+            Relawan
+
+        </button>
+
+        <button
+            class="px-5 py-2 rounded-xl"
+            style="
+                background: rgba(204,34,34,.1);
+                color: var(--color-merah);
+            ">
+
+            Donatur
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="admin-card overflow-hidden">
+
+    <div
+        class="px-6 py-5 border-b"
+        style="border-color: rgba(212,160,23,.15);">
+
+        <h3
+            class="font-bold text-xl"
+            style="color: var(--color-hitam);">
+
+            Daftar Pengguna
+
+        </h3>
+
+    </div>
+
+    <table class="w-full">
+
+        <thead
+            style="
+                background:
+                rgba(212,160,23,.08);
+            ">
+
+            <tr>
+
+                <th class="p-4 text-left">Nama</th>
+                <th class="p-4 text-left">Role</th>
+                <th class="p-4 text-left">Poin</th>
+                <th class="p-4 text-left">Tier</th>
+                <th class="p-4 text-left">Status</th>
+                <th class="p-4 text-center">Aksi</th>
+
+            </tr>
+
+        </thead>
 
 <tbody>
 
@@ -69,19 +204,14 @@
 
     <td class="p-4">
 
-        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
+        <span
+            class="px-3 py-1 rounded-full text-sm font-semibold"
+            style="
+            background: rgba(212,160,23,.15);
+            color: var(--color-kuning);
+            ">
 
-            Gold
-
-        </span>
-
-    </td>
-
-    <td class="p-4">
-
-        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
-
-            Aktif
+        Gold
 
         </span>
 
@@ -89,11 +219,128 @@
 
     <td class="p-4">
 
-        <button class="bg-red-600 text-white px-3 py-2 rounded-lg">
+        <span
+class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
 
-            Nonaktifkan
+Aktif
 
-        </button>
+</span>
+
+    </td>
+
+    <td class="p-4">
+
+        <button
+class="px-4 py-2 rounded-lg text-white ml-2"
+style="background-color: var(--color-merah);">
+
+Nonaktifkan
+
+</button>
+
+    </td>
+
+</tr>
+
+<tr class="border-t">
+
+    <td class="p-4">
+        Farhan
+    </td>
+
+    <td class="p-4">
+        Volunteer
+    </td>
+
+    <td class="p-4">
+        250
+    </td>
+
+    <td class="p-4">
+
+        <span
+        class="px-3 py-1 rounded-full text-sm font-semibold bg-slate-100 text-slate-600">
+
+        Silver
+
+        </span>
+
+    </td>
+
+    <td class="p-4">
+
+        <span
+class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+
+Aktif
+
+</span>
+
+    </td>
+
+    <td class="p-4">
+
+        <button
+class="px-4 py-2 rounded-lg text-white ml-2"
+style="background-color: var(--color-merah);">
+
+Nonaktifkan
+
+</button>
+
+    </td>
+
+</tr>
+
+<tr class="border-t">
+
+    <td class="p-4">
+        Farhan
+    </td>
+
+    <td class="p-4">
+        Volunteer
+    </td>
+
+    <td class="p-4">
+        250
+    </td>
+
+    <td class="p-4">
+
+        <span
+            class="px-3 py-1 rounded-full text-sm font-semibold"
+            style="
+            background: rgba(139,94,42,.1);
+            color: var(--color-coklat);
+            ">
+
+            Bronze
+
+        </span>
+
+    </td>
+
+    <td class="p-4">
+
+        <span
+class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+
+Aktif
+
+</span>
+
+    </td>
+
+    <td class="p-4">
+
+        <button
+class="px-4 py-2 rounded-lg text-white ml-2"
+style="background-color: var(--color-merah);">
+
+Nonaktifkan
+
+</button>
 
     </td>
 

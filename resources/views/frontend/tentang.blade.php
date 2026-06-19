@@ -3,11 +3,19 @@
 @section('content')
 
 <!-- HERO -->
-<section class="bg-gradient-to-r from-blue-600 to-cyan-500 py-24">
+<section class="py-28"
+    style="
+        background:
+        linear-gradient(
+            135deg,
+            var(--color-merah),
+            var(--color-coklat)
+        );
+    ">
 
     <div class="container mx-auto px-6 text-center text-white">
 
-        <span class="uppercase tracking-widest text-blue-100">
+        <span class="uppercase tracking-[4px]" style="color:var(--color-kuning);">
             Tentang Kami
         </span>
 
@@ -15,7 +23,7 @@
             Sikola Foundation
         </h1>
 
-        <p class="mt-6 max-w-3xl mx-auto text-xl text-blue-100">
+        <p class="mt-6 max-w-3xl mx-auto text-xl" style="color: rgba(249,246,240,.9);">
             Yayasan yang berfokus pada pendidikan, kegiatan sosial,
             pengembangan masyarakat, dan pemberdayaan generasi muda.
         </p>
@@ -25,7 +33,9 @@
 </section>
 
 <!-- SEJARAH -->
-<section class="py-24 bg-white">
+<section
+    class="py-24"
+    style="background-color: var(--color-putih);">
 
     <div class="container mx-auto px-6">
 
@@ -33,22 +43,22 @@
 
             <div>
 
-                <span class="text-blue-600 font-semibold">
+                <span class="font-semibold" style="color: var(--color-merah);">
                     SEJARAH YAYASAN
                 </span>
 
-                <h2 class="text-4xl font-bold mt-3">
+                <h2 class="text-4xl font-bold mt-3" style="color: var(--color-hitam);">
                     Awal Berdirinya Sikola Foundation
                 </h2>
 
-                <p class="mt-6 text-slate-600 leading-8">
+                <p class="mt-6 leading-8" style="color: var(--color-coklat);">
                     Sikola Foundation didirikan dengan tujuan membantu
                     masyarakat memperoleh akses pendidikan yang lebih baik,
                     memperluas kesempatan belajar, dan mendukung kegiatan
                     sosial yang memberikan dampak positif bagi lingkungan.
                 </p>
 
-                <p class="mt-4 text-slate-600 leading-8">
+                <p class="mt-4  leading-8" style="color: var(--color-coklat);">
                     Sejak berdiri, yayasan telah melaksanakan berbagai
                     program pendidikan, pelatihan, donasi, kegiatan sosial,
                     serta kolaborasi dengan berbagai pihak untuk menciptakan
@@ -59,7 +69,12 @@
 
             <div>
 
-                <div class="bg-blue-50 rounded-3xl p-12">
+                <div
+                class="rounded-3xl p-12"
+                style="
+                    background-color: rgba(212,160,23,.15);
+                    border: 2px solid var(--color-kuning);
+                ">
 
                     <div class="text-center">
 
@@ -67,11 +82,11 @@
                             🏢
                         </div>
 
-                        <h3 class="text-2xl font-bold">
+                        <h3 class="text-2xl font-bold" style="color: var(--color-hitam);">
                             Berdiri Sejak 2025
                         </h3>
 
-                        <p class="mt-3 text-slate-600">
+                        <p class="mt-3 " style="color: var(--color-coklat);">
                             Berkomitmen memberikan kontribusi nyata
                             melalui pendidikan dan kegiatan sosial.
                         </p>
@@ -89,13 +104,17 @@
 </section>
 
 <!-- VISI MISI -->
-<section class="py-24 bg-slate-50">
+<section
+    class="py-24"
+    style="
+        background-color: rgba(212,160,23,.08);
+    ">
 
     <div class="container mx-auto px-6">
 
         <div class="text-center mb-16">
 
-            <span class="text-blue-600 font-semibold">
+            <span class="font-semibold" style="color: var(--color-merah);">
                 VISI & MISI
             </span>
 
@@ -108,10 +127,18 @@
         <div class="grid lg:grid-cols-2 gap-8">
 
             <!-- VISI -->
-            <div class="bg-white rounded-3xl p-10 shadow-sm">
+            <div
+                class="rounded-3xl p-10"
+                style="
+                    background-color: var(--color-putih);
+                    box-shadow: var(--shadow);
+                    border-top: 5px solid var(--color-merah);">
 
                 <div
-                    class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl">
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
+                    style="
+                        background-color: rgba(204,34,34,.15);
+                    ">
                     🎯
                 </div>
 
@@ -119,7 +146,7 @@
                     Visi
                 </h3>
 
-                <p class="mt-4 text-slate-600 leading-8">
+                <p class="mt-4  leading-8" style="color: var(--color-coklat);">
                     Menjadi yayasan yang berkontribusi dalam
                     meningkatkan kualitas pendidikan, sosial,
                     dan pemberdayaan masyarakat secara berkelanjutan.
@@ -128,10 +155,19 @@
             </div>
 
             <!-- MISI -->
-            <div class="bg-white rounded-3xl p-10 shadow-sm">
+            <div
+                class="rounded-3xl p-10"
+                style="
+                    background-color: var(--color-putih);
+                    box-shadow: var(--shadow);
+                    border-top: 5px solid var(--color-kuning);
+                ">
 
                 <div
-                    class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-3xl">
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
+                    style="
+                        background-color: rgba(212,160,23,.15);
+                    ">
                     🚀
                 </div>
 
@@ -139,7 +175,7 @@
                     Misi
                 </h3>
 
-                <ul class="mt-4 space-y-3 text-slate-600">
+                <ul class="mt-4 space-y-3" style="color: var(--color-coklat);">
 
                     <li>✓ Menyelenggarakan program pendidikan.</li>
 
@@ -162,13 +198,17 @@
 </section>
 
 <!-- TEAM -->
-<section class="py-24 bg-white">
+<section
+    class="py-24"
+    style="background-color: var(--color-putih);">
 
     <div class="container mx-auto px-6">
 
         <div class="text-center mb-16">
 
-            <span class="text-blue-600 font-semibold">
+            <span
+                class="font-semibold"
+                style="color: var(--color-merah);">
                 TEAM MEMBER
             </span>
 
@@ -185,10 +225,18 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
             <!-- Ketua -->
-            <div class="bg-slate-50 rounded-3xl p-8 text-center">
+            <div
+                class="rounded-3xl p-8 text-center transition"
+                style="
+                    background-color: var(--color-putih);
+                    border: 1px solid rgba(212,160,23,.25);
+                    box-shadow: var(--shadow);
+                ">
 
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-blue-100 flex items-center justify-center text-5xl">
+                <div class="w-28 h-28 mx-auto rounded-full flex items-center justify-center text-5xl"
+                    style="
+                        background-color: rgba(204,34,34,.15);
+                        border: 3px solid var(--color-merah);">
                     👨
                 </div>
 
@@ -203,10 +251,19 @@
             </div>
 
             <!-- Sekretaris -->
-            <div class="bg-slate-50 rounded-3xl p-8 text-center">
+            <div
+                class="rounded-3xl p-8 text-center transition"
+                style="
+                    background-color: var(--color-putih);
+                    border: 1px solid rgba(212,160,23,.25);
+                    box-shadow: var(--shadow);
+                ">
 
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-green-100 flex items-center justify-center text-5xl">
+                <div class="w-28 h-28 mx-auto rounded-full flex items-center justify-center text-5xl"
+                    style="
+                        background-color: rgba(212,160,23,.15);
+                        border: 3px solid var(--color-kuning);
+                    ">
                     👩
                 </div>
 
@@ -221,10 +278,18 @@
             </div>
 
             <!-- Bendahara -->
-            <div class="bg-slate-50 rounded-3xl p-8 text-center">
+            <div
+                class="rounded-3xl p-8 text-center transition"
+                style="
+                    background-color: var(--color-putih);
+                    border: 1px solid rgba(212,160,23,.25);
+                    box-shadow: var(--shadow);
+                ">
 
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-yellow-100 flex items-center justify-center text-5xl">
+                <div class="w-28 h-28 mx-auto rounded-full flex items-center justify-center text-5xl"
+                    style="
+                        background-color: rgba(139,94,42,.15);
+                        border: 3px solid var(--color-coklat);">
                     👨
                 </div>
 
@@ -239,10 +304,18 @@
             </div>
 
             <!-- Koordinator -->
-            <div class="bg-slate-50 rounded-3xl p-8 text-center">
+            <div
+                class="rounded-3xl p-8 text-center transition"
+                style="
+                    background-color: var(--color-putih);
+                    border: 1px solid rgba(212,160,23,.25);
+                    box-shadow: var(--shadow);
+                ">
 
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-purple-100 flex items-center justify-center text-5xl">
+                <div class="w-28 h-28 mx-auto rounded-full flex items-center justify-center text-5xl"
+                    style="
+                        background-color: rgba(26,26,26,.08);
+                        border: 3px solid var(--color-hitam);">
                     👩
                 </div>
 

@@ -2,40 +2,108 @@
 
 @section('content')
 
-<section class="bg-gradient-to-r from-blue-600 to-cyan-500 py-20">
+<!-- HERO -->
+<section
+    class="relative py-24"
+    style="
+        background:
+        linear-gradient(
+            135deg,
+            var(--color-merah),
+            var(--color-coklat)
+        );
+    ">
 
-    <div class="container mx-auto px-6 text-center text-white">
+    <div class="container mx-auto px-6">
 
-        <h1 class="text-5xl font-bold">
-            Event Sikola Foundation
-        </h1>
+        <!-- Back Button -->
+        <a href="{{ url('/#program') }}"
+           class="absolute top-8 left-8 z-30 inline-flex items-center gap-3 px-5 py-3 rounded-xl"
+           style="
+                background: rgba(255,255,255,.12);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(212,160,23,.5);
+                color: var(--color-putih);
+           ">
 
-        <p class="mt-4 text-blue-100">
-            Kegiatan mendatang dan arsip event yang telah diselenggarakan.
-        </p>
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"/>
+            </svg>
+
+            Back
+        </a>
+
+        <!-- Hero Content -->
+        <div class="text-center text-white">
+
+            <span
+                class="uppercase tracking-[4px]"
+                style="color: var(--color-kuning);">
+                Event Sikola Foundation
+            </span>
+
+            <h1 class="text-5xl md:text-6xl font-bold mt-4">
+                Kegiatan & Agenda Yayasan
+            </h1>
+
+            <p
+                class="mt-5 max-w-3xl mx-auto text-lg"
+                style="color: rgba(249,246,240,.9);">
+                Ikuti berbagai kegiatan pendidikan, sosial,
+                seminar, workshop, dan program pemberdayaan
+                masyarakat yang diselenggarakan oleh
+                Sikola Foundation.
+            </p>
+
+        </div>
 
     </div>
 
 </section>
 
-<section class="py-12 bg-white">
+<!-- FILTER -->
+<section
+    class="py-10"
+    style="
+        background-color: var(--color-putih);
+        border-bottom: 2px solid rgba(212,160,23,.2);
+    ">
 
     <div class="container mx-auto px-6">
 
-        <div class="flex justify-center gap-3">
+        <div class="flex justify-center flex-wrap gap-3">
 
             <button
-                class="px-5 py-2 bg-blue-600 text-white rounded-full">
+                class="px-6 py-2 rounded-full font-semibold"
+                style="
+                    background-color: var(--color-merah);
+                    color: var(--color-putih);
+                ">
                 Semua
             </button>
 
             <button
-                class="px-5 py-2 bg-slate-100 rounded-full">
+                class="px-6 py-2 rounded-full transition"
+                style="
+                    background-color: rgba(212,160,23,.15);
+                    color: var(--color-hitam);
+                ">
                 Mendatang
             </button>
 
             <button
-                class="px-5 py-2 bg-slate-100 rounded-full">
+                class="px-6 py-2 rounded-full transition"
+                style="
+                    background-color: rgba(212,160,23,.15);
+                    color: var(--color-hitam);
+                ">
                 Arsip
             </button>
 
@@ -45,7 +113,10 @@
 
 </section>
 
-<section class="py-20 bg-slate-50">
+<!-- EVENT LIST -->
+<section
+    class="py-20"
+    style="background-color: rgba(212,160,23,.08);">
 
     <div class="container mx-auto px-6">
 
@@ -53,41 +124,70 @@
 
             @foreach($events as $event)
 
-            <div
-                class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition">
+            <article
+                class="rounded-3xl overflow-hidden transition duration-300 hover:-translate-y-2"
+                style="
+                    background-color: white;
+                    box-shadow: var(--shadow);
+                ">
 
                 <img
                     src="{{ $event['image'] }}"
-                    class="h-56 w-full object-cover">
+                    alt="{{ $event['title'] }}"
+                    class="w-full h-56 object-cover">
 
                 <div class="p-6">
 
-                    <span
-                        class="inline-flex px-3 py-1 rounded-full text-sm
-                        {{ $event['status'] == 'upcoming'
-                            ? 'bg-green-100 text-green-600'
-                            : 'bg-gray-100 text-gray-600' }}">
+                    @if($event['status'] == 'upcoming')
 
-                        {{ $event['status'] == 'upcoming'
-                            ? 'Mendatang'
-                            : 'Arsip' }}
+                        <span
+                            class="inline-flex px-3 py-1 rounded-full text-sm font-medium"
+                            style="
+                                background-color: rgba(204,34,34,.15);
+                                color: var(--color-merah);
+                            ">
+                            📅 Mendatang
+                        </span>
 
-                    </span>
+                    @else
 
-                    <h3 class="text-xl font-bold mt-4">
+                        <span
+                            class="inline-flex px-3 py-1 rounded-full text-sm font-medium"
+                            style="
+                                background-color: rgba(139,94,42,.15);
+                                color: var(--color-coklat);
+                            ">
+                            📚 Arsip
+                        </span>
+
+                    @endif
+
+                    <h3
+                        class="text-xl font-bold mt-4"
+                        style="color: var(--color-hitam);">
+
                         {{ $event['title'] }}
+
                     </h3>
 
-                    <p class="text-slate-500 mt-2">
-                        📅 {{ $event['date'] }}
-                    </p>
+                    <div
+                        class="mt-4 space-y-2 text-sm"
+                        style="color: var(--color-coklat);">
 
-                    <p class="text-slate-500">
-                        📍 {{ $event['location'] }}
-                    </p>
+                        <p>
+                            📅 {{ $event['date'] }}
+                        </p>
 
-                    <a href="{{ route('event.show', $event['slug']) }}"
-                       class="inline-flex mt-5 text-blue-600 font-semibold">
+                        <p>
+                            📍 {{ $event['location'] }}
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{{ route('event.show', $event['slug']) }}"
+                        class="inline-flex items-center gap-2 mt-6 font-semibold transition hover:translate-x-1"
+                        style="color: var(--color-merah);">
 
                         Detail Event →
 
@@ -95,9 +195,64 @@
 
                 </div>
 
-            </div>
+            </article>
 
             @endforeach
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+<section
+    class="py-24"
+    style="background-color: var(--color-putih);">
+
+    <div class="container mx-auto px-6">
+
+        <div
+            class="rounded-3xl p-12 md:p-16 text-center"
+            style="
+                background:
+                linear-gradient(
+                    135deg,
+                    var(--color-merah),
+                    var(--color-coklat)
+                );
+                color: var(--color-putih);
+            ">
+
+            <h2 class="text-4xl md:text-5xl font-bold">
+                Ingin Mengikuti Event Kami?
+            </h2>
+
+            <p
+                class="mt-5 max-w-3xl mx-auto text-lg"
+                style="color: rgba(249,246,240,.9);">
+
+                Bergabunglah dalam berbagai kegiatan sosial,
+                pendidikan, workshop, dan program kemanusiaan
+                bersama Sikola Foundation.
+
+            </p>
+
+            <div class="mt-10">
+
+                <a
+                    href="{{ url('/kontak') }}"
+                    class="inline-flex items-center gap-2 px-10 py-4 rounded-xl font-bold text-lg transition hover:scale-105"
+                    style="
+                        background-color: var(--color-kuning);
+                        color: var(--color-hitam);
+                    ">
+
+                    📞 Hubungi Kami
+
+                </a>
+
+            </div>
 
         </div>
 

@@ -3,34 +3,83 @@
 @section('content')
 
 <section
-    class="min-h-screen bg-gradient-to-br from-blue-600 via-cyan-500 to-blue-800 flex items-center justify-center px-6">
+    class="min-h-screen flex items-center justify-center px-6 py-10"
+    style="
+        background:
+        linear-gradient(
+            135deg,
+            var(--color-merah),
+            var(--color-coklat)
+        );
+    ">
 
     <div class="max-w-6xl w-full">
 
-        <div
-            class="grid lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-2xl">
+        <div class="grid lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-2xl">
 
             <!-- LEFT -->
             <div
-                class="hidden lg:flex flex-col justify-center p-16 bg-gradient-to-br from-blue-700 to-cyan-600 text-white">
+                class="hidden lg:flex flex-col p-16 text-white relative"
+                style="
+                    background:
+                    linear-gradient(
+                        135deg,
+                        var(--color-merah),
+                        var(--color-coklat)
+                    );
+                ">
 
-                <h1 class="text-5xl font-bold">
-                    Sikola Foundation
-                </h1>
+                <!-- Back Button -->
+                <a href="{{ url('/') }}"
+                       class="absolute top-8 left-8 inline-flex items-center gap-2 px-4 py-2 rounded-xl transition"
+                       style="
+                            background: rgba(255,255,255,.12);
+                            backdrop-filter: blur(10px);
+                            border: 1px solid rgba(212,160,23,.4);
+                            color: var(--color-putih);
+                       ">
 
-                <p class="mt-6 text-lg text-blue-100">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="w-5 h-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
 
-                    Bersama membangun pendidikan, sosial,
-                    dan kemanusiaan untuk masa depan yang lebih baik.
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 19l-7-7 7-7" />
 
-                </p>
+                    </svg>
 
-                <div class="mt-10 space-y-4">
+                    Beranda
 
-                    <div>✓ Event Sosial</div>
-                    <div>✓ Program Donasi</div>
-                    <div>✓ Volunteer & Membership</div>
-                    <div>✓ Pendidikan Masyarakat</div>
+                </a>
+
+                <div class="flex-1 flex flex-col justify-center">
+
+                    <h1 class="text-5xl font-bold">
+                        Sikola Foundation
+                    </h1>
+
+                    <div
+                        class="w-24 h-1 rounded-full mt-4"
+                        style="background-color: var(--color-kuning);">
+                    </div>
+
+                    <p class="mt-6 text-lg" style="color: rgba(249,246,240,.9);">
+                        Bersama membangun pendidikan, sosial,
+                        dan kemanusiaan untuk masa depan yang lebih baik.
+                    </p>
+
+                    <div class="mt-10 space-y-4 text-lg">
+
+                        <div>✓ Event Sosial</div>
+                        <div>✓ Program Donasi</div>
+                        <div>✓ Volunteer & Membership</div>
+                        <div>✓ Pendidikan Masyarakat</div>
+
+                    </div>
 
                 </div>
 
@@ -41,7 +90,7 @@
 
                 <div class="text-center">
 
-                    <h2 class="text-4xl font-bold">
+                    <h2 class="text-4xl font-bold" style="color: var(--color-hitam);">
                         Login
                     </h2>
 
@@ -53,7 +102,11 @@
 
                 <!-- GOOGLE LOGIN -->
                 <a href="#"
-                    class="mt-8 flex items-center justify-center gap-3 border rounded-xl py-3 hover:bg-slate-50 transition">
+                   class="mt-8 flex items-center justify-center gap-3 rounded-xl py-3 transition"
+                   style="
+                        border:1px solid rgba(212,160,23,.3);
+                        color:var(--color-hitam);
+                   ">
 
                     <svg width="22" height="22" viewBox="0 0 48 48">
                         <path fill="#FFC107"
@@ -84,7 +137,7 @@
                 </div>
 
                 <!-- LOGIN FORM -->
-                <form method="POST" action="{{ url('/dashboard') }}">
+                <form method="POST" action="{{ url('/admin/dashboard') }}">
 
                     @csrf
 
@@ -96,7 +149,10 @@
 
                         <input
                             type="email"
-                            class="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full rounded-xl px-4 py-3 border focus:outline-none"
+                            style="
+                                border-color: rgba(212,160,23,.25);
+                            ">
 
                     </div>
 
@@ -108,7 +164,10 @@
 
                         <input
                             type="password"
-                            class="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full rounded-xl px-4 py-3 border focus:outline-none"
+                            style="
+                                border-color: rgba(212,160,23,.25);
+                            ">
 
                     </div>
 
@@ -126,7 +185,8 @@
                         </label>
 
                         <a href="#"
-                            class="text-blue-600 text-sm">
+                           class="text-sm font-medium"
+                           style="color: var(--color-merah);">
 
                             Lupa Password?
 
@@ -135,7 +195,11 @@
                     </div>
 
                     <button
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold">
+                        class="w-full py-3 rounded-xl font-semibold transition hover:opacity-90"
+                        style="
+                            background-color: var(--color-merah);
+                            color: var(--color-putih);
+                        ">
 
                         Login
 
@@ -151,7 +215,8 @@
                     </span>
 
                     <a href="#"
-                        class="text-blue-600 font-semibold">
+                       class="font-semibold"
+                       style="color: var(--color-merah);">
 
                         Daftar Sekarang
 

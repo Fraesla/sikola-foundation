@@ -4,22 +4,32 @@
 
 @section('content')
 
+<!-- Header -->
 <div class="flex justify-between items-center mb-8">
 
     <div>
 
-        <h1 class="text-3xl font-bold">
+        <h1
+            class="text-3xl font-bold"
+            style="color: var(--color-hitam);">
+
             Merchandise & Order
+
         </h1>
 
-        <p class="text-slate-500 mt-2">
-            Kelola produk, stok dan pesanan.
+        <p
+            class="mt-2"
+            style="color: var(--color-coklat);">
+
+            Kelola produk, stok, dan pesanan merchandise.
+
         </p>
 
     </div>
 
     <button
-        class="bg-blue-600 text-white px-5 py-3 rounded-xl">
+        class="px-5 py-3 rounded-xl font-semibold text-white"
+        style="background-color: var(--color-merah);">
 
         + Tambah Produk
 
@@ -27,61 +37,197 @@
 
 </div>
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+<!-- Statistik -->
+<div class="grid md:grid-cols-4 gap-6 mb-8">
 
-<table class="w-full">
+    <div class="admin-card p-6">
 
-<thead class="bg-slate-50">
+        <p class="admin-muted">
+            Total Produk
+        </p>
 
-<tr>
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-merah);">
 
-    <th class="p-4">Produk</th>
-    <th class="p-4">Stok</th>
-    <th class="p-4">Harga</th>
-    <th class="p-4">Terjual</th>
-    <th class="p-4">Aksi</th>
+            24
 
-</tr>
+        </h2>
 
-</thead>
+    </div>
 
-<tbody>
+    <div class="admin-card p-6">
 
-<tr class="border-t">
+        <p class="admin-muted">
+            Total Stok
+        </p>
 
-    <td class="p-4">
-        Kaos Sikola Foundation
-    </td>
+        <h2
+            class="text-3xl font-bold mt-2">
 
-    <td class="p-4">
-        50
-    </td>
+            420
 
-    <td class="p-4">
-        Rp 120.000
-    </td>
+        </h2>
 
-    <td class="p-4">
-        35
-    </td>
+    </div>
 
-    <td class="p-4">
+    <div class="admin-card p-6">
 
-        <button class="text-blue-600">
-            Edit
-        </button>
+        <p class="admin-muted">
+            Pesanan Baru
+        </p>
 
-        <button class="text-red-600 ml-3">
-            Hapus
-        </button>
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-kuning);">
 
-    </td>
+            15
 
-</tr>
+        </h2>
 
-</tbody>
+    </div>
 
-</table>
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Terjual
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color:#16a34a;">
+
+            235
+
+        </h2>
+
+    </div>
+
+</div>
+
+<!-- Tabel Produk -->
+<div class="admin-card overflow-hidden">
+
+    <div
+        class="px-6 py-5 border-b"
+        style="border-color: rgba(212,160,23,.15);">
+
+        <h3
+            class="font-bold text-xl"
+            style="color: var(--color-hitam);">
+
+            Daftar Produk
+
+        </h3>
+
+    </div>
+
+    <table class="w-full">
+
+        <thead
+            style="
+                background:
+                rgba(212,160,23,.08);
+            ">
+
+            <tr>
+
+                <th class="p-4 text-left">
+                    Produk
+                </th>
+
+                <th class="p-4 text-left">
+                    Stok
+                </th>
+
+                <th class="p-4 text-left">
+                    Harga
+                </th>
+
+                <th class="p-4 text-left">
+                    Terjual
+                </th>
+
+                <th class="p-4 text-center">
+                    Aksi
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr
+                class="border-t"
+                style="
+                    border-color:
+                    rgba(212,160,23,.1);
+                ">
+
+                <td class="p-4 font-medium">
+                    Kaos Sikola Foundation
+                </td>
+
+                <td class="p-4">
+
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold"
+                        style="
+                            background:
+                            rgba(22,163,74,.12);
+                            color:#16a34a;
+                        ">
+
+                        50 Stok
+
+                    </span>
+
+                </td>
+
+                <td
+                    class="p-4 font-semibold"
+                    style="color: var(--color-merah);">
+
+                    Rp 120.000
+
+                </td>
+
+                <td class="p-4">
+                    35 Unit
+                </td>
+
+                <td class="p-4 text-center">
+
+                    <button
+                        class="px-4 py-2 rounded-lg text-white"
+                        style="
+                            background-color:
+                            var(--color-coklat);
+                        ">
+
+                        Edit
+
+                    </button>
+
+                    <button
+                        class="px-4 py-2 rounded-lg text-white ml-2"
+                        style="
+                            background-color:
+                            var(--color-merah);
+                        ">
+
+                        Hapus
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
 
 </div>
 

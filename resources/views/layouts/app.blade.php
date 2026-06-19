@@ -11,25 +11,41 @@
     ])
 </head>
 
-<body class="bg-slate-50">
+<body
+    class="min-h-screen"
+    style="
+        background-color: var(--color-putih);
+        color: var(--color-hitam);
+        font-family: var(--font-body);
+    ">
      @if(!Request::is('login'))
     <!-- Navbar -->
-    <nav class="bg-white shadow-sm">
+    <nav
+    class="shadow-lg border-b-4"
+    style="
+        background-color: var(--color-merah);
+        border-color: var(--color-kuning);
+    ">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-center h-16">
 
-                <a href="/" class="font-bold text-2xl text-blue-600">
+                <a href="/"
+                   class="text-2xl font-bold"
+                   style="
+                      color: var(--color-putih);
+                      font-family: var(--font-display);
+                   ">
                     Sikola Foundation
                 </a>
 
                 <div class="hidden md:flex gap-8">
-                    <a href="/">Beranda</a>
-                    <a href="{{ url('/tentang') }}" class="hover:text-blue-600 transition">Tentang</a>
-                    <a href="{{ url('/berita') }}" class="hover:text-blue-600 transition">Berita</a>
-                    <a href="{{ url('/merchandise') }}" class="hover:text-blue-600 transition">Merchandise</a>
-                    <a href="{{ url('/tim') }}" class="hover:text-blue-600 transition">Tim</a>
-                    <a href="{{ url('/kontak') }}" class="hover:text-blue-600 transition">Kontak</a>
-                    <a href="{{ url('/login') }}" class="hover:text-blue-600 transition">Login</a>
+                    <a href="/" class="nav-link">Beranda</a>
+                    <a href="{{ url('/tentang') }}" class="nav-link">Tentang</a>
+                    <a href="{{ url('/berita') }}" class="nav-link">Berita</a>
+                    <a href="{{ url('/merchandise') }}" class="nav-link">Merchandise</a>
+                    <a href="{{ url('/tim') }}" class="nav-link">Tim</a>
+                    <a href="{{ url('/kontak') }}" class="nav-link">Kontak</a>
+                    <a href="{{ url('/login') }}" class="nav-link">Login</a>
                 </div>
 
             </div>
@@ -41,9 +57,25 @@
         @yield('content')
     </main>
     @if(!Request::is('login'))
-    <footer class="bg-slate-900 text-white py-10 mt-20">
+    <footer class="py-10 mt-20 border-t-4"
+        style="
+            background-color: var(--color-hitam);
+            border-color: var(--color-kuning);
+            color: var(--color-putih);
+        ">
         <div class="container mx-auto px-6 text-center">
-            © {{ date('Y') }} Sikola Foundation
+            <h3
+                class="text-2xl font-bold mb-2"
+                style="font-family: var(--font-display);">
+                    Sikola Foundation
+            </h3>
+            <p style="color: #d6d6d6;">
+                Pendidikan • Sosial • Kemanusiaan
+            </p>
+            <div class="mt-4 text-sm">
+                © {{ date('Y') }} Sikola Foundation
+            </div>
+
         </div>
     </footer>
     @endif

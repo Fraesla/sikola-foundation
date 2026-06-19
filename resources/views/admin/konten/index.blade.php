@@ -4,43 +4,76 @@
 
 @section('content')
 
+<!-- HEADER -->
 <div class="mb-8">
 
-    <h1 class="text-3xl font-bold text-slate-800">
+    <h1
+        class="text-3xl font-bold"
+        style="color: var(--color-hitam);">
+
         Manajemen Konten
+
     </h1>
 
-    <p class="text-slate-500 mt-2">
+    <p
+        class="mt-2"
+        style="color: var(--color-coklat);">
+
         Kelola banner website, postingan berita, dan team member.
+
     </p>
 
 </div>
 
+<!-- MENU KONTEN -->
 <div class="grid lg:grid-cols-3 gap-6">
 
     <!-- Banner -->
     <div
-        class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition">
+        class="rounded-3xl overflow-hidden transition hover:-translate-y-2"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <div class="h-1 bg-amber-500"></div>
+        <div
+            class="h-2"
+            style="background-color: var(--color-kuning);">
+        </div>
 
         <div class="p-6">
 
-            <p class="text-xs tracking-[4px] uppercase text-slate-500 mb-4">
+            <p
+                class="text-xs uppercase tracking-[4px] mb-4"
+                style="color: var(--color-coklat);">
+
                 Konten
+
             </p>
 
-            <h3 class="text-2xl font-bold text-slate-800 mb-4">
+            <h3
+                class="text-2xl font-bold mb-4"
+                style="color: var(--color-hitam);">
+
                 Banner
+
             </h3>
 
-            <p class="text-slate-600 leading-7">
+            <p
+                class="leading-7"
+                style="color: var(--color-coklat);">
+
                 Kelola banner homepage, upload gambar,
-                ubah judul, tombol CTA dan atur urutan drag & drop.
+                ubah judul, tombol CTA dan atur urutan slide.
+
             </p>
 
             <a href="{{ url('/admin/banner') }}"
-                class="inline-flex mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg">
+               class="inline-flex mt-6 px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
+               style="
+                    background-color: var(--color-merah);
+                    color: var(--color-putih);
+               ">
 
                 Kelola Banner
 
@@ -52,27 +85,50 @@
 
     <!-- Postingan -->
     <div
-        class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition">
+        class="rounded-3xl overflow-hidden transition hover:-translate-y-2"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <div class="h-1 bg-blue-600"></div>
+        <div
+            class="h-2"
+            style="background-color: var(--color-merah);">
+        </div>
 
         <div class="p-6">
 
-            <p class="text-xs tracking-[4px] uppercase text-slate-500 mb-4">
+            <p
+                class="text-xs uppercase tracking-[4px] mb-4"
+                style="color: var(--color-coklat);">
+
                 Konten
+
             </p>
 
-            <h3 class="text-2xl font-bold text-slate-800 mb-4">
+            <h3
+                class="text-2xl font-bold mb-4"
+                style="color: var(--color-hitam);">
+
                 Postingan
+
             </h3>
 
-            <p class="text-slate-600 leading-7">
-                Kelola artikel dan berita menggunakan editor
-                WYSIWYG QuillJS atau TipTap.
+            <p
+                class="leading-7"
+                style="color: var(--color-coklat);">
+
+                Kelola artikel dan berita menggunakan
+                editor WYSIWYG seperti QuillJS atau TipTap.
+
             </p>
 
             <a href="{{ url('/admin/postingan') }}"
-                class="inline-flex mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg">
+               class="inline-flex mt-6 px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
+               style="
+                    background-color: var(--color-merah);
+                    color: var(--color-putih);
+               ">
 
                 Kelola Postingan
 
@@ -84,27 +140,50 @@
 
     <!-- Team -->
     <div
-        class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition">
+        class="rounded-3xl overflow-hidden transition hover:-translate-y-2"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <div class="h-1 bg-green-600"></div>
+        <div
+            class="h-2"
+            style="background-color: var(--color-coklat);">
+        </div>
 
         <div class="p-6">
 
-            <p class="text-xs tracking-[4px] uppercase text-slate-500 mb-4">
+            <p
+                class="text-xs uppercase tracking-[4px] mb-4"
+                style="color: var(--color-coklat);">
+
                 Konten
+
             </p>
 
-            <h3 class="text-2xl font-bold text-slate-800 mb-4">
+            <h3
+                class="text-2xl font-bold mb-4"
+                style="color: var(--color-hitam);">
+
                 Team Member
+
             </h3>
 
-            <p class="text-slate-600 leading-7">
+            <p
+                class="leading-7"
+                style="color: var(--color-coklat);">
+
                 Kelola data pengurus dan anggota tim,
                 foto profil, jabatan dan sosial media.
+
             </p>
 
             <a href="{{ url('/admin/team') }}"
-                class="inline-flex mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg">
+               class="inline-flex mt-6 px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
+               style="
+                    background-color: var(--color-merah);
+                    color: var(--color-putih);
+               ">
 
                 Kelola Team
 
@@ -116,41 +195,68 @@
 
 </div>
 
-<!-- Ringkasan Statistik -->
+<!-- STATISTIK -->
 <div class="grid md:grid-cols-3 gap-6 mt-10">
 
-    <div class="bg-white rounded-2xl shadow p-6">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <p class="text-slate-500">
+        <p style="color: var(--color-coklat);">
             Total Banner
         </p>
 
-        <h2 class="text-4xl font-bold mt-3">
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
+
             5
+
         </h2>
 
     </div>
 
-    <div class="bg-white rounded-2xl shadow p-6">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <p class="text-slate-500">
+        <p style="color: var(--color-coklat);">
             Total Postingan
         </p>
 
-        <h2 class="text-4xl font-bold mt-3">
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
+
             24
+
         </h2>
 
     </div>
 
-    <div class="bg-white rounded-2xl shadow p-6">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <p class="text-slate-500">
+        <p style="color: var(--color-coklat);">
             Team Member
         </p>
 
-        <h2 class="text-4xl font-bold mt-3">
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
+
             12
+
         </h2>
 
     </div>

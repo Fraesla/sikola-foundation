@@ -4,80 +4,261 @@
 
 @section('content')
 
+<!-- Header -->
 <div class="flex justify-between items-center mb-8">
 
     <div>
-        <h1 class="text-3xl font-bold">
+
+        <h1
+            class="text-3xl font-bold"
+            style="color: var(--color-hitam);">
+
             Manajemen Donasi
+
         </h1>
 
-        <p class="text-slate-500 mt-2">
-            Kelola seluruh transaksi donasi.
+        <p
+            class="mt-2"
+            style="color: var(--color-coklat);">
+
+            Kelola seluruh transaksi dan verifikasi donasi.
+
         </p>
+
     </div>
 
 </div>
 
-<!-- Tabs -->
-<div class="flex gap-3 mb-8">
+<!-- Statistik -->
+<div class="grid md:grid-cols-4 gap-6 mb-8">
 
-    <button class="bg-blue-600 text-white px-5 py-2 rounded-xl">
-        Semua Donasi
-    </button>
+    <div class="admin-card p-6">
 
-    <button class="bg-yellow-500 text-white px-5 py-2 rounded-xl">
-        Menunggu Verifikasi
-    </button>
+        <p class="admin-muted">
+            Total Donasi
+        </p>
 
-    <button class="bg-green-600 text-white px-5 py-2 rounded-xl">
-        Langganan Aktif
-    </button>
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-merah);">
+
+            Rp 75 Jt
+
+        </h2>
+
+    </div>
+
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Pending
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-kuning);">
+
+            8
+
+        </h2>
+
+    </div>
+
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Donatur Aktif
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: #16a34a;">
+
+            124
+
+        </h2>
+
+    </div>
+
+    <div class="admin-card p-6">
+
+        <p class="admin-muted">
+            Langganan Bulanan
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-coklat);">
+
+            32
+
+        </h2>
+
+    </div>
 
 </div>
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+<!-- Filter -->
+<div class="admin-card p-5 mb-8">
 
-<table class="w-full">
+    <div class="flex flex-wrap gap-3">
 
-<thead class="bg-slate-50">
+        <button
+            class="px-5 py-2 rounded-xl text-white font-medium"
+            style="background-color: var(--color-merah);">
 
-<tr>
-    <th class="p-4">Donatur</th>
-    <th class="p-4">Nominal</th>
-    <th class="p-4">Metode</th>
-    <th class="p-4">Tanggal</th>
-    <th class="p-4">Status</th>
-    <th class="p-4">Aksi</th>
-</tr>
+            Semua Donasi
 
-</thead>
-
-<tbody>
-
-<tr class="border-t">
-
-    <td class="p-4">Farhan</td>
-    <td class="p-4">Rp 500.000</td>
-    <td class="p-4">Transfer BCA</td>
-    <td class="p-4">12 Jan 2026</td>
-
-    <td class="p-4">
-        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
-            Pending
-        </span>
-    </td>
-
-    <td class="p-4">
-        <button class="bg-green-600 text-white px-3 py-2 rounded-lg">
-            Verifikasi
         </button>
-    </td>
 
-</tr>
+        <button
+            class="px-5 py-2 rounded-xl font-medium"
+            style="
+                background: rgba(212,160,23,.12);
+                color: var(--color-kuning);
+            ">
 
-</tbody>
+            Menunggu Verifikasi
 
-</table>
+        </button>
+
+        <button
+            class="px-5 py-2 rounded-xl font-medium"
+            style="
+                background: rgba(22,163,74,.12);
+                color: #16a34a;
+            ">
+
+            Langganan Aktif
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Tabel -->
+<div class="admin-card overflow-hidden">
+
+    <div
+        class="px-6 py-5 border-b"
+        style="border-color: rgba(212,160,23,.15);">
+
+        <h3
+            class="font-bold text-xl"
+            style="color: var(--color-hitam);">
+
+            Data Donasi
+
+        </h3>
+
+    </div>
+
+    <table class="w-full">
+
+        <thead
+            style="
+                background:
+                rgba(212,160,23,.08);
+            ">
+
+            <tr>
+
+                <th class="p-4 text-left">
+                    Donatur
+                </th>
+
+                <th class="p-4 text-left">
+                    Nominal
+                </th>
+
+                <th class="p-4 text-left">
+                    Metode
+                </th>
+
+                <th class="p-4 text-left">
+                    Tanggal
+                </th>
+
+                <th class="p-4 text-left">
+                    Status
+                </th>
+
+                <th class="p-4 text-center">
+                    Aksi
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr
+                class="border-t"
+                style="
+                    border-color:
+                    rgba(212,160,23,.1);
+                ">
+
+                <td class="p-4">
+                    Farhan Maulidani
+                </td>
+
+                <td
+                    class="p-4 font-semibold"
+                    style="color: var(--color-merah);">
+
+                    Rp 500.000
+
+                </td>
+
+                <td class="p-4">
+                    Transfer BCA
+                </td>
+
+                <td class="p-4">
+                    12 Jan 2026
+                </td>
+
+                <td class="p-4">
+
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold"
+                        style="
+                            background:
+                            rgba(212,160,23,.15);
+
+                            color:
+                            var(--color-kuning);
+                        ">
+
+                        Pending
+
+                    </span>
+
+                </td>
+
+                <td class="p-4 text-center">
+
+                    <button
+                        class="px-4 py-2 rounded-lg text-white font-medium"
+                        style="
+                            background-color:
+                            var(--color-merah);
+                        ">
+
+                        Verifikasi
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
 
 </div>
 

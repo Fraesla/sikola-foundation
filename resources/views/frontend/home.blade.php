@@ -27,9 +27,11 @@
 
                             <div class="max-w-3xl">
 
-                                <span
-                                    class="inline-flex bg-blue-600 text-white px-4 py-2 rounded-full text-sm">
-                                    Sikola Foundation
+                                <span class="inline-flex px-4 py-2 rounded-full text-sm font-semibold"
+                                style="
+                                    background-color: var(--color-kuning);
+                                    color: var(--color-hitam);">
+                                        ✨ Sikola Foundation
                                 </span>
 
                                 <h1
@@ -50,20 +52,21 @@
 
                                 <div class="mt-8 flex flex-wrap gap-4">
 
-                                    <a href="/donation"
-                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold">
-
-                                        Donasi Sekarang
-
+                                    <a href="/donasi"
+                                       class="px-8 py-4 rounded-xl font-semibold transition hover:scale-105"
+                                       style="
+                                          background-color: var(--color-merah);
+                                          color: var(--color-putih); ">
+                                            Donasi Sekarang
                                     </a>
 
                                     <a href="#program"
-                                       class="bg-white text-slate-800 px-8 py-4 rounded-xl font-semibold">
-
-                                        Lihat Program
-
+                                       class="px-8 py-4 rounded-xl font-semibold transition hover:scale-105"
+                                       style="
+                                          background-color: var(--color-kuning);
+                                          color: var(--color-hitam);">
+                                            Lihat Program
                                     </a>
-
                                 </div>
 
                             </div>
@@ -166,21 +169,21 @@
 
         <div class="swiper-pagination"></div>
 
-        <div class="swiper-button-prev text-white"></div>
-        <div class="swiper-button-next text-white"></div>
+        <div class="swiper-button-prev hero-prev"></div>
+        <div class="swiper-button-next hero-next"></div>
 
     </div>
 
 </section>
 
 <!-- PROGRAM -->
-<section id="program" class="py-24 bg-white">
+<section id="program" class="py-24 bg-white" style="background-color: var(--color-putih);">
 
     <div class="container mx-auto px-6">
 
         <div class="text-center mb-16">
 
-            <span class="text-blue-600 font-semibold">
+            <span class="text-blue-600 font-semibold" style="color: var(--color-merah);">
                 PROGRAM KAMI
             </span>
 
@@ -201,18 +204,20 @@
            class="group block">
 
             <div
-                class="bg-slate-50 p-8 rounded-3xl border hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full">
+                class="p-8 rounded-3xl border hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full" style="background-color: var(--color-putih); border-color: var(--color-coklat);">
 
                 <div
-                    class="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center text-3xl">
-
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl" style="background-color:#FCE8E8;">
                     🎉
-
                 </div>
 
-                <h3 class="text-2xl font-bold mt-6 group-hover:text-blue-600">
-                    Event
-                </h3>
+                <div class="group">
+                    <h3 class="text-2xl font-bold mt-6
+                               text-[var(--color-hitam)]
+                               group-hover:text-[var(--color-merah)]">
+                        Event
+                    </h3>
+                </div>
 
                 <p class="mt-4 text-slate-600">
                     Berbagai kegiatan sosial, edukasi, seminar,
@@ -222,11 +227,11 @@
 
                 <div class="flex justify-between items-center mt-6">
 
-                    <span class="font-medium text-blue-600">
+                    <span class="font-medium text-[var(--color-merah)]">
                         Selengkapnya
                     </span>
 
-                    <span class="text-xl">
+                    <span class="text-xl text-[var(--color-merah)]">
                         →
                     </span>
 
@@ -241,16 +246,16 @@
            class="group block">
 
             <div
-                class="bg-slate-50 p-8 rounded-3xl border hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full">
+                class="p-8 rounded-3xl border hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full" style="background-color: var(--color-putih); border-color: var(--color-coklat);">
 
                 <div
-                    class="w-16 h-16 rounded-2xl bg-green-100 flex items-center justify-center text-3xl">
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl" style="background-color:#FFF3D4;">
 
                     💝
 
                 </div>
 
-                <h3 class="text-2xl font-bold mt-6 group-hover:text-green-600">
+                <h3 class="text-2xl font-bold mt-6 group-hover:text-green-600" >
                     Donasi
                 </h3>
 
@@ -262,11 +267,11 @@
 
                 <div class="flex justify-between items-center mt-6">
 
-                    <span class="font-medium text-blue-600">
+                    <span class="font-medium text-[var(--color-merah)]">
                         Selengkapnya
                     </span>
 
-                    <span class="text-xl">
+                    <span class="text-xl text-[var(--color-merah)]">
                         →
                     </span>
 
@@ -281,10 +286,10 @@
            class="group block">
 
             <div
-                class="bg-slate-50 p-8 rounded-3xl border hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full">
+                class="p-8 rounded-3xl border hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full" style="background-color: var(--color-putih); border-color: var(--color-coklat);">
 
                 <div
-                    class="w-16 h-16 rounded-2xl bg-orange-100 flex items-center justify-center text-3xl">
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl" style="background-color:#F5E8DA;">
 
                     🤝
 
@@ -302,11 +307,11 @@
 
                 <div class="flex justify-between items-center mt-6">
 
-                    <span class="font-medium text-blue-600">
+                    <span class="font-medium text-[var(--color-merah)]">
                         Selengkapnya
                     </span>
 
-                    <span class="text-xl">
+                    <span class="text-xl text-[var(--color-merah)]">
                         →
                     </span>
 
@@ -325,7 +330,7 @@
 </section>
 
 <!-- STATISTIK -->
-<section class="py-20 bg-blue-600 text-white">
+<section class="py-20" style="background-color: var(--color-merah); color:var(--color-putih);">
 
     <div class="container mx-auto px-6">
 
@@ -386,30 +391,82 @@
 </section>
 
 <!-- CTA -->
-<section class="py-24 bg-slate-50">
+<section
+    class="py-24"
+    style="background-color: var(--color-putih);">
 
     <div class="container mx-auto px-6">
 
         <div
-            class="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-3xl p-12 md:p-16 text-center text-white">
+            class="relative overflow-hidden rounded-[32px] p-12 md:p-16 text-center shadow-xl"
+            style="background-color: var(--color-coklat);">
 
-            <h2 class="text-4xl md:text-5xl font-bold">
-                Hubungi Kami Untuk Informasi Lebih Lanjut
-            </h2>
+            <!-- Ornament -->
+            <div
+                class="absolute -top-20 -right-20 w-72 h-72 rounded-full opacity-10"
+                style="background-color: var(--color-kuning);">
+            </div>
 
-            <p class="mt-6 text-lg text-blue-100 max-w-3xl mx-auto">
-                Ingin berkolaborasi, menjadi volunteer, atau mengetahui lebih lanjut
-                tentang program Sikola Foundation? Tim kami siap membantu Anda.
-            </p>
+            <div
+                class="absolute -bottom-20 -left-20 w-72 h-72 rounded-full opacity-10"
+                style="background-color: var(--color-kuning);">
+            </div>
 
-            <div class="mt-10">
+            <div class="relative z-10">
 
-                <a href="{{ url('/kontak') }}"
-                   class="inline-flex items-center gap-2 bg-white text-blue-700 px-10 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition">
+                <span
+                    class="inline-flex px-4 py-2 rounded-full text-sm font-semibold mb-6"
+                    style="
+                        background-color: rgba(212,160,23,.15);
+                        color: var(--color-kuning);">
 
-                    📞 Kontak Kami
+                    ✨ Mari Berkolaborasi
 
-                </a>
+                </span>
+
+                <h2
+                    class="text-4xl md:text-5xl font-bold leading-tight"
+                    style="color: var(--color-putih);">
+
+                    Bersama Kita Ciptakan Dampak Nyata
+                    Untuk Pendidikan dan Masyarakat
+
+                </h2>
+
+                <p
+                    class="mt-6 text-lg max-w-3xl mx-auto"
+                    style="color: #F9F6F0;">
+
+                    Sikola Foundation membuka peluang kolaborasi,
+                    program CSR, relawan, dan dukungan donasi
+                    untuk membangun masa depan yang lebih baik.
+
+                </p>
+
+                <div
+                    class="mt-10 flex flex-wrap justify-center gap-4">
+
+                    <a href="{{ url('/kontak') }}"
+                       class="px-8 py-4 rounded-xl font-bold transition hover:-translate-y-1"
+                       style="
+                            background-color: var(--color-kuning);
+                            color: var(--color-hitam);">
+
+                        📞 Hubungi Kami
+
+                    </a>
+
+                    <a href="{{ url('/relawan') }}"
+                       class="px-8 py-4 rounded-xl font-bold border transition hover:bg-white/10"
+                       style="
+                            border-color: var(--color-putih);
+                            color: var(--color-putih);">
+
+                        🤝 Menjadi Relawan
+
+                    </a>
+
+                </div>
 
             </div>
 

@@ -4,16 +4,34 @@
 
 @section('content')
 
-<div class="flex justify-between items-center mb-8">
+<!-- HEADER -->
+<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
     <div>
 
-        <h1 class="text-3xl font-bold">
-            Laporan
+        <span
+            class="uppercase tracking-[4px] text-xs font-semibold"
+            style="color: var(--color-kuning);">
+
+            REPORT CENTER
+
+        </span>
+
+        <h1
+            class="text-4xl font-bold mt-2"
+            style="color: var(--color-hitam);">
+
+            Laporan Sistem
+
         </h1>
 
-        <p class="text-slate-500 mt-2">
-            Rekap seluruh aktivitas sistem.
+        <p
+            class="mt-2"
+            style="color: var(--color-coklat);">
+
+            Rekap seluruh aktivitas yayasan, donasi,
+            merchandise dan relawan.
+
         </p>
 
     </div>
@@ -21,16 +39,24 @@
     <div class="flex gap-3">
 
         <button
-            class="bg-green-600 text-white px-5 py-3 rounded-xl">
+            class="px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
+            style="
+                background-color: var(--color-kuning);
+                color: var(--color-hitam);
+            ">
 
-            Export Excel
+            📊 Export Excel
 
         </button>
 
         <button
-            class="bg-red-600 text-white px-5 py-3 rounded-xl">
+            class="px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
+            style="
+                background-color: var(--color-merah);
+                color: var(--color-putih);
+            ">
 
-            Export PDF
+            📄 Export PDF
 
         </button>
 
@@ -38,55 +64,110 @@
 
 </div>
 
+<!-- SUMMARY -->
 <div class="grid md:grid-cols-3 gap-6">
 
-    <div class="bg-white rounded-2xl p-6 shadow">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-kuning);
+        ">
 
-        <h3 class="font-bold text-lg">
+        <p style="color: var(--color-coklat);">
             Total Donasi
-        </h3>
+        </p>
 
-        <p class="text-4xl font-bold mt-4">
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
+
             Rp 75 Juta
-        </p>
+
+        </h2>
 
     </div>
 
-    <div class="bg-white rounded-2xl p-6 shadow">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-merah);
+        ">
 
-        <h3 class="font-bold text-lg">
+        <p style="color: var(--color-coklat);">
             Penjualan Merchandise
-        </h3>
-
-        <p class="text-4xl font-bold mt-4">
-            Rp 25 Juta
         </p>
+
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
+
+            Rp 25 Juta
+
+        </h2>
 
     </div>
 
-    <div class="bg-white rounded-2xl p-6 shadow">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-coklat);
+        ">
 
-        <h3 class="font-bold text-lg">
+        <p style="color: var(--color-coklat);">
             Aktivitas Relawan
-        </h3>
-
-        <p class="text-4xl font-bold mt-4">
-            125 Event
         </p>
+
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
+
+            125 Event
+
+        </h2>
 
     </div>
 
 </div>
 
-<div class="bg-white rounded-2xl shadow p-6 mt-8">
+<!-- CHART -->
+<div
+    class="rounded-3xl p-8 mt-8"
+    style="
+        background-color: white;
+        box-shadow: var(--shadow);
+    ">
 
-    <h3 class="font-bold text-xl mb-4">
+    <div class="flex items-center justify-between mb-6">
 
-        Ringkasan Bulanan
+        <div>
 
-    </h3>
+            <h3
+                class="text-2xl font-bold"
+                style="color: var(--color-hitam);">
 
-    <canvas id="reportChart"></canvas>
+                Ringkasan Bulanan
+
+            </h3>
+
+            <p
+                class="mt-1"
+                style="color: var(--color-coklat);">
+
+                Grafik perkembangan donasi per bulan
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <canvas id="reportChart" height="100"></canvas>
 
 </div>
 
@@ -99,17 +180,33 @@
 <script>
 
 new Chart(
-document.getElementById('reportChart'),
-{
-    type: 'bar',
-    data: {
-        labels: ['Jan','Feb','Mar','Apr','Mei'],
-        datasets: [{
-            label: 'Donasi',
-            data: [5,8,7,10,12]
-        }]
+    document.getElementById('reportChart'),
+    {
+        type: 'bar',
+        data: {
+            labels: [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'Mei'
+            ],
+            datasets: [{
+                label: 'Donasi (Juta)',
+                data: [5,8,7,10,12],
+                backgroundColor: '#CC2222',
+                borderRadius: 10
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
     }
-});
+);
 
 </script>
 

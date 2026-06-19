@@ -4,108 +4,259 @@
 
 @section('content')
 
+<!-- HEADER -->
 <div class="mb-8">
 
-    <h1 class="text-3xl font-bold">
+    <span
+        class="uppercase tracking-[4px] text-xs font-semibold"
+        style="color: var(--color-kuning);">
+
+        Volunteer Center
+
+    </span>
+
+    <h1
+        class="text-4xl font-bold mt-2"
+        style="color: var(--color-hitam);">
+
         Verifikasi Relawan
+
     </h1>
 
-    <p class="text-slate-500 mt-2">
+    <p
+        class="mt-2"
+        style="color: var(--color-coklat);">
 
-        Kelola pendaftaran volunteer dan verifikasi dokumen.
+        Kelola pendaftaran volunteer, verifikasi dokumen,
+        dan persetujuan anggota relawan.
 
     </p>
 
 </div>
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+<!-- STATISTIK -->
+<div class="grid md:grid-cols-3 gap-6 mb-8">
 
-<table class="w-full">
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-kuning);
+        ">
 
-<thead class="bg-slate-50">
+        <p style="color: var(--color-coklat);">
+            Total Pendaftar
+        </p>
 
-<tr>
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
 
-    <th class="p-4 text-left">
-        Nama
-    </th>
+            128
 
-    <th class="p-4 text-left">
-        Email
-    </th>
+        </h2>
 
-    <th class="p-4 text-left">
-        KTP
-    </th>
+    </div>
 
-    <th class="p-4 text-left">
-        Status
-    </th>
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-merah);
+        ">
 
-    <th class="p-4 text-center">
-        Aksi
-    </th>
+        <p style="color: var(--color-coklat);">
+            Menunggu Verifikasi
+        </p>
 
-</tr>
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
 
-</thead>
+            12
 
-<tbody>
+        </h2>
 
-<tr class="border-t">
+    </div>
 
-    <td class="p-4">
-        Farhan Maulidani
-    </td>
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background: white;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-coklat);
+        ">
 
-    <td class="p-4">
-        farhan@gmail.com
-    </td>
+        <p style="color: var(--color-coklat);">
+            Relawan Aktif
+        </p>
 
-    <td class="p-4">
+        <h2
+            class="text-4xl font-bold mt-3"
+            style="color: var(--color-merah);">
 
-        <button class="text-blue-600">
+            96
 
-            Preview KTP
+        </h2>
 
-        </button>
+    </div>
 
-    </td>
+</div>
 
-    <td class="p-4">
+<!-- TABLE -->
+<div
+    class="rounded-3xl overflow-hidden"
+    style="
+        background: white;
+        box-shadow: var(--shadow);
+    ">
 
-        <span
-            class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
+    <div
+        class="h-2"
+        style="
+            background:
+            linear-gradient(
+                135deg,
+                var(--color-merah),
+                var(--color-coklat)
+            );
+        ">
+    </div>
 
-            Pending
+    <div class="p-6 border-b">
 
-        </span>
+        <h3
+            class="text-xl font-bold"
+            style="color: var(--color-hitam);">
 
-    </td>
+            Daftar Verifikasi Relawan
 
-    <td class="p-4 text-center">
+        </h3>
 
-        <button
-            class="bg-green-600 text-white px-3 py-2 rounded-lg">
+    </div>
 
-            Setujui
+    <table class="w-full">
 
-        </button>
+        <thead
+            style="
+                background-color:
+                rgba(212,160,23,.08);
+            ">
 
-        <button
-            class="bg-red-600 text-white px-3 py-2 rounded-lg ml-2">
+            <tr>
 
-            Tolak
+                <th class="p-4 text-left">
+                    Nama
+                </th>
 
-        </button>
+                <th class="p-4 text-left">
+                    Email
+                </th>
 
-    </td>
+                <th class="p-4 text-left">
+                    Dokumen
+                </th>
 
-</tr>
+                <th class="p-4 text-left">
+                    Status
+                </th>
 
-</tbody>
+                <th class="p-4 text-center">
+                    Aksi
+                </th>
 
-</table>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr
+                class="border-t"
+                style="
+                    border-color:
+                    rgba(212,160,23,.15);
+                ">
+
+                <td class="p-4">
+                    Farhan Maulidani
+                </td>
+
+                <td class="p-4">
+                    farhan@gmail.com
+                </td>
+
+                <td class="p-4">
+
+                    <button
+                        style="
+                            color:
+                            var(--color-merah);
+                        ">
+
+                        👁 Preview KTP
+
+                    </button>
+
+                </td>
+
+                <td class="p-4">
+
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold"
+                        style="
+                            background-color:
+                            rgba(212,160,23,.15);
+
+                            color:
+                            var(--color-coklat);
+                        ">
+
+                        Pending
+
+                    </span>
+
+                </td>
+
+                <td class="p-4 text-center">
+
+                    <button
+                        class="px-4 py-2 rounded-xl font-semibold transition hover:opacity-90"
+                        style="
+                            background-color:
+                            var(--color-kuning);
+
+                            color:
+                            var(--color-hitam);
+                        ">
+
+                        Setujui
+
+                    </button>
+
+                    <button
+                        class="px-4 py-2 rounded-xl ml-2 font-semibold transition hover:opacity-90"
+                        style="
+                            background-color:
+                            var(--color-merah);
+
+                            color:
+                            var(--color-putih);
+                        ">
+
+                        Tolak
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
 
 </div>
 

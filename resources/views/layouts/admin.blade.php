@@ -9,32 +9,74 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
 
     <style>
-        .menu-active {
-            background: rgb(37 99 235);
+        .menu-active{
+            background: linear-gradient(
+                135deg,
+                var(--color-merah),
+                var(--color-coklat)
+            );
             color: white;
+            border-left: 4px solid var(--color-kuning);
+            transform: translateX(4px);
+        }
+
+        .menu-active::before{
+            content:'';
+            position:absolute;
+            left:0;
+            top:0;
+            width:4px;
+            height:100%;
+            background: var(--color-kuning);
         }
     </style>
 
 </head>
 
-<body class="bg-slate-100">
+<body
+    style="
+        background-color:
+        rgba(212,160,23,.06);
+    ">
 
     <div class="flex min-h-screen">
 
         <aside
-            class="w-72 bg-slate-900 text-white min-h-screen">
+            class="w-72 min-h-screen border-r"
+            style="
+                background-color: var(--color-hitam);
+                color: var(--color-putih);
+                border-color: rgba(212,160,23,.2);
+            ">
 
             <!-- Logo -->
             <div
-                class="p-6 border-b border-slate-800">
+                class="p-6 border-b"
+                style="border-color: rgba(212,160,23,.15);">
 
-                <h1 class="text-2xl font-bold">
+                <h1
+                    class="text-2xl font-bold"
+                    style="color: var(--color-putih);">
+
                     Sikola Foundation
+
                 </h1>
 
-                <p class="text-slate-400 text-sm">
+                <div
+                    class="w-20 h-1 rounded-full mt-3"
+                    style="background-color: var(--color-kuning);">
+                </div>
+
+                <h2
+                    class="text-xl mt-4"
+                    style="
+                        color: var(--color-kuning);
+                        font-family: var(--font-display);
+                    ">
+
                     Admin Panel
-                </p>
+
+                </h2>
 
             </div>
 
@@ -43,8 +85,8 @@
 
                 <!-- Dashboard -->
                 <a href="{{ url('/admin/dashboard') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'dashboard' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                   class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300
+                   {{ ($activePage ?? '') == 'dashboard' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     📊 Dashboard
 
@@ -53,7 +95,7 @@
                 <!-- Konten -->
                 <a href="{{ url('/admin/konten') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'konten' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'konten' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     📰 Konten
 
@@ -62,7 +104,7 @@
                 <!-- Event -->
                 <a href="{{ url('/admin/event') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'event' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'event' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     📅 Event
 
@@ -71,7 +113,7 @@
                 <!-- Relawan -->
                 <a href="{{ url('/admin/relawan') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'relawan' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'relawan' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     🤝 Relawan
 
@@ -80,7 +122,7 @@
                 <!-- Donasi -->
                 <a href="{{ url('/admin/donasi') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'donasi' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'donasi' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     💰 Donasi
 
@@ -89,7 +131,7 @@
                 <!-- Merchandise -->
                 <a href="{{ url('/admin/merchandise') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'merchandise' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'merchandise' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     🛍 Merchandise
 
@@ -98,7 +140,7 @@
                 <!-- Pengguna -->
                 <a href="{{ url('/admin/pengguna') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'pengguna' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'pengguna' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     👥 Pengguna
 
@@ -107,7 +149,7 @@
                 <!-- Laporan -->
                 <a href="{{ url('/admin/laporan') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
-                    {{ ($activePage ?? '') == 'laporan' ? 'menu-active' : 'hover:bg-slate-800' }}">
+                    {{ ($activePage ?? '') == 'laporan' ? 'menu-active' : 'hover:bg-white/10' }}">
 
                     📈 Laporan
 
@@ -117,7 +159,7 @@
                 <div class="pt-6 border-t border-slate-800 mt-6">
 
                     <a href="{{ url('/login') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-600">
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl menu-logout">
 
                         🚪 Logout
 
@@ -131,13 +173,20 @@
 
         <div class="flex-1 flex flex-col">
 
-            <header class="bg-white border-b shadow-sm">
+            <header
+                class="border-b"
+                style="
+                    background-color: white;
+                    border-color: rgba(212,160,23,.15);
+                ">
 
                 <div class="px-6 py-4 flex items-center justify-between">
 
                     <div>
 
-                        <h2 class="text-xl font-bold text-slate-800">
+                        <h2
+                            class="text-xl font-bold"
+                            style="color: var(--color-hitam);">
                             {{ ucfirst($activePage ?? 'Dashboard') }}
                         </h2>
 
@@ -151,7 +200,11 @@
                             🔔
 
                             <span
-                                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                                class="absolute -top-1 -right-1 w-5 h-5 text-xs rounded-full flex items-center justify-center"
+                                style="
+                                    background-color: var(--color-merah);
+                                    color: var(--color-putih);
+                                ">
 
                                 3
 
@@ -167,12 +220,20 @@
 
                             <div>
 
-                                <div class="font-semibold">
+                                <div
+                                    class="font-semibold"
+                                    style="color: var(--color-hitam);">
+
                                     Administrator
+
                                 </div>
 
-                                <div class="text-xs text-slate-500">
-                                    Admin
+                                <div
+                                    class="text-xs"
+                                    style="color: var(--color-coklat);">
+
+                                    Super Admin
+
                                 </div>
 
                             </div>
@@ -185,7 +246,12 @@
 
             </header>
 
-            <main class="p-6">
+            <main
+    class="p-6"
+    style="
+        background-color:
+        rgba(212,160,23,.04);
+    ">
 
                 @yield('content')
 

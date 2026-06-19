@@ -6,6 +6,206 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+}
+
+/* ====================================
+   MARAWA MINANGKABAU DESIGN TOKENS
+==================================== */
+:root {
+    --color-merah: #CC2222;
+    --color-hitam: #1A1A1A;
+    --color-kuning: #D4A017;
+    --color-putih: #F9F6F0;
+    --color-coklat: #8B5E2A;
+
+    --tier-perunggu: #CD7F32;
+    --tier-perak: #C0C0C0;
+    --tier-emas: #D4A017;
+    --tier-platinum: #E5E4E2;
+    --tier-diamond: #B9F2FF;
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+
+    --radius: 8px;
+    --radius-lg: 16px;
+    --shadow: 0 2px 12px rgba(0, 0, 0, .08);
+}
+
+/* ====================================
+   HERO SWIPER
+==================================== */
+
+/* Navigation Button */
+.heroSwiper .swiper-button-prev,
+.heroSwiper .swiper-button-next {
+    width: 50px !important;
+    height: 50px !important;
+
+    border-radius: 9999px;
+    background-color: var(--color-merah) !important;
+
+    border: 2px solid var(--color-kuning) !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all .3s ease;
+}
+
+.heroSwiper .swiper-button-prev:hover,
+.heroSwiper .swiper-button-next:hover {
+    background-color: var(--color-coklat) !important;
+    transform: scale(1.08);
+}
+
+/* Icon Arrow */
+.heroSwiper .swiper-button-prev::after,
+.heroSwiper .swiper-button-next::after {
+    color: var(--color-putih) !important;
+    font-size: 24px !important;
+    font-weight: bold;
+}
+
+/* Jika menggunakan SVG custom */
+.heroSwiper .swiper-button-prev svg,
+.heroSwiper .swiper-button-next svg {
+    stroke: var(--color-putih);
+    fill: var(--color-putih);
+}
+
+/* Pagination */
+.heroSwiper .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+
+    opacity: 1;
+
+    background: rgba(249, 246, 240, .5);
+}
+
+.heroSwiper .swiper-pagination-bullet-active {
+    width: 36px;
+    border-radius: 9999px;
+
+    background: var(--color-kuning);
+}
+.nav-link{
+    color: var(--color-putih);
+    transition: .3s;
+}
+
+.nav-link:hover{
+    color: var(--color-kuning);
+}
+
+//* Admin Panel */
+.sidebar-link{
+    color: var(--color-putih);
+    transition:.3s;
+}
+
+.sidebar-link:hover{
+    background: var(--color-merah);
+    color: var(--color-putih);
+}
+
+.sidebar-link.active{
+    background: var(--color-kuning);
+    color: var(--color-hitam);
+    font-weight:700;
+}
+
+.menu-active{
+    background: linear-gradient(
+        135deg,
+        var(--color-merah),
+        var(--color-coklat)
+    );
+    color: white;
+    border-left: 4px solid var(--color-kuning);
+    box-shadow: 0 10px 25px rgba(204,34,34,.25);
+}
+
+.menu-item{
+    transition: all .3s ease;
+}
+
+.menu-item:hover{
+    background: rgba(212,160,23,.1);
+    color: var(--color-kuning);
+    transform: translateX(4px);
+}
+
+.menu-logout:hover{
+    background: var(--color-merah);
+}
+
+/* Article */
+
+.news-card{
+    background: #fff;
+    box-shadow: var(--shadow);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.news-card:hover{
+    transform: translateY(-8px);
+}
+
+.news-title{
+    color: var(--color-hitam);
+}
+
+.news-text{
+    color: var(--color-coklat);
+}
+
+.news-link{
+    color: var(--color-merah);
+    font-weight: 600;
+}
+
+.badge-event{
+    background: rgba(204,34,34,.15);
+    color: var(--color-merah);
+}
+
+.badge-donasi{
+    background: rgba(212,160,23,.15);
+    color: var(--color-kuning);
+}
+
+.badge-volunteer{
+    background: rgba(139,94,42,.15);
+    color: var(--color-coklat);
+}
+
+.badge-pendidikan{
+    background: rgba(26,26,26,.08);
+    color: var(--color-hitam);
+}
+
+.article-content{
+    color: var(--color-hitam);
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3{
+    color: var(--color-merah);
+}
+
+.article-content a{
+    color: var(--color-merah);
+}
+
+.article-content blockquote{
+    border-left:4px solid var(--color-kuning);
 }

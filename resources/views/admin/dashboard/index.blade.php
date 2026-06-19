@@ -4,104 +4,247 @@
 
 @section('content')
 
-<div class="p-6">
+<!-- Welcome -->
+<div
+    class="rounded-3xl p-8 mb-8"
+    style="
+        background:
+        linear-gradient(
+            135deg,
+            var(--color-merah),
+            var(--color-coklat)
+        );
+        color: var(--color-putih);
+    ">
 
+    <h1 class="text-3xl font-bold">
+        Dashboard Admin
+    </h1>
 
+    <p class="mt-3 opacity-90">
+        Selamat datang di panel administrasi
+        Sikola Foundation.
+    </p>
 
-    <!-- Statistik -->
-    <div class="grid md:grid-cols-4 gap-6 mt-10">
+</div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
+<!-- Statistik -->
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <p class="text-slate-500 text-sm">
-                Total Donasi
-            </p>
+    <!-- Donasi -->
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+        ">
 
-            <h2 class="text-3xl font-bold mt-2">
-                Rp 25 Jt
-            </h2>
-
+        <div
+            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            style="
+                background-color: rgba(204,34,34,.12);
+                color: var(--color-merah);
+            ">
+            💰
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
+        <p
+            class="mt-4 text-sm"
+            style="color: var(--color-coklat);">
 
-            <p class="text-slate-500 text-sm">
-                Total Order
-            </p>
+            Total Donasi
 
-            <h2 class="text-3xl font-bold mt-2">
-                124
-            </h2>
+        </p>
 
-        </div>
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-hitam);">
 
-        <div class="bg-white rounded-2xl shadow p-6">
+            Rp 25 Jt
 
-            <p class="text-slate-500 text-sm">
-                Relawan Baru
-            </p>
-
-            <h2 class="text-3xl font-bold mt-2">
-                18
-            </h2>
-
-        </div>
-
-        <div class="bg-white rounded-2xl shadow p-6">
-
-            <p class="text-slate-500 text-sm">
-                Pending
-            </p>
-
-            <h2 class="text-3xl font-bold mt-2 text-red-600">
-                6
-            </h2>
-
-        </div>
+        </h2>
 
     </div>
 
-    <!-- Grafik -->
-    <div class="bg-white rounded-2xl shadow p-6 mt-10">
+    <!-- Order -->
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <div class="flex justify-between items-center mb-6">
-
-            <h3 class="text-xl font-bold">
-                Grafik Donasi Bulanan
-            </h3>
-
+        <div
+            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            style="
+                background-color: rgba(212,160,23,.15);
+                color: var(--color-kuning);
+            ">
+            🛍
         </div>
 
-        <canvas id="donationChart" height="100"></canvas>
+        <p
+            class="mt-4 text-sm"
+            style="color: var(--color-coklat);">
+
+            Total Order
+
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-hitam);">
+
+            124
+
+        </h2>
 
     </div>
 
-    <!-- Notifikasi -->
-    <div class="bg-white rounded-2xl shadow p-6 mt-10">
+    <!-- Relawan -->
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+        ">
 
-        <h3 class="text-xl font-bold mb-6">
-            Notifikasi Pending
+        <div
+            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            style="
+                background-color: rgba(139,94,42,.15);
+                color: var(--color-coklat);
+            ">
+            🤝
+        </div>
+
+        <p
+            class="mt-4 text-sm"
+            style="color: var(--color-coklat);">
+
+            Relawan Baru
+
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-hitam);">
+
+            18
+
+        </h2>
+
+    </div>
+
+    <!-- Pending -->
+    <div
+        class="rounded-3xl p-6"
+        style="
+            background-color: white;
+            box-shadow: var(--shadow);
+        ">
+
+        <div
+            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            style="
+                background-color: rgba(204,34,34,.12);
+                color: var(--color-merah);
+            ">
+            ⏳
+        </div>
+
+        <p
+            class="mt-4 text-sm"
+            style="color: var(--color-coklat);">
+
+            Pending
+
+        </p>
+
+        <h2
+            class="text-3xl font-bold mt-2"
+            style="color: var(--color-merah);">
+
+            6
+
+        </h2>
+
+    </div>
+
+</div>
+
+<!-- Grafik -->
+<div
+    class="rounded-3xl p-8 mt-10"
+    style="
+        background-color: white;
+        box-shadow: var(--shadow);
+    ">
+
+    <div class="flex items-center justify-between mb-6">
+
+        <h3
+            class="text-2xl font-bold"
+            style="color: var(--color-hitam);">
+
+            Grafik Donasi Bulanan
+
         </h3>
 
-        <div class="space-y-4">
+    </div>
 
-            <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl">
+    <canvas id="donationChart" height="100"></canvas>
 
-                5 Donasi menunggu verifikasi pembayaran.
+</div>
 
-            </div>
+<!-- Notifikasi -->
+<div
+    class="rounded-3xl p-8 mt-10"
+    style="
+        background-color: white;
+        box-shadow: var(--shadow);
+    ">
 
-            <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
+    <h3
+        class="text-2xl font-bold mb-6"
+        style="color: var(--color-hitam);">
 
-                2 Relawan menunggu persetujuan admin.
+        Notifikasi Pending
 
-            </div>
+    </h3>
 
-            <div class="bg-green-50 border border-green-200 p-4 rounded-xl">
+    <div class="space-y-4">
 
-                3 Order merchandise perlu diproses.
+        <div
+            class="p-4 rounded-2xl"
+            style="
+                background-color: rgba(204,34,34,.08);
+                border-left: 4px solid var(--color-merah);
+            ">
 
-            </div>
+            💰 5 Donasi menunggu verifikasi pembayaran.
+
+        </div>
+
+        <div
+            class="p-4 rounded-2xl"
+            style="
+                background-color: rgba(212,160,23,.10);
+                border-left: 4px solid var(--color-kuning);
+            ">
+
+            🤝 2 Relawan menunggu persetujuan admin.
+
+        </div>
+
+        <div
+            class="p-4 rounded-2xl"
+            style="
+                background-color: rgba(139,94,42,.10);
+                border-left: 4px solid var(--color-coklat);
+            ">
+
+            🛍 3 Order merchandise perlu diproses.
 
         </div>
 
@@ -112,7 +255,6 @@
 @endsection
 
 @push('scripts')
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -120,24 +262,11 @@
 const ctx = document.getElementById('donationChart');
 
 new Chart(ctx, {
-
     type: 'bar',
-
     data: {
-
-        labels: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'Mei',
-            'Jun'
-        ],
-
+        labels: ['Jan','Feb','Mar','Apr','Mei','Jun'],
         datasets: [{
-
             label: 'Donasi',
-
             data: [
                 5000000,
                 3000000,
@@ -145,14 +274,19 @@ new Chart(ctx, {
                 4000000,
                 6000000,
                 8000000
-            ]
-
+            ],
+            backgroundColor: '#CC2222',
+            borderRadius: 8
         }]
-
+    },
+    options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
     }
-
 });
 
 </script>
-
 @endpush
