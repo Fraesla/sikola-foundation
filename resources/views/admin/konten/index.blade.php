@@ -1,191 +1,58 @@
-@extends('layouts.admin', [
-    'activePage' => 'konten'
-])
+@extends('layouts.admin', ['activePage' => 'konten'])
 
 @section('content')
 
-<!-- HEADER -->
-<div class="mb-8">
+{{-- HERO --}}
+<div class="card-admin p-8 mb-8 overflow-hidden relative">
 
-    <h1
-        class="text-3xl font-bold"
-        style="color: var(--color-hitam);">
+    <div class="absolute -top-16 -right-16 w-60 h-60 rounded-full opacity-10"
+         style="background: var(--color-merah)">
+    </div>
 
-        Manajemen Konten
+    <div class="relative z-10">
 
-    </h1>
+        <h1 class="text-4xl font-bold text-[var(--color-coklat)]">
+            Dashboard Konten
+        </h1>
 
-    <p
-        class="mt-2"
-        style="color: var(--color-coklat);">
+        <p class="text-slate-500 mt-2">
+            Kelola seluruh konten website dari satu tempat.
+        </p>
 
-        Kelola banner website, postingan berita, dan team member.
+        <div class="grid md:grid-cols-3 gap-5 mt-8">
 
-    </p>
+            <a href="{{ route('admin.banners.create') }}"
+               class="rounded-2xl p-5 text-white hover:scale-105 transition"
+               style="background:linear-gradient(135deg,var(--color-kuning),var(--color-coklat));">
 
-</div>
-
-<!-- MENU KONTEN -->
-<div class="grid lg:grid-cols-3 gap-6">
-
-    <!-- Banner -->
-    <div
-        class="rounded-3xl overflow-hidden transition hover:-translate-y-2"
-        style="
-            background: white;
-            box-shadow: var(--shadow);
-        ">
-
-        <div
-            class="h-2"
-            style="background-color: var(--color-kuning);">
-        </div>
-
-        <div class="p-6">
-
-            <p
-                class="text-xs uppercase tracking-[4px] mb-4"
-                style="color: var(--color-coklat);">
-
-                Konten
-
-            </p>
-
-            <h3
-                class="text-2xl font-bold mb-4"
-                style="color: var(--color-hitam);">
-
-                Banner
-
-            </h3>
-
-            <p
-                class="leading-7"
-                style="color: var(--color-coklat);">
-
-                Kelola banner homepage, upload gambar,
-                ubah judul, tombol CTA dan atur urutan slide.
-
-            </p>
-
-            <a href="{{ url('/admin/banner') }}"
-               class="inline-flex mt-6 px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
-               style="
-                    background-color: var(--color-merah);
-                    color: var(--color-putih);
-               ">
-
-                Kelola Banner
+                <div class="text-4xl">🖼️</div>
+                <h3 class="font-bold text-xl mt-3">
+                    Tambah Banner
+                </h3>
 
             </a>
 
-        </div>
+            <a href="{{ route('admin.postingans.create') }}"
+               class="rounded-2xl p-5 text-white hover:scale-105 transition"
+               style="background:linear-gradient(135deg,var(--color-merah),var(--color-coklat));">
 
-    </div>
+                <div class="text-4xl">📰</div>
 
-    <!-- Postingan -->
-    <div
-        class="rounded-3xl overflow-hidden transition hover:-translate-y-2"
-        style="
-            background: white;
-            box-shadow: var(--shadow);
-        ">
-
-        <div
-            class="h-2"
-            style="background-color: var(--color-merah);">
-        </div>
-
-        <div class="p-6">
-
-            <p
-                class="text-xs uppercase tracking-[4px] mb-4"
-                style="color: var(--color-coklat);">
-
-                Konten
-
-            </p>
-
-            <h3
-                class="text-2xl font-bold mb-4"
-                style="color: var(--color-hitam);">
-
-                Postingan
-
-            </h3>
-
-            <p
-                class="leading-7"
-                style="color: var(--color-coklat);">
-
-                Kelola artikel dan berita menggunakan
-                editor WYSIWYG seperti QuillJS atau TipTap.
-
-            </p>
-
-            <a href="{{ url('/admin/postingan') }}"
-               class="inline-flex mt-6 px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
-               style="
-                    background-color: var(--color-merah);
-                    color: var(--color-putih);
-               ">
-
-                Kelola Postingan
+                <h3 class="font-bold text-xl mt-3">
+                    Buat Artikel
+                </h3>
 
             </a>
 
-        </div>
+            <a href="{{ route('admin.team.create') }}"
+               class="rounded-2xl p-5 text-white hover:scale-105 transition"
+               style="background:linear-gradient(135deg,#059669,#065f46);">
 
-    </div>
+                <div class="text-4xl">👥</div>
 
-    <!-- Team -->
-    <div
-        class="rounded-3xl overflow-hidden transition hover:-translate-y-2"
-        style="
-            background: white;
-            box-shadow: var(--shadow);
-        ">
-
-        <div
-            class="h-2"
-            style="background-color: var(--color-coklat);">
-        </div>
-
-        <div class="p-6">
-
-            <p
-                class="text-xs uppercase tracking-[4px] mb-4"
-                style="color: var(--color-coklat);">
-
-                Konten
-
-            </p>
-
-            <h3
-                class="text-2xl font-bold mb-4"
-                style="color: var(--color-hitam);">
-
-                Team Member
-
-            </h3>
-
-            <p
-                class="leading-7"
-                style="color: var(--color-coklat);">
-
-                Kelola data pengurus dan anggota tim,
-                foto profil, jabatan dan sosial media.
-
-            </p>
-
-            <a href="{{ url('/admin/team') }}"
-               class="inline-flex mt-6 px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
-               style="
-                    background-color: var(--color-merah);
-                    color: var(--color-putih);
-               ">
-
-                Kelola Team
+                <h3 class="font-bold text-xl mt-3">
+                    Tambah Team
+                </h3>
 
             </a>
 
@@ -195,69 +62,163 @@
 
 </div>
 
-<!-- STATISTIK -->
-<div class="grid md:grid-cols-3 gap-6 mt-10">
+{{-- ANALYTICS --}}
+<div class="grid md:grid-cols-4 gap-6 mb-8">
 
-    <div
-        class="rounded-3xl p-6"
-        style="
-            background: white;
-            box-shadow: var(--shadow);
-        ">
+    <div class="card-admin p-6">
+        <p class="text-slate-500">Total Banner</p>
 
-        <p style="color: var(--color-coklat);">
-            Total Banner
-        </p>
+        <div class="flex justify-between mt-3">
 
-        <h2
-            class="text-4xl font-bold mt-3"
-            style="color: var(--color-merah);">
+            <h2 class="text-4xl font-bold text-red-600">
+                {{ $totalBanner }}
+            </h2>
 
-            5
+            <span class="text-5xl">🖼️</span>
 
-        </h2>
+        </div>
+    </div>
+
+    <div class="card-admin p-6">
+        <p class="text-slate-500">Postingan</p>
+
+        <div class="flex justify-between mt-3">
+
+            <h2 class="text-4xl font-bold text-yellow-500">
+                {{ $totalPostingan }}
+            </h2>
+
+            <span class="text-5xl">📰</span>
+
+        </div>
+    </div>
+
+    <div class="card-admin p-6">
+        <p class="text-slate-500">Team</p>
+
+        <div class="flex justify-between mt-3">
+
+            <h2 class="text-4xl font-bold text-green-600">
+                {{ $totalTeam }}
+            </h2>
+
+            <span class="text-5xl">👥</span>
+
+        </div>
+    </div>
+
+    <div class="card-admin p-6">
+        <p class="text-slate-500">Banner Aktif</p>
+
+        <div class="flex justify-between mt-3">
+
+            <h2 class="text-4xl font-bold text-blue-600">
+                {{ $bannerAktif }}
+            </h2>
+
+            <span class="text-5xl">🚀</span>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="grid lg:grid-cols-3 gap-6 mt-8">
+
+    {{-- AKTIVITAS --}}
+    <div class="lg:col-span-2 card-admin p-6">
+
+        <h3 class="text-xl font-bold mb-6">
+            Aktivitas Terbaru
+        </h3>
+
+        <div class="space-y-5">
+
+            @foreach($postinganTerbaru as $item)
+
+            <div class="flex items-center gap-4 border-b pb-4">
+
+                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl"
+                     style="background:#fee2e2">
+
+                    📰
+
+                </div>
+
+                <div class="flex-1">
+
+                    <h4 class="font-semibold">
+                        {{ $item->judul }}
+                    </h4>
+
+                    <p class="text-sm text-slate-500">
+                        Dibuat {{ $item->created_at->diffForHumans() }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+        </div>
 
     </div>
 
-    <div
-        class="rounded-3xl p-6"
-        style="
-            background: white;
-            box-shadow: var(--shadow);
-        ">
 
-        <p style="color: var(--color-coklat);">
-            Total Postingan
-        </p>
+    {{-- QUICK INFO --}}
+    <div class="card-admin p-6">
 
-        <h2
-            class="text-4xl font-bold mt-3"
-            style="color: var(--color-merah);">
+        <h3 class="text-xl font-bold mb-6">
+            Ringkasan Sistem
+        </h3>
 
-            24
+        <div class="space-y-5">
 
-        </h2>
+            <div>
+                <p class="text-slate-500">
+                    Banner Aktif
+                </p>
 
-    </div>
+                <div class="w-full h-3 rounded-full bg-slate-200 mt-2">
 
-    <div
-        class="rounded-3xl p-6"
-        style="
-            background: white;
-            box-shadow: var(--shadow);
-        ">
+                    <div class="h-3 rounded-full"
+                         style="
+                            width:{{ $persenAktif }}%;
+                            background:var(--color-merah);
+                         ">
+                    </div>
 
-        <p style="color: var(--color-coklat);">
-            Team Member
-        </p>
+                </div>
 
-        <h2
-            class="text-4xl font-bold mt-3"
-            style="color: var(--color-merah);">
+            </div>
 
-            12
+            <div class="rounded-2xl p-5 bg-slate-50">
 
-        </h2>
+                <p class="text-slate-500">
+                    Banner Terbaru
+                </p>
+
+                <h4 class="font-bold mt-2">
+                    {{ $bannerTerbaru->judul ?? '-' }}
+                </h4>
+
+            </div>
+
+            <div class="rounded-2xl p-5 bg-slate-50">
+
+                <p class="text-slate-500">
+                    Total Konten
+                </p>
+
+                <h2 class="text-3xl font-bold">
+                    {{ $totalBanner + $totalPostingan + $totalTeam }}
+                </h2>
+
+            </div>
+
+        </div>
 
     </div>
 

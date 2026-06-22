@@ -30,7 +30,7 @@
             background: var(--color-kuning);
         }
     </style>
-
+    @stack('styles')
 </head>
 
 <body
@@ -102,7 +102,7 @@
                 </a>
 
                 <!-- Event -->
-                <a href="{{ url('/admin/event') }}"
+                <a href="{{ url('/admin/events') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
                     {{ ($activePage ?? '') == 'event' ? 'menu-active' : 'hover:bg-white/10' }}">
 
@@ -129,11 +129,11 @@
                 </a>
 
                 <!-- Merchandise -->
-                <a href="{{ url('/admin/merchandise') }}"
+                <a href="{{ url('/admin/produk') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
                     {{ ($activePage ?? '') == 'merchandise' ? 'menu-active' : 'hover:bg-white/10' }}">
 
-                    🛍 Merchandise
+                    🛍 Merchandise & Orders
 
                 </a>
 

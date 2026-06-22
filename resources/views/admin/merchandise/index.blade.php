@@ -1,233 +1,398 @@
-@extends('layouts.admin', [
-    'activePage' => 'merchandise'
-])
+@extends('layouts.admin',['activePage'=>'merchandise'])
 
 @section('content')
 
-<!-- Header -->
+{{-- HEADER --}}
 <div class="flex justify-between items-center mb-8">
 
     <div>
 
-        <h1
-            class="text-3xl font-bold"
-            style="color: var(--color-hitam);">
+        <h1 class="text-3xl font-bold"
+            style="color:var(--color-hitam)">
 
-            Merchandise & Order
+            Produk Merchandise
 
         </h1>
 
-        <p
-            class="mt-2"
-            style="color: var(--color-coklat);">
+        <p class="mt-2"
+           style="color:var(--color-coklat)">
 
-            Kelola produk, stok, dan pesanan merchandise.
+            Kelola seluruh produk merchandise.
 
         </p>
 
     </div>
 
-    <button
-        class="px-5 py-3 rounded-xl font-semibold text-white"
-        style="background-color: var(--color-merah);">
+    <div class="flex items-center gap-3">
 
-        + Tambah Produk
+        {{-- Tombol Kembali --}}
+        <a href="{{ route('admin.produk') }}"
+           class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition shadow-sm">
 
-    </button>
+            <span>←</span>
+            <span>Kembali</span>
+
+        </a>
+
+        {{-- Tombol Tambah Produk --}}
+        <a href="{{ route('admin.merchandise.create') }}"
+           class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition"
+           style="
+                background: linear-gradient(
+                    135deg,
+                    var(--color-merah),
+                    var(--color-coklat)
+                );
+           ">
+
+            <span class="text-lg">+</span>
+            <span>Tambah Produk</span>
+
+        </a>
+
+    </div>
 
 </div>
 
-<!-- Statistik -->
+
+{{-- STATISTIK --}}
 <div class="grid md:grid-cols-4 gap-6 mb-8">
 
-    <div class="admin-card p-6">
+    <div class="card-admin p-6">
+        <p>Total Produk</p>
 
-        <p class="admin-muted">
-            Total Produk
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color: var(--color-merah);">
-
-            24
-
+        <h2 class="text-4xl font-bold text-red-600 mt-2">
+            {{ $totalProduk }}
         </h2>
-
     </div>
 
-    <div class="admin-card p-6">
+    <div class="card-admin p-6">
+        <p>Total Stok</p>
 
-        <p class="admin-muted">
-            Total Stok
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2">
-
-            420
-
+        <h2 class="text-4xl font-bold mt-2">
+            {{ $totalStok }}
         </h2>
-
     </div>
 
-    <div class="admin-card p-6">
+    <div class="card-admin p-6">
+        <p>Produk Aktif</p>
 
-        <p class="admin-muted">
-            Pesanan Baru
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color: var(--color-kuning);">
-
-            15
-
+        <h2 class="text-4xl font-bold text-green-600 mt-2">
+            {{ $produkAktif }}
         </h2>
-
     </div>
 
-    <div class="admin-card p-6">
+    <div class="card-admin p-6">
+        <p>Produk Nonaktif</p>
 
-        <p class="admin-muted">
-            Terjual
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color:#16a34a;">
-
-            235
-
+        <h2 class="text-4xl font-bold text-yellow-500 mt-2">
+            {{ $produkNonaktif }}
         </h2>
+    </div>
+
+</div>
+
+
+
+{{-- FILTER --}}
+<form class="card-admin p-6 mb-6">
+
+<div class="grid lg:grid-cols-4 gap-4">
+
+    <input type="text"
+           name="search"
+           value="{{ request('search') }}"
+           placeholder="Cari produk..."
+           class="rounded-xl border px-4 py-3">
+
+    <select name="kategori"
+            onchange="this.form.submit()"
+            class="rounded-xl border px-4 py-3">
+
+        <option value="">
+            Semua Kategori
+        </option>
+
+        <option value="Kaos">
+            Kaos
+        </option>
+
+        <option value="Topi">
+            Topi
+        </option>
+
+        <option value="Sticker">
+            Sticker
+        </option>
+
+        <option value="Aksesoris">
+            Aksesoris
+        </option>
+
+    </select>
+
+
+    <select name="status"
+            onchange="this.form.submit()"
+            class="rounded-xl border px-4 py-3">
+
+        <option value="">
+            Semua Status
+        </option>
+
+        <option value="1">
+            Aktif
+        </option>
+
+        <option value="0">
+            Nonaktif
+        </option>
+
+    </select>
+
+
+    <div class="flex gap-2">
+
+        <select name="sort"
+                class="rounded-xl border px-4 py-3 w-full">
+
+            <option value="latest">
+                Terbaru
+            </option>
+
+            <option value="oldest">
+                Terlama
+            </option>
+
+        </select>
+
+        <button class="btn-primary">
+
+            Cari
+
+        </button>
 
     </div>
 
 </div>
 
-<!-- Tabel Produk -->
-<div class="admin-card overflow-hidden">
+</form>
 
-    <div
-        class="px-6 py-5 border-b"
-        style="border-color: rgba(212,160,23,.15);">
 
-        <h3
-            class="font-bold text-xl"
-            style="color: var(--color-hitam);">
 
-            Daftar Produk
+{{-- TABLE --}}
+<div class="card-admin overflow-hidden">
 
-        </h3>
+<div class="p-6 border-b">
 
-    </div>
+    <h3 class="font-bold text-xl">
 
-    <table class="w-full">
+        Daftar Produk
 
-        <thead
-            style="
-                background:
-                rgba(212,160,23,.08);
-            ">
+    </h3>
 
-            <tr>
+</div>
 
-                <th class="p-4 text-left">
-                    Produk
-                </th>
+<table class="w-full">
 
-                <th class="p-4 text-left">
-                    Stok
-                </th>
+<thead class="bg-slate-50">
 
-                <th class="p-4 text-left">
-                    Harga
-                </th>
+<tr>
 
-                <th class="p-4 text-left">
-                    Terjual
-                </th>
+<th class="p-4 text-left">
+    Produk
+</th>
 
-                <th class="p-4 text-center">
-                    Aksi
-                </th>
+<th>Kategori</th>
 
-            </tr>
+<th>Harga</th>
 
-        </thead>
+<th>Stok</th>
 
-        <tbody>
+<th>Status</th>
 
-            <tr
-                class="border-t"
-                style="
-                    border-color:
-                    rgba(212,160,23,.1);
-                ">
+<th class="text-center">
+    Aksi
+</th>
 
-                <td class="p-4 font-medium">
-                    Kaos Sikola Foundation
-                </td>
+</tr>
 
-                <td class="p-4">
+</thead>
 
-                    <span
-                        class="px-3 py-1 rounded-full text-sm font-semibold"
-                        style="
-                            background:
-                            rgba(22,163,74,.12);
-                            color:#16a34a;
-                        ">
 
-                        50 Stok
+<tbody>
 
-                    </span>
+@forelse($products as $product)
 
-                </td>
+<tr class="border-t hover:bg-slate-50">
 
-                <td
-                    class="p-4 font-semibold"
-                    style="color: var(--color-merah);">
+<td class="p-4">
 
-                    Rp 120.000
+<div class="flex items-center gap-4">
 
-                </td>
+<img
+src="{{ asset('storage/'.($product->gambar[0] ?? 'default.png')) }}"
+class="w-20 h-20 rounded-xl object-cover">
 
-                <td class="p-4">
-                    35 Unit
-                </td>
+<div>
 
-                <td class="p-4 text-center">
+<h4 class="font-semibold">
+    {{ $product->nama }}
+</h4>
 
-                    <button
-                        class="px-4 py-2 rounded-lg text-white"
-                        style="
-                            background-color:
-                            var(--color-coklat);
-                        ">
+<p class="text-sm text-slate-500">
+    {{ Str::limit($product->deskripsi,60) }}
+</p>
 
-                        Edit
+</div>
 
-                    </button>
+</div>
 
-                    <button
-                        class="px-4 py-2 rounded-lg text-white ml-2"
-                        style="
-                            background-color:
-                            var(--color-merah);
-                        ">
+</td>
 
-                        Hapus
+<td>
 
-                    </button>
+<span class="badge-warning">
+    {{ $product->kategori }}
+</span>
 
-                </td>
+</td>
 
-            </tr>
+<td class="font-semibold text-red-600">
 
-        </tbody>
+Rp {{ number_format($product->harga,0,',','.') }}
 
-    </table>
+</td>
+
+<td>
+
+@if($product->stok > 10)
+
+<span class="badge-success">
+
+{{ $product->stok }} Stok
+
+</span>
+
+@else
+
+<span class="badge-danger">
+
+{{ $product->stok }} Stok
+
+</span>
+
+@endif
+
+</td>
+
+<td>
+
+@if($product->is_aktif)
+
+<span class="badge-success">
+    Aktif
+</span>
+
+@else
+
+<span class="badge-warning">
+    Nonaktif
+</span>
+
+@endif
+
+</td>
+
+<td>
+
+<div class="flex justify-center gap-2">
+
+<a href="{{ route('admin.merchandise.edit',$product) }}"
+   class="px-3 py-2 rounded-lg bg-blue-100 text-blue-600">
+
+    ✏️ Edit
+
+</a>
+
+<form action="{{ route('admin.merchandise.destroy',$product) }}"
+      method="POST">
+
+@csrf
+@method('DELETE')
+
+<button
+onclick="return confirm('Hapus produk?')"
+class="px-3 py-2 rounded-lg bg-red-100 text-red-600">
+
+🗑 Hapus
+
+</button>
+
+</form>
+
+</div>
+
+</td>
+
+</tr>
+
+@empty
+
+<tr>
+
+<td colspan="6">
+
+<div class="py-20 text-center">
+
+<div class="text-7xl mb-5">
+
+🛍️
+
+</div>
+
+<h3 class="text-2xl font-bold mb-3">
+
+Belum Ada Produk
+
+</h3>
+
+<p class="text-slate-500 mb-6">
+
+Tambahkan produk merchandise pertama
+untuk mulai berjualan.
+
+</p>
+
+<a href="{{ route('admin.merchandise.create') }}"
+   class="btn-primary">
+
+    + Tambah Produk
+
+</a>
+
+</div>
+
+</td>
+
+</tr>
+
+@endforelse
+
+</tbody>
+
+</table>
+
+
+@if($products->count())
+
+<div class="p-6 border-t">
+
+{{ $products->links() }}
+
+</div>
+
+@endif
 
 </div>
 

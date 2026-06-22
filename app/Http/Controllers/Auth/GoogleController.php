@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class GoogleController extends Controller
 {
@@ -15,7 +19,7 @@ class GoogleController extends Controller
     public function callback(Request $request)
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
             $user = User::updateOrCreate(
                 ['email' => $googleUser->email],
@@ -34,7 +38,7 @@ class GoogleController extends Controller
             }
 
             Auth::login($user);
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/admin/dashboard');
 
         } catch (Exception $e) {
             return redirect('/')->with('error', 'Login Google gagal. Silakan coba lagi.');

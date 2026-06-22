@@ -101,7 +101,7 @@
                 </div>
 
                 <!-- GOOGLE LOGIN -->
-                <a href="#"
+                <a href="{{ url('/auth/google') }}"
                    class="mt-8 flex items-center justify-center gap-3 rounded-xl py-3 transition"
                    style="
                         border:1px solid rgba(212,160,23,.3);
@@ -137,7 +137,7 @@
                 </div>
 
                 <!-- LOGIN FORM -->
-                <form method="POST" action="{{ url('/admin/dashboard') }}">
+                <form method="POST" action="{{ route('login.process') }}">
 
                     @csrf
 
@@ -149,6 +149,7 @@
 
                         <input
                             type="email"
+                            name="email"
                             class="w-full rounded-xl px-4 py-3 border focus:outline-none"
                             style="
                                 border-color: rgba(212,160,23,.25);
@@ -164,6 +165,7 @@
 
                         <input
                             type="password"
+                            name="password"
                             class="w-full rounded-xl px-4 py-3 border focus:outline-none"
                             style="
                                 border-color: rgba(212,160,23,.25);
