@@ -25,12 +25,12 @@ Route::get('/', function () {
 // ── PUBLIK (tanpa auth) ──────────────────────────────────────────
 Route::get('/',                     [CompanyProfileController::class, 'beranda']);
 Route::get('/tentang',              [CompanyProfileController::class, 'tentang']);
-Route::get('/berita',               [CompanyProfileController::class, 'beritaIndex']);
-Route::get('/berita/{slug}',        [CompanyProfileController::class, 'beritaShow']);
-Route::get('/event',                [CompanyProfileController::class, 'eventIndex']);
+Route::get('/berita',               [CompanyProfileController::class, 'beritaIndex'])->name('berita.index');
+Route::get('/berita/{slug}',        [CompanyProfileController::class, 'beritaShow'])->name('berita.show');
+Route::get('/event',                [CompanyProfileController::class, 'eventIndex'])->name('event.index');
 Route::get('/event/{slug}',         [CompanyProfileController::class, 'eventShow'])->name('event.show');
 Route::get('/donasi',               [CompanyProfileController::class, 'donasi']);
-Route::get('/merchandise',          [CompanyProfileController::class, 'merchandise']);
+Route::get('/merchandise',          [CompanyProfileController::class, 'merchandise'])->name('merchandise');
 Route::get('/merchandise/{slug}',   [MerchandisePublicController::class, 'show']);
 Route::get('/tim',                  [CompanyProfileController::class, 'tim']);
 Route::get('/relawan',              [CompanyProfileController::class, 'relawan']);

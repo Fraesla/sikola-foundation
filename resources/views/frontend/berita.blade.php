@@ -47,52 +47,82 @@
 
     <div class="container mx-auto px-6">
 
-        <div class="flex flex-wrap gap-3 justify-center">
+        <div class="flex justify-center flex-wrap gap-3">
 
-            <button
-                class="px-5 py-2 rounded-full font-medium"
-                style="
-                    background-color: var(--color-merah);
-                    color: var(--color-putih);
-                ">
+            <a href="{{ route('berita.index') }}"
+               class="px-6 py-2 rounded-full font-semibold"
+               style="
+                    background:
+                    {{ request('status') == null
+                        ? 'var(--color-merah)'
+                        : 'rgba(212,160,23,.15)' }};
+
+                    color:
+                    {{ request('status') == null
+                        ? 'white'
+                        : 'var(--color-hitam)' }};
+               ">
+
                 Semua
-            </button>
 
-           <button
-                class="px-5 py-2 rounded-full transition"
-                style="
-                    background-color: rgba(212,160,23,.15);
-                    color: var(--color-hitam);
-                ">
-                Event
-            </button>
+            </a>
 
-            <button
-                class="px-5 py-2 rounded-full transition"
-                style="
-                    background-color: rgba(212,160,23,.15);
-                    color: var(--color-hitam);
-                ">
-                Donasi
-            </button>
+            <a href="{{ route('berita.index',['status'=>'publikasi']) }}"
+               class="px-6 py-2 rounded-full"
 
-            <button
-                class="px-5 py-2 rounded-full transition"
-                style="
-                    background-color: rgba(212,160,23,.15);
-                    color: var(--color-hitam);
-                ">
-                Volunteer
-            </button>
+               style="
+                    background:
+                    {{ request('status') == 'publikasi'
+                        ? 'var(--color-merah)'
+                        : 'rgba(212,160,23,.15)' }};
 
-            <button
-                class="px-5 py-2 rounded-full transition"
-                style="
-                    background-color: rgba(212,160,23,.15);
-                    color: var(--color-hitam);
-                ">
-                Pendidikan
-            </button>
+                    color:
+                    {{ request('status') == 'publikasi'
+                        ? 'white'
+                        : 'var(--color-hitam)' }};
+               ">
+
+                Dipublikasikan
+
+            </a>
+
+            <a href="{{ route('berita.index',['status'=>'draft']) }}"
+               class="px-6 py-2 rounded-full"
+
+               style="
+                    background:
+                    {{ request('status') == 'draft'
+                        ? 'var(--color-merah)'
+                        : 'rgba(212,160,23,.15)' }};
+
+                    color:
+                    {{ request('status') == 'draft'
+                        ? 'white'
+                        : 'var(--color-hitam)' }};
+               ">
+
+                Draft
+
+            </a>
+
+            <a href="{{ route('berita.index',['status'=>'arsip']) }}"
+               class="px-6 py-2 rounded-full"
+
+               style="
+                    background:
+                    {{ request('status') == 'arsip'
+                        ? 'var(--color-merah)'
+                        : 'rgba(212,160,23,.15)' }};
+
+                    color:
+                    {{ request('status') == 'arsip'
+                        ? 'white'
+                        : 'var(--color-hitam)' }};
+               ">
+
+                Arsip
+
+            </a>
 
         </div>
 
@@ -103,269 +133,124 @@
 <!-- LIST BERITA -->
 <section
     class="py-20"
-    style="
-        background-color: rgba(212,160,23,.08);
-    ">
+    style="background-color: rgba(212,160,23,.08);">
 
     <div class="container mx-auto px-6">
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <!-- Artikel 1 -->
-            <article class="news-card">
+            @forelse($posts as $post)
 
-                <img
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
-                    class="w-full h-56 object-cover"
-                    alt=""
-                >
+                <article class="news-card">
 
-                <div class="p-6">
+                    <img
+                        src="{{ asset('storage/'.$post->gambar_cover) }}"
+                        alt="{{ $post->judul }}"
+                        class="w-full h-56 object-cover">
 
-                    <span class="badge-event px-3 py-1 rounded-full text-sm">
-                        Event
-                    </span>
+                    <div class="p-6">
 
-                    <h3 class="news-title text-xl font-bold mt-4">
-                        Seminar Pendidikan Untuk Generasi Muda
-                    </h3>
+                        @php
 
-                    <p class="news-text mt-3">
-                        Kegiatan seminar pendidikan yang diikuti
-                        oleh ratusan peserta dari berbagai daerah.
-                    </p>
+                        $badgeColor = match($post->status){
+                            'publikasi' => [
+                                'bg' => 'rgba(34,197,94,.15)',
+                                'text' => '#16a34a',
+                                'label' => 'Dipublikasikan'
+                            ],
 
-                    <a
-                        href="{{ url('/berita/seminar-pendidikan-generasi-muda') }}"
-                        class="news-link inline-flex items-center gap-2 mt-5"
-                    >
-                        Baca Selengkapnya →
-                    </a>
+                            'draft' => [
+                                'bg' => 'rgba(245,158,11,.15)',
+                                'text' => '#d97706',
+                                'label' => 'Draft'
+                            ],
 
-                </div>
+                            default => [
+                                'bg' => 'rgba(107,114,128,.15)',
+                                'text' => '#6b7280',
+                                'label' => 'Arsip'
+                            ]
+                        };
 
-            </article>
+                        @endphp
 
-            <!-- Artikel 2 -->
-            <article class="news-card">
+                        <span
+                            class="inline-flex px-3 py-1 rounded-full text-sm font-medium"
+                            style="
+                                background: {{ $badgeColor['bg'] }};
+                                color: {{ $badgeColor['text'] }};
+                            ">
 
-                 <img
-                    src="https://images.unsplash.com/photo-1509099836639-18ba1795216d"
-                    alt=""
-                    class="w-full h-56 object-cover">
+                            {{ $badgeColor['label'] }}
 
-                <div class="p-6">
+                        </span>
 
-                    <span class="badge-donasi px-3 py-1 rounded-full text-sm">
-                        Donasi
-                    </span>
+                        <h3
+                            class="news-title text-xl font-bold mt-4">
 
-                    <h3 class="news-title text-xl font-bold mt-4">
-                        Penyaluran Donasi Untuk Sekolah Pedalaman
-                    </h3>
+                            {{ $post->judul }}
 
-                    <p class="news-text mt-3">
-                        Bantuan perlengkapan sekolah berhasil
-                        disalurkan kepada siswa di daerah terpencil.
-                    </p>
+                        </h3>
 
-                    <a
-                        href="{{ url('/berita/penyaluran-donasi-untuk-sekolah-pedalaman') }}"
-                        class="news-link inline-flex items-center gap-2 mt-5"
-                    >
-                        Baca Selengkapnya →
-                    </a>
+                        <p class="news-text mt-3">
 
-                </div>
+                            {{ Str::limit(strip_tags($post->konten),120) }}
 
-            </article>
+                        </p>
 
-            <!-- Artikel 3 -->
-            <article class="news-card">
+                        <div
+                            class="mt-4 text-sm text-slate-500">
 
-                 <img
-                    src="https://images.unsplash.com/photo-1517048676732-d65bc937f952"
-                    alt=""
-                    class="w-full h-56 object-cover">
+                            {{ optional($post->published_at)->translatedFormat('d F Y') }}
 
-                <div class="p-6">
+                        </div>
 
-                    <span class="badge-volunteer px-3 py-1 rounded-full text-sm">
-                        Volunteer
-                    </span>
+                        <a
+                            href="{{ route('berita.show',$post->slug) }}"
+                            class="news-link inline-flex items-center gap-2 mt-5">
 
-                    <h3 class="news-title text-xl font-bold mt-4">
-                        Pelatihan Volunteer Sikola Foundation
-                    </h3>
+                            Baca Selengkapnya →
 
-                    <p class="news-text mt-3">
-                        Mempersiapkan relawan untuk mendukung
-                        berbagai program sosial dan pendidikan.
-                    </p>
+                        </a>
 
-                    <a
-                        href="{{ url('/berita/pelatihan-volunteer-sikola-foundation') }}"
-                        class="news-link inline-flex items-center gap-2 mt-5"
-                    >
-                        Baca Selengkapnya →
-                    </a>
+                    </div>
 
-                </div>
+                </article>
 
-            </article>
+            @empty
 
-            <!-- Artikel 4 -->
-            <article class="news-card">
+                <div class="col-span-3">
 
-                 <img
-                    src="https://images.unsplash.com/photo-1497486751825-1233686d5d80"
-                    alt=""
-                    class="w-full h-56 object-cover">
+                    <div class="news-card p-12 text-center">
 
-                <div class="p-6">
+                        <div class="text-7xl">
+                            📰
+                        </div>
 
-                    <span class="badge-pendidikan px-3 py-1 rounded-full text-sm">
-                        Pendidikan
-                    </span>
+                        <h3 class="text-2xl font-bold mt-4">
 
-                    <h3 class="news-title text-xl font-bold mt-4">
-                        Program Literasi Anak Usia Dini
-                    </h3>
+                            Belum Ada Berita
 
-                    <p class="news-text mt-3">
-                        Program membaca dan belajar yang dirancang
-                        untuk meningkatkan minat literasi anak.
-                    </p>
+                        </h3>
 
-                    <a
-                        href="{{ url('/berita/program-literasi-anak-usia-dini') }}"
-                        class="news-link inline-flex items-center gap-2 mt-5"
-                    >
-                        Baca Selengkapnya →
-                    </a>
+                        <p class="mt-2 text-slate-500">
+
+                            Saat ini belum ada berita yang dipublikasikan.
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </article>
-
-            <!-- Artikel 5 -->
-            <article class="news-card">
-
-                 <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7" alt="" class="w-full h-56 object-cover">
-
-                <div class="p-6">
-
-                    <span class="badge-event px-3 py-1 rounded-full text-sm">
-                        Event
-                    </span>
-
-                    <h3 class="news-title text-xl font-bold mt-4">
-                        Workshop Teknologi Untuk Pelajar
-                    </h3>
-
-                    <p class="news-text mt-3">
-                        Workshop pengenalan teknologi dan coding
-                        bagi siswa tingkat SMA.
-                    </p>
-
-                    <a
-                        href="{{ url('/berita/workshop-teknologi-untuk-pelajar') }}"
-                        class="news-link inline-flex items-center gap-2 mt-5"
-                    >
-                        Baca Selengkapnya →
-                    </a>
-
-                </div>
-
-            </article>
-
-            <!-- Artikel 6 -->
-            <article class="news-card">
-
-                 <img
-                    src="https://images.unsplash.com/photo-1469571486292-b53601020f1d"
-                    alt=""
-                    class="w-full h-56 object-cover">
-
-                <div class="p-6">
-
-                    <span class="badge-donasi px-3 py-1 rounded-full text-sm">
-                        Donasi
-                    </span>
-
-                    <h3 class="news-title text-xl font-bold mt-4">
-                        Donasi Buku Untuk Rumah Belajar
-                    </h3>
-
-                    <p class="news-text mt-3">
-                        Pengumpulan dan distribusi buku bacaan
-                        bagi anak-anak di berbagai daerah.
-                    </p>
-
-                    <a
-                        href="{{ url('/berita/donasi-buku-untuk-rumah-belajar') }}"
-                        class="news-link inline-flex items-center gap-2 mt-5"
-                    >
-                        Baca Selengkapnya →
-                    </a>
-
-                </div>
-
-            </article>
+            @endforelse
 
         </div>
 
-        <!-- PAGINATION -->
-        <div class="flex justify-center mt-16">
+        {{-- Pagination --}}
+        <div class="mt-16">
 
-            <nav class="flex items-center gap-2">
-
-                <a href="#"
-class="w-10 h-10 rounded-xl flex items-center justify-center transition"
-style="
-    border: 1px solid var(--color-kuning);
-    color: var(--color-hitam);
-">
-                    ‹
-                </a>
-
-               <a href="#"
-class="w-10 h-10 rounded-xl flex items-center justify-center"
-style="
-    background-color: var(--color-merah);
-    color: var(--color-putih);
-">
-    1
-</a>
-
-                <a href="#"
-class="w-10 h-10 rounded-xl flex items-center justify-center transition"
-style="
-    border: 1px solid var(--color-kuning);
-    color: var(--color-hitam);
-">
-    2
-</a>
-
-               <a href="#"
-class="w-10 h-10 rounded-xl flex items-center justify-center transition"
-style="
-    border: 1px solid var(--color-kuning);
-    color: var(--color-hitam);
-">
-                    3
-                </a>
-
-                <a href="#"
-class="w-10 h-10 rounded-xl flex items-center justify-center transition"
-style="
-    border: 1px solid var(--color-kuning);
-    color: var(--color-hitam);
-">
-                    ›
-                </a>
-
-            </nav>
+            {{ $posts->links() }}
 
         </div>
 

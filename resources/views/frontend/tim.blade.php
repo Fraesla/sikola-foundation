@@ -50,120 +50,156 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-            @for($i=1;$i<=8;$i++)
+            @forelse($teams as $team)
 
-            <div
-                class="rounded-3xl overflow-hidden text-center transition duration-300 hover:-translate-y-2"
-                style="
-                    background-color: white;
-                    box-shadow: var(--shadow);
-                ">
-
-                <!-- HEADER -->
                 <div
-                    class="h-24"
+                    class="rounded-3xl overflow-hidden text-center transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
                     style="
-                        background:
-                        linear-gradient(
-                            135deg,
-                            var(--color-merah),
-                            var(--color-coklat)
-                        );
+                        background-color: white;
+                        box-shadow: var(--shadow);
                     ">
-                </div>
 
-                <!-- PHOTO -->
-                <div class="-mt-14">
-
-                    <img
-                        src="https://i.pravatar.cc/300?img={{ $i }}"
-                        class="
-                            w-28 h-28
-                            rounded-full
-                            mx-auto
-                            border-4
-                        "
+                    {{-- HEADER --}}
+                    <div
+                        class="h-28"
                         style="
-                            border-color: var(--color-kuning);
+                            background:
+                            linear-gradient(
+                                135deg,
+                                var(--color-merah),
+                                var(--color-coklat)
+                            );
                         ">
+                    </div>
 
-                </div>
+                    {{-- FOTO --}}
+                    <div class="-mt-14">
 
-                <!-- CONTENT -->
-                <div class="p-6">
+                        <img
+                            src="{{ $team->foto
+                                    ? asset('storage/'.$team->foto)
+                                    : 'https://ui-avatars.com/api/?name='.$team->nama }}"
+                            alt="{{ $team->nama }}"
+                            class="w-28 h-28 rounded-full mx-auto border-4 object-cover"
+                            style="
+                                border-color: var(--color-kuning);
+                            ">
 
-                    <h3
-                        class="text-xl font-bold"
-                        style="color: var(--color-hitam);">
+                    </div>
 
-                        Team Member {{ $i }}
+                    {{-- CONTENT --}}
+                    <div class="p-6">
 
-                    </h3>
+                        <h3
+                            class="text-2xl font-bold"
+                            style="color: var(--color-hitam);">
 
-                    <p
-                        class="mt-2 font-medium"
-                        style="color: var(--color-merah);">
+                            {{ $team->nama }}
 
-                        Koordinator Program
+                        </h3>
 
-                    </p>
+                        <p
+                            class="mt-2 font-semibold"
+                            style="color: var(--color-merah);">
 
-                    <p
-                        class="mt-4 text-sm leading-6"
-                        style="color: var(--color-coklat);">
+                            {{ $team->jabatan }}
 
-                        Berperan dalam mengelola dan
-                        menjalankan berbagai program
-                        sosial dan pendidikan yayasan.
+                        </p>
 
-                    </p>
+                        <p
+                            class="mt-4 text-sm leading-7 min-h-[120px]"
+                            style="color: var(--color-coklat);">
 
-                    <!-- SOCIAL -->
-                    <div class="flex justify-center gap-3 mt-6">
+                            {{ \Illuminate\Support\Str::limit($team->bio,120) }}
 
-                        <a href="#"
-                           class="w-10 h-10 rounded-full flex items-center justify-center transition"
-                           style="
-                                background-color: rgba(212,160,23,.15);
-                                color: var(--color-merah);
-                           ">
-                            🌐
-                        </a>
+                        </p>
 
-                        <a href="#"
-                           class="w-10 h-10 rounded-full flex items-center justify-center transition"
-                           style="
-                                background-color: rgba(212,160,23,.15);
-                                color: var(--color-merah);
-                           ">
-                            📘
-                        </a>
+                        {{-- SOCIAL MEDIA --}}
+                        @php
+                            $social = $team->sosial_media ?? [];
+                        @endphp
 
-                        <a href="#"
-                           class="w-10 h-10 rounded-full flex items-center justify-center transition"
-                           style="
-                                background-color: rgba(212,160,23,.15);
-                                color: var(--color-merah);
-                           ">
-                            📷
-                        </a>
+                        <div class="flex justify-center gap-3 mt-6">
 
-                        <a href="#"
-                           class="w-10 h-10 rounded-full flex items-center justify-center transition"
-                           style="
-                                background-color: rgba(212,160,23,.15);
-                                color: var(--color-merah);
-                           ">
-                            💼
-                        </a>
+                            @if(isset($social['website']))
+                            <a href="{{ $social['website'] }}"
+                               target="_blank"
+                               class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition"
+                               style="
+                                    background-color: rgba(212,160,23,.15);
+                                    color: var(--color-merah);
+                               ">
+                                🌐
+                            </a>
+                            @endif
+
+                            @if(isset($social['facebook']))
+                            <a href="{{ $social['facebook'] }}"
+                               target="_blank"
+                               class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition"
+                               style="
+                                    background-color: rgba(212,160,23,.15);
+                                    color: var(--color-merah);
+                               ">
+                                📘
+                            </a>
+                            @endif
+
+                            @if(isset($social['instagram']))
+                            <a href="{{ $social['instagram'] }}"
+                               target="_blank"
+                               class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition"
+                               style="
+                                    background-color: rgba(212,160,23,.15);
+                                    color: var(--color-merah);
+                               ">
+                                📷
+                            </a>
+                            @endif
+
+                            @if(isset($social['linkedin']))
+                            <a href="{{ $social['linkedin'] }}"
+                               target="_blank"
+                               class="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition"
+                               style="
+                                    background-color: rgba(212,160,23,.15);
+                                    color: var(--color-merah);
+                               ">
+                                💼
+                            </a>
+                            @endif
+
+                        </div>
 
                     </div>
 
                 </div>
 
-            </div>
+            @empty
 
-            @endfor
+                <div class="col-span-4">
+
+                    <div
+                        class="rounded-3xl bg-white p-16 text-center"
+                        style="box-shadow: var(--shadow);">
+
+                        <div class="text-7xl mb-4">
+                            👥
+                        </div>
+
+                        <h3 class="text-3xl font-bold mb-4">
+                            Belum Ada Data Tim
+                        </h3>
+
+                        <p class="text-slate-500">
+                            Saat ini belum ada anggota tim yang ditampilkan.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            @endforelse
 
         </div>
 

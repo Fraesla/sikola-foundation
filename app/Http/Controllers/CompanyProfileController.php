@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Event;  
+use App\Models\Postingan;
+use App\Models\TeamMember;
+use App\Models\Merchandise;
 
 class CompanyProfileController extends Controller
 {
@@ -21,154 +25,83 @@ class CompanyProfileController extends Controller
         return view('frontend/tentang');
     }
 
-    public function beritaIndex()
+    public function beritaIndex(Request $request)
     {
-        return view('frontend/berita');
+        $query = Postingan::query();
+
+        // filter status
+        if ($request->status && $request->status != 'semua') {
+            $query->where('status', $request->status);
+        }
+
+        // search
+        if ($request->search) {
+            $query->where('judul', 'like', '%'.$request->search.'%');
+        }
+
+        $posts = $query
+            ->latest('published_at')
+            ->paginate(5)
+            ->withQueryString();
+
+        return view(
+            'frontend.berita',
+            compact('posts')
+        );
     }
 
     public function beritaShow($slug)
     {
-        $news = (object)[
-            'title' => 'Seminar Pendidikan Untuk Generasi Muda',
-            'slug' => $slug,
-            'thumbnail' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f',
-            'views' => 1250,
-            'created_at' => now(),
-            'content' => '
-                <p>
-                    Seminar pendidikan merupakan salah satu kegiatan
-                    yang bertujuan meningkatkan wawasan generasi muda.
-                </p>
+        $news = Postingan::where('slug', $slug)
+            ->where('status', 'publikasi')
+            ->firstOrFail();
 
-                <p>
-                    Dalam kegiatan ini peserta mendapatkan berbagai
-                    materi mengenai pendidikan, teknologi, dan pengembangan diri.
-                </p>
+        // tambah views otomatis
+        $news->increment('views');
 
-                <h2>Tujuan Kegiatan</h2>
+        // berita terbaru untuk sidebar
+        $latestNews = Postingan::where('status', 'publikasi')
+            ->where('id', '!=', $news->id)
+            ->latest('published_at')
+            ->take(5)
+            ->get();
 
-                <ul>
-                    <li>Meningkatkan motivasi belajar</li>
-                    <li>Mengembangkan soft skill</li>
-                    <li>Membangun jaringan kolaborasi</li>
-                </ul>
-            '
-        ];
-
-        return view('frontend.berita-detail', compact('news'));
+        return view(
+            'frontend.berita-detail',
+            compact('news', 'latestNews')
+        );
     }
 
-    public function eventIndex()
+    public function eventIndex(Request $request)
     {
-        $events = [
+        $query = Event::query();
 
-            [
-                'slug' => 'seminar-pendidikan-2026',
-                'title' => 'Seminar Pendidikan 2026',
-                'date' => '20 Januari 2026',
-                'location' => 'Padang, Sumatera Barat',
-                'quota' => 100,
-                'registered' => 65,
-                'status' => 'upcoming',
-                'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865'
-            ],
+        // Filter status
+        if ($request->status == 'mendatang') {
+            $query->whereDate('tanggal_mulai', '>=', now());
+        }
 
-            [
-                'slug' => 'workshop-laravel',
-                'title' => 'Workshop Laravel',
-                'date' => '15 Februari 2026',
-                'location' => 'Bukittinggi',
-                'quota' => 50,
-                'registered' => 30,
-                'status' => 'upcoming',
-                'image' => 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d'
-            ],
+        if ($request->status == 'arsip') {
+            $query->whereDate('tanggal_mulai', '<', now());
+        }
 
-            [
-                'slug' => 'bakti-sosial-2025',
-                'title' => 'Bakti Sosial 2025',
-                'date' => '12 Agustus 2025',
-                'location' => 'Agam',
-                'quota' => 150,
-                'registered' => 150,
-                'status' => 'archive',
-                'image' => 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c'
-            ]
+        // Search
+        if ($request->search) {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
 
-        ];
+        $events = $query
+            ->orderBy('tanggal_mulai', 'asc')
+            ->paginate(9)
+            ->withQueryString();
 
         return view('frontend.event', compact('events'));
-    }
+    } 
 
     public function eventShow($slug)
     {
-        $events = [
-
-            'seminar-pendidikan-2026' => [
-                'title' => 'Seminar Pendidikan 2026',
-                'date' => '20 Januari 2026',
-                'location' => 'Padang, Sumatera Barat',
-                'quota' => 100,
-                'registered' => 65,
-                'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865',
-                'description' => '
-                    <p>
-                        Seminar pendidikan nasional yang menghadirkan
-                        berbagai pembicara dari kalangan akademisi.
-                    </p>
-
-                    <h2>Agenda Kegiatan</h2>
-
-                    <ul>
-                        <li>Seminar Pendidikan</li>
-                        <li>Diskusi Panel</li>
-                        <li>Networking Session</li>
-                    </ul>
-                '
-            ],
-
-            'workshop-laravel' => [
-                'title' => 'Workshop Laravel',
-                'date' => '15 Februari 2026',
-                'location' => 'Bukittinggi',
-                'quota' => 50,
-                'registered' => 30,
-                'image' => 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d',
-                'description' => '
-                    <p>
-                        Pelatihan Laravel untuk mahasiswa dan pelajar.
-                    </p>
-                '
-            ],
-
-            'bakti-sosial-2025' => [
-                'title' => 'Bakti Sosial 2025',
-                'date' => '12 Agustus 2025',
-                'location' => 'Agam',
-                'quota' => 150,
-                'registered' => 150,
-                'image' => 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c',
-                'description' => '
-                    <p>
-                        Kegiatan bakti sosial yang melibatkan relawan
-                        dari berbagai daerah untuk membantu masyarakat.
-                    </p>
-
-                    <h2>Kegiatan</h2>
-
-                    <ul>
-                        <li>Pembagian sembako</li>
-                        <li>Pemeriksaan kesehatan gratis</li>
-                        <li>Edukasi masyarakat</li>
-                    </ul>
-                '
-            ],
-
-        ];
-
-        abort_unless(isset($events[$slug]), 404);
-
-        $event = (object) $events[$slug];
+        $event = Event::where('slug', $slug)
+        ->firstOrFail();
 
         return view('frontend.event-detail', compact('event'));
     }
@@ -178,14 +111,38 @@ class CompanyProfileController extends Controller
         return view('frontend/donasi');
     }
 
-    public function merchandise()
+    public function merchandise(Request $request)
     {
-        return view('frontend/merchandise');
+        $query = Merchandise::where('is_aktif', true);
+
+        // Filter kategori
+        if ($request->filled('kategori') && $request->kategori != 'semua') {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $merchandises = $query
+                        ->latest()
+                        ->paginate(8)
+                        ->withQueryString();
+
+        $categories = Merchandise::where('is_aktif', true)
+                        ->select('kategori')
+                        ->distinct()
+                        ->pluck('kategori');
+
+        return view(
+            'frontend.merchandise',
+            compact('merchandises', 'categories')
+        );
     }
 
     public function tim()
     {
-        return view('frontend/tim');
+        $teams = TeamMember::where('is_aktif', true)
+                    ->orderBy('urutan')
+                    ->get();
+
+        return view('frontend.tim', compact('teams'));
     }
 
     public function relawan()

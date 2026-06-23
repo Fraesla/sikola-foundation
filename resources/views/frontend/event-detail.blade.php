@@ -2,76 +2,65 @@
 
 @section('content')
 
-<!-- HERO -->
-<section class="relative h-[500px] overflow-hidden">
+{{-- HERO --}}
+<section class="relative h-[550px] overflow-hidden">
 
-    <!-- Tombol Back -->
-    <a href="{{ url('/event') }}"
-       class="absolute top-8 left-8 z-30 inline-flex items-center gap-3 px-5 py-3 rounded-xl transition hover:bg-white/20"
-       style="
-            background: rgba(0,0,0,.25);
+    <a href="{{ route('event.index') }}"
+        class="absolute top-8 left-8 z-30 px-5 py-3 rounded-xl flex items-center gap-2"
+        style="
+            background: rgba(255,255,255,.12);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(212,160,23,.5);
-            color: var(--color-putih);
-       ">
+            color:white;
+            border:1px solid rgba(255,255,255,.2);
+        ">
 
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="w-5 h-5"
-             fill="none"
-             viewBox="0 0 24 24"
-             stroke="currentColor">
-            <path stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"/>
-        </svg>
+        ← Kembali
 
-        BACK
     </a>
 
-    <!-- Background Image -->
-    <img
-        src="{{ $event->image }}"
-        class="absolute inset-0 w-full h-full object-cover"
-        alt="{{ $event->title }}">
+    <img src="{{ asset('storage/'.$event->gambar) }}"
+         class="absolute inset-0 w-full h-full object-cover">
 
-    <!-- Overlay -->
-    <div
-        class="absolute inset-0"
+    <div class="absolute inset-0"
         style="
             background:
             linear-gradient(
-                rgba(26,26,26,.65),
-                rgba(26,26,26,.65)
-            ),
-            linear-gradient(
-                135deg,
-                rgba(204,34,34,.35),
-                rgba(139,94,42,.35)
+                rgba(0,0,0,.65),
+                rgba(0,0,0,.75)
             );
         ">
     </div>
 
-    <!-- Content -->
-    <div class="absolute inset-0 flex items-center z-10">
+    <div class="absolute inset-0 flex items-center">
 
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-6 text-white relative z-10">
 
-            <div class="max-w-4xl">
+            <span
+                class="px-4 py-2 rounded-full text-sm font-semibold"
+                style="
+                    background:rgba(212,160,23,.2);
+                    color:var(--color-kuning);
+                ">
 
-                <span
-                    class="inline-flex px-4 py-2 rounded-full text-sm font-semibold"
-                    style="
-                        background-color: var(--color-kuning);
-                        color: var(--color-hitam);
-                    ">
-                    🎉 Event Sikola Foundation
-                </span>
+                {{ ucfirst($event->status) }}
 
-                <h1
-                    class="text-5xl md:text-7xl font-bold text-white mt-6">
-                    {{ $event->title }}
-                </h1>
+            </span>
+
+            <h1 class="text-5xl md:text-6xl font-bold mt-6">
+                {{ $event->judul }}
+            </h1>
+
+            <div class="flex flex-wrap gap-8 mt-8 text-lg">
+
+                <div>
+                    📅
+                    {{ \Carbon\Carbon::parse($event->tanggal_mulai)
+                        ->translatedFormat('d F Y H:i') }}
+                </div>
+
+                <div>
+                    📍 {{ $event->lokasi }}
+                </div>
 
             </div>
 
@@ -81,45 +70,31 @@
 
 </section>
 
-<!-- CONTENT -->
-<section
-    class="py-20"
-    style="background-color: var(--color-putih);">
+
+{{-- CONTENT --}}
+<section class="py-20">
 
     <div class="container mx-auto px-6">
 
-        <div class="grid lg:grid-cols-4 gap-12">
+        <div class="grid lg:grid-cols-4 gap-10">
 
-            <!-- ARTIKEL -->
+            {{-- KONTEN --}}
             <div class="lg:col-span-3">
 
                 <div
                     class="rounded-3xl p-10"
                     style="
-                        background-color: white;
-                        box-shadow: var(--shadow);
+                        background:white;
+                        box-shadow:var(--shadow);
                     ">
 
-                    <div
-                        class="flex flex-wrap gap-6 pb-6 mb-8 border-b"
-                        style="
-                            border-color:
-                            rgba(212,160,23,.2);
-                        ">
-
-                        <span style="color: var(--color-coklat);">
-                            📅 {{ $event->date }}
-                        </span>
-
-                        <span style="color: var(--color-coklat);">
-                            📍 {{ $event->location }}
-                        </span>
-
-                    </div>
+                    <h2 class="text-3xl font-bold mb-8">
+                        Tentang Event
+                    </h2>
 
                     <div class="prose prose-lg max-w-none">
 
-                        {!! $event->description !!}
+                        {!! $event->deskripsi !!}
 
                     </div>
 
@@ -127,74 +102,180 @@
 
             </div>
 
-            <!-- SIDEBAR -->
+            {{-- SIDEBAR --}}
             <div>
 
                 <div
-                    class="rounded-3xl p-6 sticky top-24"
+                    class="rounded-3xl p-8 sticky top-24"
                     style="
-                        background-color: white;
-                        box-shadow: var(--shadow);
+                        background:white;
+                        box-shadow:var(--shadow);
                     ">
 
                     <h3
-                        class="font-bold text-xl mb-6"
-                        style="color: var(--color-hitam);">
+                        class="text-2xl font-bold mb-6"
+                        style="color:var(--color-hitam)">
 
                         Informasi Event
 
                     </h3>
 
-                    <div class="space-y-4">
+                    <div class="space-y-5">
 
-                        <p style="color: var(--color-coklat);">
-                            📅 {{ $event->date }}
-                        </p>
+                        <div>
 
-                        <p style="color: var(--color-coklat);">
-                            📍 {{ $event->location }}
-                        </p>
+                            <p class="text-sm text-slate-500">
+                                Tanggal Mulai
+                            </p>
 
-                        <p style="color: var(--color-coklat);">
-                            👥 Kuota:
-                            {{ $event->quota }}
-                        </p>
+                            <p class="font-semibold">
 
-                        <p style="color: var(--color-coklat);">
-                            ✅ Terdaftar:
-                            {{ $event->registered }}
-                        </p>
+                                {{ \Carbon\Carbon::parse($event->tanggal_mulai)
+                                    ->translatedFormat('d F Y H:i') }}
 
-                        <div
-                            class="rounded-xl p-4 text-center font-bold"
-                            style="
-                                background-color:
-                                rgba(212,160,23,.12);
+                            </p>
 
-                                color:
-                                var(--color-merah);
-                            ">
+                        </div>
 
-                            Sisa Kuota:
-                            {{ $event->quota - $event->registered }}
+                        @if($event->tanggal_selesai)
+
+                        <div>
+
+                            <p class="text-sm text-slate-500">
+                                Tanggal Selesai
+                            </p>
+
+                            <p class="font-semibold">
+
+                                {{ \Carbon\Carbon::parse($event->tanggal_selesai)
+                                    ->translatedFormat('d F Y H:i') }}
+
+                            </p>
+
+                        </div>
+
+                        @endif
+
+                        <div>
+
+                            <p class="text-sm text-slate-500">
+                                Lokasi
+                            </p>
+
+                            <p class="font-semibold">
+                                {{ $event->lokasi }}
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-sm text-slate-500">
+                                Kuota
+                            </p>
+
+                            <p class="font-semibold">
+
+                                {{ $event->kuota ?? 'Unlimited' }}
+
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-sm text-slate-500">
+                                Reward Poin
+                            </p>
+
+                            <p class="font-semibold">
+                                {{ $event->poin_reward }} Poin
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-sm text-slate-500">
+                                Status
+                            </p>
+
+                            @if($event->status == 'terbuka')
+
+                                <span
+                                    class="px-3 py-1 rounded-full text-sm"
+                                    style="
+                                        background:rgba(22,163,74,.15);
+                                        color:#16a34a;
+                                    ">
+
+                                    Terbuka
+
+                                </span>
+
+                            @elseif($event->status == 'ditutup')
+
+                                <span
+                                    class="px-3 py-1 rounded-full text-sm"
+                                    style="
+                                        background:rgba(245,158,11,.15);
+                                        color:#f59e0b;
+                                    ">
+
+                                    Ditutup
+
+                                </span>
+
+                            @elseif($event->status == 'draft')
+
+                                <span
+                                    class="px-3 py-1 rounded-full text-sm"
+                                    style="
+                                        background:rgba(148,163,184,.15);
+                                        color:#64748b;
+                                    ">
+
+                                    Draft
+
+                                </span>
+
+                            @else
+
+                                <span
+                                    class="px-3 py-1 rounded-full text-sm"
+                                    style="
+                                        background:rgba(204,34,34,.15);
+                                        color:var(--color-merah);
+                                    ">
+
+                                    Selesai
+
+                                </span>
+
+                            @endif
 
                         </div>
 
                     </div>
 
-                    <a href="#"
-                       class="block mt-8 text-center py-3 rounded-xl font-semibold transition hover:opacity-90"
-                       style="
-                            background-color:
-                            var(--color-merah);
+                    @if($event->status == 'terbuka')
 
-                            color:
-                            var(--color-putih);
-                       ">
+                        <button
+                            class="w-full mt-8 py-4 rounded-xl font-bold text-white"
+                            style="
+                                background:
+                                linear-gradient(
+                                    135deg,
+                                    var(--color-merah),
+                                    var(--color-coklat)
+                                );
+                            ">
 
-                        🤝 Daftar Sebagai Relawan
+                            Daftar Event
 
-                    </a>
+                        </button>
+
+                    @endif
 
                 </div>
 
@@ -206,10 +287,11 @@
 
 </section>
 
-<!-- CTA -->
+
+{{-- EVENT LAINNYA --}}
 <section
-    class="py-24"
-    style="background-color: rgba(212,160,23,.08);">
+    class="py-20"
+    style="background:rgba(212,160,23,.08)">
 
     <div class="container mx-auto px-6">
 
@@ -222,34 +304,28 @@
                     var(--color-merah),
                     var(--color-coklat)
                 );
-                color: var(--color-putih);
+                color:white;
             ">
 
             <h2 class="text-4xl font-bold">
-                Siap Bergabung Dalam Event Ini?
+                Mari Bergabung Bersama Sikola Foundation
             </h2>
 
-            <p
-                class="mt-4 max-w-2xl mx-auto"
-                style="color: rgba(249,246,240,.9);">
+            <p class="mt-5 max-w-3xl mx-auto">
 
-                Jadilah bagian dari gerakan pendidikan,
-                sosial, dan pemberdayaan masyarakat bersama
-                Sikola Foundation.
+                Jadilah bagian dari perubahan melalui kegiatan
+                sosial, pendidikan, dan pemberdayaan masyarakat.
 
             </p>
 
-            <a href="#"
+            <a href="{{ url('/kontak') }}"
                class="inline-block mt-8 px-8 py-4 rounded-xl font-bold"
                style="
-                    background-color:
-                    var(--color-kuning);
-
-                    color:
-                    var(--color-hitam);
+                    background:var(--color-kuning);
+                    color:var(--color-hitam);
                ">
 
-                Daftar Sekarang
+                Hubungi Kami
 
             </a>
 

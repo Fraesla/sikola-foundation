@@ -5,10 +5,23 @@
 <!-- HERO -->
 <section class="relative">
 
+    <a href="{{ route('berita.index') }}"
+        class="absolute top-8 left-8 z-30 px-5 py-3 rounded-xl flex items-center gap-2"
+        style="
+            background: rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
+            color:white;
+            border:1px solid rgba(255,255,255,.2);
+        ">
+
+        ← Kembali
+
+    </a>
+
     <div class="h-[500px]">
 
         <img
-            src="{{ $news->thumbnail }}"
+            src="{{ asset('storage/'.$news->gambar_cover) }}"
             class="w-full h-full object-cover"
             alt="{{ $news->title }}">
 
@@ -33,20 +46,22 @@
             <div class="max-w-4xl">
 
                 <span
-    class="inline-flex px-4 py-2 rounded-full font-semibold"
-    style="
-        background-color: var(--color-kuning);
-        color: var(--color-hitam);
-    ">
+                    class="inline-flex px-4 py-2 rounded-full font-semibold"
+                    style="
+                        background-color: var(--color-kuning);
+                        color: var(--color-hitam);
+                    ">
 
-                    Berita
+                    {{ ucfirst($news->kategori) }}
 
                 </span>
+
+
 
                 <h1
                     class="text-4xl md:text-6xl font-bold text-white mt-6">
 
-                    {{ $news->title }}
+                    {{ $news->judul }}
 
                 </h1>
 
@@ -79,7 +94,12 @@
     ">
 
                     <span>
-                        📅 {{ $news->created_at->format('d M Y') }}
+                        📅
+                        {{ optional($news->published_at)
+                            ? \Carbon\Carbon::parse($news->published_at)
+                                ->translatedFormat('d F Y')
+                            : $news->created_at->translatedFormat('d F Y')
+                        }}
                     </span>
 
                     <span>
@@ -90,58 +110,54 @@
 
                 <!-- WYSIWYG CONTENT -->
                <div class="article-content prose prose-lg max-w-none">
-    {!! $news->content !!}
+    {!! $news->konten !!}
 </div>
 
             </div>
 
             <!-- SIDEBAR -->
-            <div>
+            <div class="space-y-6">
 
-                <div
-    class="rounded-3xl p-6 sticky top-24"
-    style="
-        background-color: white;
-        border: 2px solid rgba(212,160,23,.2);
-        box-shadow: var(--shadow);
-    ">
-
-                    <h3
-    class="font-bold text-xl mb-6"
-    style="color: var(--color-merah);">
-    Berita Terbaru
-</h3>
-
-                    <div class="space-y-5">
+                    @forelse($latestNews as $item)
 
                         <a
-    href="#"
-    class="block transition hover:translate-x-1"
-    style="color: var(--color-hitam);">
+                            href="{{ route('berita.show', $item->slug) }}"
+                            class="flex gap-4 group">
 
-    Workshop Teknologi Untuk Pelajar
+                            <img
+                                src="{{ asset('storage/'.$item->gambar_cover) }}"
+                                class="w-20 h-20 rounded-xl object-cover">
 
-</a>
+                            <div>
 
-                        <a href="#"
-                           class="block hover:text-blue-600">
+                                <h4
+                                    class="font-semibold transition group-hover:text-red-600">
 
-                            Donasi Buku Untuk Rumah Belajar
+                                   {{ \Illuminate\Support\Str::limit($item->judul,50) }}
+
+                                </h4>
+
+                                <p class="text-sm text-slate-500 mt-1">
+
+                                    {{ \Carbon\Carbon::parse(
+                                        $item->published_at ?? $item->created_at
+                                    )->translatedFormat('d M Y') }}
+
+                                </p>
+
+                            </div>
 
                         </a>
 
-                        <a href="#"
-                           class="block hover:text-blue-600">
+                    @empty
 
-                            Pelatihan Volunteer Sikola Foundation
+                        <p class="text-slate-500">
+                            Belum ada berita lainnya.
+                        </p>
 
-                        </a>
-
-                    </div>
+                    @endforelse
 
                 </div>
-
-            </div>
 
         </div>
 
