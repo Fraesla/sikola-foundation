@@ -18,7 +18,7 @@
             </p>
         </div>
 
-        <a href="{{ route('admin.banners.index') }}"
+        <a href="{{ url()->previous() }}"
            class="px-5 py-3 rounded-xl border hover:bg-slate-50 transition">
 
             ← Kembali
@@ -151,6 +151,64 @@
                             name="urutan"
                             value="{{ old('urutan',1) }}"
                             class="w-full rounded-xl border px-4 py-3">
+
+                    </div>
+
+                    <!-- NOTE -->
+                    <div
+                        class="rounded-2xl p-4 text-sm"
+                        style="
+                            background: rgba(212,160,23,.08);
+                            border: 1px solid rgba(212,160,23,.25);
+                        ">
+
+                        <h4
+                            class="font-bold mb-3"
+                            style="color: var(--color-coklat);">
+
+                            📌 Keterangan Urutan Banner
+
+                        </h4>
+
+                        <div class="flex flex-wrap gap-2 mt-3">
+
+                            <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+                                1 = Hero Banner Home
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700">
+                                2 = Hero Banner Tentang
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                3 = Hero Banner Event
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-red-100 text-red-700">
+                                4 = Hero Banner Donasi
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-700">
+                                5 = Hero Banner Relawan
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-pink-100 text-pink-700">
+                                6 = Hero Banner Berita
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-orange-100 text-orange-700">
+                                7 = Hero Banner Merchandise
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">
+                                8 = Hero Banner  Tim
+                            </span>
+
+                            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700">
+                                9 = Hero Banner Kontak
+                            </span>
+
+                        </div>
 
                     </div>
 

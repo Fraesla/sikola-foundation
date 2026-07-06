@@ -22,7 +22,7 @@
 
         <div class="flex gap-3">
 
-            <a href="{{ route('admin.merchandise.index') }}"
+            <a href="{{ url()->previous() }}"
                class="px-6 py-3 rounded-xl border bg-white hover:shadow-lg transition">
 
                 ← Kembali

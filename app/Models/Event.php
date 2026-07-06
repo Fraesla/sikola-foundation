@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EventRegistrasi;
 
 class Event extends Model
 {
@@ -29,4 +30,10 @@ class Event extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function registrasi()
+    {
+        return $this->hasMany(EventRegistrasi::class);
+    }
+
 }

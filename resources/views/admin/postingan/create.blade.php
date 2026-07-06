@@ -16,7 +16,7 @@
             </p>
         </div>
 
-        <a href="{{ route('admin.postingans.index') }}"
+        <a href="{{ url()->previous() }}"
            class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border border-slate-300 bg-white hover:shadow-lg transition">
 
             <span>←</span>

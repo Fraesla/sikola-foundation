@@ -18,7 +18,7 @@
             </p>
         </div>
 
-        <a href="{{ route('admin.banners.index') }}"
+        <a href="{{ url()->previous() }}"
            class="px-4 py-2 rounded-xl border">
             ← Kembali
         </a>
@@ -147,6 +147,45 @@
                             name="urutan"
                             value="{{ old('urutan',$banner->urutan) }}"
                             class="w-full rounded-xl border px-4 py-3">
+
+                    </div>
+                    <!-- NOTE -->
+                    <div
+                        class="rounded-2xl p-4 text-sm"
+                        style="
+                            background: rgba(212,160,23,.08);
+                            border: 1px solid rgba(212,160,23,.25);
+                        ">
+
+                        <h4
+                            class="font-bold mb-3"
+                            style="color: var(--color-coklat);">
+
+                            📌 Keterangan Urutan Banner
+
+                        </h4>
+
+                        <ul class="space-y-2 text-slate-600">
+
+                            <li><strong>1</strong> = Hero Banner Home / Dashboard</li>
+
+                            <li><strong>2</strong> = Hero Banner Tentang</li>
+
+                            <li><strong>3</strong> = Hero Banner Event</li>
+
+                            <li><strong>4</strong> = Hero Banner Donasi</li>
+
+                            <li><strong>5</strong> = Hero Banner Relawan</li>
+
+                            <li><strong>6</strong> = Hero Banner Berita</li>
+
+                            <li><strong>7</strong> = Hero Banner Merchandise</li>
+
+                            <li><strong>8</strong> = Hero Banner Tim</li>
+
+                            <li><strong>9</strong> = Hero Banner Kontak</li>
+
+                        </ul>
 
                     </div>
 

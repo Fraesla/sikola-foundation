@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donasis', function (Blueprint $table) {
-             $table->id();
+            $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('dontaion_category_id')
+                   ->nullable()
+                   ->constrained('donasi_kategori')
+                   ->nullOnDelete();
             $table->foreignId('langganan_id')
                    ->nullable()
                    ->constrained('donasi_langganans')

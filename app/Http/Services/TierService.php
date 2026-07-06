@@ -29,4 +29,18 @@ class TierService
             app(NotifikasiService::class)->tierNaik($user, $oldTier, $tier);
         }
     }
+    public function recalculate(User $user)
+    {
+        if ($user->poin >= 1000) {
+            $user->tier = 'Platinum';
+        } elseif ($user->poin >= 500) {
+            $user->tier = 'Gold';
+        } elseif ($user->poin >= 100) {
+            $user->tier = 'Silver';
+        } else {
+            $user->tier = 'Bronze';
+        }
+
+        $user->save();
+    }
 }

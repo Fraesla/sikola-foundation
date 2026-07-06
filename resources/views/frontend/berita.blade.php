@@ -3,6 +3,64 @@
 @section('content')
 
 <!-- HERO -->
+@if($bannerBerita->count() > 0)
+
+<section class="relative">
+
+    <div class="swiper beritaSwiper">
+
+        <div class="swiper-wrapper">
+
+            @foreach($bannerBerita as $banner)
+
+            <div class="swiper-slide">
+
+                <section class="relative min-h-[500px] flex items-center">
+
+                    <!-- Background -->
+                    <img src="{{ asset('storage/'.$banner->gambar) }}"
+                         class="absolute inset-0 w-full h-full object-cover"
+                         alt="{{ $banner->judul }}">
+
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-black/60"></div>
+
+                    <!-- Content -->
+                    <div class="relative z-10 container mx-auto px-6 text-center text-white">
+
+                        <span
+                            class="uppercase tracking-[4px]"
+                            style="color: var(--color-kuning);">
+                            Berita & Artikel
+                        </span>
+
+                        <h1 class="text-5xl md:text-6xl font-bold mt-4">
+                            {{ $banner->judul }}
+                        </h1>
+
+                        <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-200">
+                            {{ $banner->deskripsi }}
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+        <div class="swiper-pagination"></div>
+
+    </div>
+
+</section>
+
+@else
+
+<!-- HERO DEFAULT -->
 <section
     class="py-24"
     style="
@@ -29,13 +87,17 @@
         <p
             class="mt-4 max-w-2xl mx-auto text-lg"
             style="color: rgba(249,246,240,.9);">
+
             Ikuti perkembangan kegiatan, event, program donasi,
             dan berbagai informasi terbaru dari Sikola Foundation.
+
         </p>
 
     </div>
 
 </section>
+
+@endif
 
 <!-- FILTER -->
 <section

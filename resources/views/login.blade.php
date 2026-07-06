@@ -216,7 +216,7 @@
                         Belum punya akun?
                     </span>
 
-                    <a href="#"
+                    <a href="{{ url('/auth/google') }}"
                        class="font-semibold"
                        style="color: var(--color-merah);">
 

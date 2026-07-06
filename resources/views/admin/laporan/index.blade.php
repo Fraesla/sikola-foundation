@@ -38,27 +38,13 @@
 
     <div class="flex gap-3">
 
-        <button
-            class="px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
-            style="
-                background-color: var(--color-kuning);
-                color: var(--color-hitam);
-            ">
-
+        <a href="{{ route('admin.laporan.export.excel') }}" class="px-5 py-3 rounded-xl font-semibold transition hover:opacity-90" style="background:var(--color-kuning);color:var(--color-hitam);">
             📊 Export Excel
+        </a>
 
-        </button>
-
-        <button
-            class="px-5 py-3 rounded-xl font-semibold transition hover:opacity-90"
-            style="
-                background-color: var(--color-merah);
-                color: var(--color-putih);
-            ">
-
+        <a href="{{ route('admin.laporan.export.pdf') }}" class="px-5 py-3 rounded-xl font-semibold transition hover:opacity-90" style="background:var(--color-merah);color:white;">
             📄 Export PDF
-
-        </button>
+        </a>
 
     </div>
 
@@ -79,11 +65,10 @@
             Total Donasi
         </p>
 
-        <h2
-            class="text-4xl font-bold mt-3"
-            style="color: var(--color-merah);">
+        <h2 class="text-4xl font-bold mt-3"
+        style="color:var(--color-merah);">
 
-            Rp 75 Juta
+            Rp {{ number_format($totalDonasi,0,',','.') }}
 
         </h2>
 
@@ -101,11 +86,10 @@
             Penjualan Merchandise
         </p>
 
-        <h2
-            class="text-4xl font-bold mt-3"
-            style="color: var(--color-merah);">
+        <h2 class="text-4xl font-bold mt-3"
+        style="color:var(--color-merah);">
 
-            Rp 25 Juta
+            Rp {{ number_format($totalMerchandise,0,',','.') }}
 
         </h2>
 
@@ -123,12 +107,10 @@
             Aktivitas Relawan
         </p>
 
-        <h2
-            class="text-4xl font-bold mt-3"
-            style="color: var(--color-merah);">
-
-            125 Event
-
+        <h2 class="text-4xl font-bold mt-3"
+        style="color:var(--color-merah);">
+            {{ number_format($totalRelawan) }}
+            Peserta Yang Ikut event
         </h2>
 
     </div>
@@ -179,34 +161,39 @@
 
 <script>
 
-new Chart(
-    document.getElementById('reportChart'),
-    {
-        type: 'bar',
-        data: {
-            labels: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'Mei'
-            ],
-            datasets: [{
-                label: 'Donasi (Juta)',
-                data: [5,8,7,10,12],
-                backgroundColor: '#CC2222',
-                borderRadius: 10
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                }
+new Chart(document.getElementById('reportChart'),{
+
+    type:'bar',
+
+    data:{
+
+        labels:@json($labels),
+
+        datasets:[{
+
+            label:'Donasi',
+
+            data:@json($data),
+
+            backgroundColor:'#CC2222',
+
+            borderRadius:12
+
+        }]
+
+    },
+
+    options:{
+        responsive:true,
+
+        plugins:{
+            legend:{
+                display:false
             }
         }
     }
-);
+
+});
 
 </script>
 

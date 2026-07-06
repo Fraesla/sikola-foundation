@@ -3,6 +3,68 @@
 @section('content')
 
 <!-- HERO -->
+@if($bannerMerchandise->count() > 0)
+
+<section class="relative">
+
+    <div class="swiper merchandiseSwiper">
+
+        <div class="swiper-wrapper">
+
+            @foreach($bannerMerchandise as $banner)
+
+            <div class="swiper-slide">
+
+                <section class="relative min-h-[500px] flex items-center overflow-hidden">
+
+                    <!-- Background -->
+                    <img src="{{ asset('storage/'.$banner->gambar) }}"
+                         class="absolute inset-0 w-full h-full object-cover"
+                         alt="{{ $banner->judul }}">
+
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-black/60"></div>
+
+                    <!-- Content -->
+                    <div class="relative z-10 container mx-auto px-6 text-center text-white">
+
+                        <span
+                            class="uppercase tracking-[4px]"
+                            style="color: var(--color-kuning);">
+
+                            Merchandise Resmi
+
+                        </span>
+
+                        <h1 class="text-5xl md:text-6xl font-bold mt-4">
+                            {{ $banner->judul }}
+                        </h1>
+
+                        <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-200">
+                            {{ $banner->deskripsi }}
+                        </p>
+
+                        
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+        <div class="swiper-pagination"></div>
+
+    </div>
+
+</section>
+
+@else
+
+<!-- HERO DEFAULT -->
 <section
     class="py-24"
     style="
@@ -40,6 +102,8 @@
     </div>
 
 </section>
+
+@endif
 
 <!-- FILTER -->
 <section
@@ -183,17 +247,22 @@
 
                     </div>
 
-                    <a
-                        href="#"
-                        class="block text-center w-full mt-5 py-3 rounded-xl font-semibold transition"
-                        style="
-                            background-color: var(--color-merah);
-                            color: var(--color-putih);
-                        ">
+                    <form action="{{ route('pembeli.keranjang.store') }}"method="POST">
+                        @csrf
 
-                        🛒 Tambah ke Keranjang
+                        <input type="hidden"
+                           name="merchandise_id"
+                           value="{{ $item->id }}">
+                        <button
+                            class="block text-center w-full mt-5 py-3 rounded-xl font-semibold transition"
+                            style="
+                                background-color: var(--color-merah);
+                                color: var(--color-putih);
+                            ">
+                            🛒 Tambah ke Keranjang
+                        </button>
 
-                    </a>
+                    </form>
 
                 </div>
 

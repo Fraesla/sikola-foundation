@@ -60,7 +60,7 @@
             class="text-3xl font-bold mt-2"
             style="color: var(--color-hitam);">
 
-            Rp 25 Jt
+            Rp {{ number_format($totalDonasi,0,',','.') }}
 
         </h2>
 
@@ -95,7 +95,7 @@
             class="text-3xl font-bold mt-2"
             style="color: var(--color-hitam);">
 
-            124
+            {{ number_format($totalOrder) }}
 
         </h2>
 
@@ -130,7 +130,7 @@
             class="text-3xl font-bold mt-2"
             style="color: var(--color-hitam);">
 
-            18
+            {{ number_format($totalRelawan) }}
 
         </h2>
 
@@ -165,7 +165,7 @@
             class="text-3xl font-bold mt-2"
             style="color: var(--color-merah);">
 
-            6
+            {{ number_format($pending) }}
 
         </h2>
 
@@ -219,10 +219,12 @@
             class="p-4 rounded-2xl"
             style="
                 background-color: rgba(204,34,34,.08);
-                border-left: 4px solid var(--color-merah);
+                border-left:4px solid var(--color-merah);
             ">
 
-            💰 5 Donasi menunggu verifikasi pembayaran.
+            💰
+            <strong>{{ $pendingDonasi }}</strong>
+            Donasi menunggu verifikasi pembayaran.
 
         </div>
 
@@ -230,10 +232,12 @@
             class="p-4 rounded-2xl"
             style="
                 background-color: rgba(212,160,23,.10);
-                border-left: 4px solid var(--color-kuning);
+                border-left:4px solid var(--color-kuning);
             ">
 
-            🤝 2 Relawan menunggu persetujuan admin.
+            🤝
+            <strong>{{ $pendingRelawan }}</strong>
+            Relawan/Event Registrasi menunggu persetujuan admin.
 
         </div>
 
@@ -241,10 +245,12 @@
             class="p-4 rounded-2xl"
             style="
                 background-color: rgba(139,94,42,.10);
-                border-left: 4px solid var(--color-coklat);
+                border-left:4px solid var(--color-coklat);
             ">
 
-            🛍 3 Order merchandise perlu diproses.
+            🛍
+            <strong>{{ $pendingOrder }}</strong>
+            Order merchandise perlu diproses.
 
         </div>
 
@@ -264,19 +270,13 @@ const ctx = document.getElementById('donationChart');
 new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Jan','Feb','Mar','Apr','Mei','Jun'],
+        labels: @json($labels),
+
         datasets: [{
-            label: 'Donasi',
-            data: [
-                5000000,
-                3000000,
-                7000000,
-                4000000,
-                6000000,
-                8000000
-            ],
-            backgroundColor: '#CC2222',
-            borderRadius: 8
+            label:'Donasi',
+            data:@json($data),
+            backgroundColor:'#CC2222',
+            borderRadius:8
         }]
     },
     options: {

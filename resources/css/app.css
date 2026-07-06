@@ -290,3 +290,117 @@
     box-shadow: 0 0 0 4px rgba(220,38,38,.08);
     outline:none;
 }
+
+/* Donasi */
+.nominal-btn{
+    border:1px solid rgba(212,160,23,.25);
+    padding:14px;
+    border-radius:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nominal-btn:hover{
+    border-color:var(--color-merah);
+    color:var(--color-merah);
+}
+
+.nominal-btn.active{
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-merah),
+            var(--color-coklat)
+        );
+
+    color:white;
+    border-color:transparent;
+}
+
+/* Order */
+.card-order{
+    background: white;
+    border-radius: 28px;
+    padding: 30px;
+    border: 1px solid #f1f5f9;
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.05);
+}
+
+.progress-line{
+    height:6px;
+    border-radius:999px;
+    background:#e2e8f0;
+    overflow:hidden;
+}
+
+.progress-active{
+    height:100%;
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        #16a34a,
+        #22c55e
+    );
+
+    animation:progressAnimation 1.2s ease;
+}
+
+@keyframes progressAnimation{
+    from{
+        width:0;
+    }
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* PREMIUM CARD */
+
+.stat-card{
+
+    transition:.35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 25px 50px rgba(0,0,0,.15);
+
+}
+
+.stat-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:70%;
+
+    height:100%;
+
+    transform:skewX(-25deg);
+
+    background:rgba(255,255,255,.28);
+
+    transition:.6s;
+
+}
+
+.stat-card:hover::before{
+
+    left:140%;
+
+}

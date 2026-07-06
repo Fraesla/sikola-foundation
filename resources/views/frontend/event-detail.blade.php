@@ -18,7 +18,7 @@
 
     </a>
 
-    <img src="{{ asset('storage/'.$event->gambar) }}"
+    <img src="{{ url()->previous() }}"
          class="absolute inset-0 w-full h-full object-cover">
 
     <div class="absolute inset-0"
@@ -258,10 +258,22 @@
 
                     </div>
 
-                    @if($event->status == 'terbuka')
+                   @if($event->status=='terbuka')
+
+                    <form
+                        action="{{ route('relawan.events.daftar',$event->id) }}"
+                        method="POST"
+
+                        onsubmit="return confirm(
+                            'Apakah Anda yakin ingin mendaftar event ini?\n\nData yang sudah dikirim akan menunggu verifikasi admin.'
+                        )">
+
+                        @csrf
 
                         <button
-                            class="w-full mt-8 py-4 rounded-xl font-bold text-white"
+                            class="w-full mt-8 py-4 rounded-xl
+                                   font-bold text-white"
+
                             style="
                                 background:
                                 linear-gradient(
@@ -274,6 +286,8 @@
                             Daftar Event
 
                         </button>
+
+                    </form>
 
                     @endif
 

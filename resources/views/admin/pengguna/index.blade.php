@@ -26,13 +26,10 @@
 
     </div>
 
-    <button
-        class="px-5 py-3 rounded-xl text-white font-semibold"
-        style="background-color: var(--color-merah);">
-
+    <a href="{{ route('admin.pengguna.create') }}" class="px-5 py-3 rounded-xl text-white font-semibold"
+    style="background-color: var(--color-merah);">
         + Tambah Pengguna
-
-    </button>
+    </a>
 
 </div>
 
@@ -45,7 +42,7 @@
         </p>
 
         <h2 class="text-3xl font-bold mt-2">
-            356
+            {{ $totalUser }}
         </h2>
 
     </div>
@@ -60,7 +57,7 @@
             class="text-3xl font-bold mt-2"
             style="color:#16a34a;">
 
-            145
+             {{ $totalRelawan }}
 
         </h2>
 
@@ -76,7 +73,7 @@
             class="text-3xl font-bold mt-2"
             style="color: var(--color-merah);">
 
-            98
+            {{ $totalDonatur }}
 
         </h2>
 
@@ -85,14 +82,14 @@
     <div class="admin-card p-6">
 
         <p class="admin-muted">
-            Member Aktif
+            Pembeli
         </p>
 
         <h2
             class="text-3xl font-bold mt-2"
             style="color: var(--color-kuning);">
 
-            113
+            {{ $totalPembeli }}
 
         </h2>
 
@@ -100,7 +97,7 @@
 
 </div>
 
-<<div class="admin-card p-5 mb-6">
+<div class="admin-card p-5 mb-6">
 
     <div class="flex flex-wrap gap-3">
 
@@ -145,6 +142,17 @@
 
         </button>
 
+        <button
+            class="px-5 py-2 rounded-xl"
+            style="
+                background: rgba(204,34,34,.1);
+                color: var(--color-kuning);
+            ">
+
+            Pembeli
+
+        </button>
+
     </div>
 
 </div>
@@ -186,168 +194,194 @@
 
         </thead>
 
-<tbody>
+        <tbody>
 
-<tr class="border-t">
+        @forelse($users as $user)
 
-    <td class="p-4">
-        Farhan
-    </td>
+        <tr class="border-t">
 
-    <td class="p-4">
-        Volunteer
-    </td>
+            <td class="p-4">
 
-    <td class="p-4">
-        250
-    </td>
+                <div>
+                    <div class="font-semibold">
+                        {{ $user->name }}
+                    </div>
 
-    <td class="p-4">
+                    <small class="text-slate-500">
+                        {{ $user->email }}
+                    </small>
+                </div>
 
-        <span
-            class="px-3 py-1 rounded-full text-sm font-semibold"
-            style="
-            background: rgba(212,160,23,.15);
-            color: var(--color-kuning);
-            ">
+            </td>
 
-        Gold
+            <td class="p-4">
 
-        </span>
+                @php
+                    $badge = [
+                        'admin' => 'bg-red-100 text-red-700',
+                        'relawan' => 'bg-green-100 text-green-700',
+                        'donatur' => 'bg-blue-100 text-blue-700',
+                        'pembeli' => 'bg-yellow-100 text-yellow-700',
+                    ];
+                @endphp
 
-    </td>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $badge[$user->role] ?? 'bg-slate-100' }}">
+                    {{ ucfirst($user->role) }}
+                </span>
 
-    <td class="p-4">
+            </td>
 
-        <span
-class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+            <td class="p-4">
+                {{ number_format($user->total_poin) }}
+            </td>
 
-Aktif
+            <td class="p-4">
 
-</span>
+                @if($user->tier)
 
-    </td>
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold"
+                        style="
+                            background: rgba(212,160,23,.15);
+                            color: var(--color-kuning);
+                        ">
 
-    <td class="p-4">
+                        {{ $user->tier->nama }}
 
-        <button
-class="px-4 py-2 rounded-lg text-white ml-2"
-style="background-color: var(--color-merah);">
+                    </span>
 
-Nonaktifkan
+                @else
 
-</button>
+                    <span class="text-slate-400">
+                        -
+                    </span>
 
-    </td>
+                @endif
 
-</tr>
+            </td>
 
-<tr class="border-t">
+            <td class="p-4">
 
-    <td class="p-4">
-        Farhan
-    </td>
+                @if($user->is_active)
 
-    <td class="p-4">
-        Volunteer
-    </td>
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
 
-    <td class="p-4">
-        250
-    </td>
+                        Aktif
 
-    <td class="p-4">
+                    </span>
 
-        <span
-        class="px-3 py-1 rounded-full text-sm font-semibold bg-slate-100 text-slate-600">
+                @else
 
-        Silver
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-700">
 
-        </span>
+                        Nonaktif
 
-    </td>
+                    </span>
 
-    <td class="p-4">
+                @endif
 
-        <span
-class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+            </td>
 
-Aktif
+            <td class="p-4 text-center">
 
-</span>
+                    <div class="flex justify-center gap-2">
 
-    </td>
+                        <a href="{{ route('admin.pengguna.show',$user->id) }}"
+                           class="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 transition">
+                            Detail
+                        </a>
 
-    <td class="p-4">
+                        <a href="{{ route('admin.pengguna.edit',$user->id) }}" class="px-4 py-2 rounded-xl bg-yellow-500 text-white">
+                            Edit
+                        </a>
 
-        <button
-class="px-4 py-2 rounded-lg text-white ml-2"
-style="background-color: var(--color-merah);">
+                        @if($user->is_active)
 
-Nonaktifkan
+                            <form action="{{ route('admin.pengguna.nonaktif',$user->id) }}"
+                                  method="POST">
 
-</button>
+                                @csrf
 
-    </td>
+                                <button
+                                    type="submit"
+                                    class="px-4 py-2 rounded-xl font-semibold transition hover:opacity-90"
+                                    style="
+                                        background: linear-gradient(135deg,#ef4444,#dc2626);
+                                        color:white;
+                                    " onsubmit="return confirm('Yakin noaktifkan pengguna ini?')">
 
-</tr>
+                                    🔒 Nonaktifkan
 
-<tr class="border-t">
+                                </button>
 
-    <td class="p-4">
-        Farhan
-    </td>
+                            </form>
 
-    <td class="p-4">
-        Volunteer
-    </td>
+                        @else
 
-    <td class="p-4">
-        250
-    </td>
+                            <form action="{{ route('admin.pengguna.aktif',$user->id) }}"
+                                  method="POST">
 
-    <td class="p-4">
+                                @csrf
 
-        <span
-            class="px-3 py-1 rounded-full text-sm font-semibold"
-            style="
-            background: rgba(139,94,42,.1);
-            color: var(--color-coklat);
-            ">
+                                <button
+                                    type="submit"
+                                    class="px-4 py-2 rounded-xl font-semibold transition hover:opacity-90"
+                                    style="
+                                        background: linear-gradient(135deg,#22c55e,#16a34a);
+                                        color:white;
+                                    " onsubmit="return confirm('Yakin aktifkan pengguna ini ?')">
 
-            Bronze
+                                    ✅ Aktifkan
 
-        </span>
+                                </button>
 
-    </td>
+                            </form>
 
-    <td class="p-4">
+                        @endif
+                        <form action="{{ route('admin.pengguna.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Hapus pengguna ini?')">
+                            @csrf
+                            @method('DELETE')
+                                <button class="px-4 py-2 rounded-xl bg-red-600 text-white">Hapus</button>
 
-        <span
-class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+                        </form>
 
-Aktif
+                    </div>
 
-</span>
+                </td>
 
-    </td>
+        </tr>
 
-    <td class="p-4">
+        @empty
 
-        <button
-class="px-4 py-2 rounded-lg text-white ml-2"
-style="background-color: var(--color-merah);">
+        <tr>
 
-Nonaktifkan
+            <td colspan="6" class="text-center py-10">
 
-</button>
+                <div class="flex flex-col items-center">
 
-    </td>
+                    <div class="text-5xl mb-3">
+                        👥
+                    </div>
 
-</tr>
+                    <h3 class="font-bold text-lg">
+                        Belum ada pengguna
+                    </h3>
 
-</tbody>
+                    <p class="text-slate-500">
+                        Data pengguna akan muncul di sini.
+                    </p>
 
+                </div>
+
+            </td>
+
+        </tr>
+
+        @endforelse
+
+        </tbody>
 </table>
 
 </div>

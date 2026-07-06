@@ -53,7 +53,7 @@
             class="text-4xl font-bold mt-3"
             style="color: var(--color-merah);">
 
-            128
+            {{ $totalPendaftar }}
 
         </h2>
 
@@ -75,7 +75,7 @@
             class="text-4xl font-bold mt-3"
             style="color: var(--color-merah);">
 
-            12
+            {{ $menunggu }}
 
         </h2>
 
@@ -97,7 +97,7 @@
             class="text-4xl font-bold mt-3"
             style="color: var(--color-merah);">
 
-            96
+            {{ $aktif }}
 
         </h2>
 
@@ -173,86 +173,185 @@
 
         <tbody>
 
-            <tr
-                class="border-t"
-                style="
-                    border-color:
-                    rgba(212,160,23,.15);
-                ">
+        @forelse($relawans as $item)
 
-                <td class="p-4">
-                    Farhan Maulidani
-                </td>
+        <tr class="border-t"
+            style="border-color: rgba(212,160,23,.15);">
 
-                <td class="p-4">
-                    farhan@gmail.com
-                </td>
+            <td class="p-4">
 
-                <td class="p-4">
+                <div>
+                    <div class="font-semibold">
+                        {{ $item->user->name ?? '-' }}
+                    </div>
 
-                    <button
-                        style="
-                            color:
-                            var(--color-merah);
-                        ">
+                    <small class="text-slate-500">
+                        NIK : {{ $item->nik }}
+                    </small>
+                </div>
+
+            </td>
+
+            <td class="p-4">
+                {{ $item->user->email ?? '-' }}
+            </td>
+
+            <td class="p-4">
+
+                @if($item->foto_ktp)
+
+                    <a href="{{ asset('storage/'.$item->foto_ktp) }}"
+                       target="_blank"
+                       style="color: var(--color-merah);">
 
                         👁 Preview KTP
 
-                    </button>
+                    </a>
 
-                </td>
+                @else
 
-                <td class="p-4">
+                    <span class="text-slate-400">
+                        Tidak ada file
+                    </span>
+
+                @endif
+
+            </td>
+
+            <td class="p-4">
+
+                @if($item->status == 'menunggu')
 
                     <span
                         class="px-3 py-1 rounded-full text-sm font-semibold"
                         style="
-                            background-color:
-                            rgba(212,160,23,.15);
-
-                            color:
-                            var(--color-coklat);
+                            background: rgba(212,160,23,.15);
+                            color: var(--color-coklat);
                         ">
 
                         Pending
 
                     </span>
 
-                </td>
+                @elseif($item->status == 'disetujui')
 
-                <td class="p-4 text-center">
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700">
 
-                    <button
-                        class="px-4 py-2 rounded-xl font-semibold transition hover:opacity-90"
-                        style="
-                            background-color:
-                            var(--color-kuning);
+                        Disetujui
 
-                            color:
-                            var(--color-hitam);
-                        ">
+                    </span>
 
-                        Setujui
+                @else
 
-                    </button>
+                    <span
+                        class="px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-700">
 
-                    <button
-                        class="px-4 py-2 rounded-xl ml-2 font-semibold transition hover:opacity-90"
-                        style="
-                            background-color:
-                            var(--color-merah);
+                        Ditolak
 
-                            color:
-                            var(--color-putih);
-                        ">
+                    </span>
 
-                        Tolak
+                @endif
 
-                    </button>
+            </td>
 
-                </td>
+            <td class="p-4">
 
-            </tr>
+                <div class="flex items-center justify-center gap-2">
+
+                    {{-- Tombol Detail --}}
+                    <a href="{{ route('admin.relawans.show',$item->id) }}"
+                       class="px-4 py-2 rounded-xl font-semibold text-sm transition hover:opacity-90"
+                       style="
+                            background: #2563eb;
+                            color: white;
+                       ">
+
+                        🔍 Detail
+
+                    </a>
+
+                    @if($item->status == 'menunggu')
+
+                        {{-- Tombol Setujui --}}
+                        <form
+                            action="{{ route('admin.relawans.setujui',$item->id) }}"
+                            method="POST">
+
+                            @csrf
+
+                            <button
+                                type="submit"
+                                onclick="return confirm('Apakah terima relawan jadi ini ?')"
+                                class="px-4 py-2 rounded-xl font-semibold text-sm transition hover:opacity-90"
+                                style="
+                                    background: var(--color-kuning);
+                                    color: var(--color-hitam);
+                                ">
+
+                                ✅ Setujui
+
+                            </button>
+
+                        </form>
+
+                        {{-- Tombol Tolak --}}
+                        <form
+                            action="{{ route('admin.relawans.tolak',$item->id) }}"
+                            method="POST">
+
+                            @csrf
+
+                            <button
+                                type="submit"
+                                onclick="return confirm('Tolak relawan ini?')"
+                                class="px-4 py-2 rounded-xl font-semibold text-sm transition hover:opacity-90"
+                                style="
+                                    background: var(--color-merah);
+                                    color: white;
+                                ">
+
+                                ❌ Tolak
+
+                            </button>
+
+                        </form>
+
+                    @endif
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        @empty
+
+        <tr>
+
+            <td colspan="5" class="text-center py-10">
+
+                <div class="flex flex-col items-center">
+
+                    <div class="text-5xl mb-3">
+                        🙋
+                    </div>
+
+                    <h3 class="font-bold text-lg">
+                        Belum ada pendaftar relawan
+                    </h3>
+
+                    <p class="text-slate-500">
+                        Data relawan akan muncul di sini.
+                    </p>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        @endforelse
 
         </tbody>
 

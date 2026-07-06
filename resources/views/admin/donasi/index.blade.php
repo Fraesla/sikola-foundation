@@ -5,260 +5,259 @@
 @section('content')
 
 <!-- Header -->
-<div class="flex justify-between items-center mb-8">
+<div class="mb-10">
 
-    <div>
+    <h1
+        class="text-4xl font-bold"
+        style="color: var(--color-hitam);">
 
-        <h1
-            class="text-3xl font-bold"
-            style="color: var(--color-hitam);">
+        Donasi & Donatur
 
-            Manajemen Donasi
+    </h1>
 
-        </h1>
+    <p
+        class="mt-2 text-lg"
+        style="color: var(--color-coklat);">
 
-        <p
-            class="mt-2"
-            style="color: var(--color-coklat);">
+        Kelola kategori donasi, program donasi,
+        donatur, dan transaksi donasi.
 
-            Kelola seluruh transaksi dan verifikasi donasi.
-
-        </p>
-
-    </div>
+    </p>
 
 </div>
 
-<!-- Statistik -->
-<div class="grid md:grid-cols-4 gap-6 mb-8">
+<!-- Card Menu -->
+<div class="grid md:grid-cols-2 gap-8">
 
-    <div class="admin-card p-6">
+    <!-- DONASI -->
+    <div class="admin-card rounded-[32px] overflow-hidden">
 
-        <p class="admin-muted">
-            Total Donasi
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color: var(--color-merah);">
-
-            Rp 75 Jt
-
-        </h2>
-
-    </div>
-
-    <div class="admin-card p-6">
-
-        <p class="admin-muted">
-            Pending
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color: var(--color-kuning);">
-
-            8
-
-        </h2>
-
-    </div>
-
-    <div class="admin-card p-6">
-
-        <p class="admin-muted">
-            Donatur Aktif
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color: #16a34a;">
-
-            124
-
-        </h2>
-
-    </div>
-
-    <div class="admin-card p-6">
-
-        <p class="admin-muted">
-            Langganan Bulanan
-        </p>
-
-        <h2
-            class="text-3xl font-bold mt-2"
-            style="color: var(--color-coklat);">
-
-            32
-
-        </h2>
-
-    </div>
-
-</div>
-
-<!-- Filter -->
-<div class="admin-card p-5 mb-8">
-
-    <div class="flex flex-wrap gap-3">
-
-        <button
-            class="px-5 py-2 rounded-xl text-white font-medium"
-            style="background-color: var(--color-merah);">
-
-            Semua Donasi
-
-        </button>
-
-        <button
-            class="px-5 py-2 rounded-xl font-medium"
-            style="
-                background: rgba(212,160,23,.12);
-                color: var(--color-kuning);
-            ">
-
-            Menunggu Verifikasi
-
-        </button>
-
-        <button
-            class="px-5 py-2 rounded-xl font-medium"
-            style="
-                background: rgba(22,163,74,.12);
-                color: #16a34a;
-            ">
-
-            Langganan Aktif
-
-        </button>
-
-    </div>
-
-</div>
-
-<!-- Tabel -->
-<div class="admin-card overflow-hidden">
-
-    <div
-        class="px-6 py-5 border-b"
-        style="border-color: rgba(212,160,23,.15);">
-
-        <h3
-            class="font-bold text-xl"
-            style="color: var(--color-hitam);">
-
-            Data Donasi
-
-        </h3>
-
-    </div>
-
-    <table class="w-full">
-
-        <thead
+        <div
+            class="h-2"
             style="
                 background:
-                rgba(212,160,23,.08);
+                linear-gradient(
+                    90deg,
+                    var(--color-kuning),
+                    var(--color-coklat)
+                );
             ">
+        </div>
 
-            <tr>
+        <div class="p-8">
 
-                <th class="p-4 text-left">
-                    Donatur
-                </th>
+            <span
+                class="uppercase tracking-[6px] text-sm"
+                style="color: var(--color-coklat);">
 
-                <th class="p-4 text-left">
-                    Nominal
-                </th>
+                Donasi
 
-                <th class="p-4 text-left">
-                    Metode
-                </th>
+            </span>
 
-                <th class="p-4 text-left">
-                    Tanggal
-                </th>
+            <h2
+                class="text-4xl font-bold mt-6"
+                style="color: var(--color-hitam);">
 
-                <th class="p-4 text-left">
-                    Status
-                </th>
+                Kategori Donasi
 
-                <th class="p-4 text-center">
-                    Aksi
-                </th>
+            </h2>
 
-            </tr>
+            <p
+                class="mt-6 text-lg leading-9"
+                style="color: var(--color-coklat);">
 
-        </thead>
+                CRUD kategori donasi, target donasi,
+                nominal minimum, nominal maksimum,
+                lokasi program, dan status donasi.
 
-        <tbody>
+            </p>
 
-            <tr
-                class="border-t"
-                style="
-                    border-color:
-                    rgba(212,160,23,.1);
-                ">
+            <!-- Statistik -->
+            <div class="grid grid-cols-3 gap-8 mt-10">
 
-                <td class="p-4">
-                    Farhan Maulidani
-                </td>
+                <div>
 
-                <td
-                    class="p-4 font-semibold"
-                    style="color: var(--color-merah);">
+                    <p class="admin-muted">
+                        Total Kategori
+                    </p>
 
-                    Rp 500.000
+                    <h3
+                        class="text-5xl font-bold mt-2"
+                        style="color: var(--color-merah);">
 
-                </td>
+                        {{ $totalKategori ?? 0 }}
 
-                <td class="p-4">
-                    Transfer BCA
-                </td>
+                    </h3>
 
-                <td class="p-4">
-                    12 Jan 2026
-                </td>
+                </div>
 
-                <td class="p-4">
+                <div>
 
-                    <span
-                        class="px-3 py-1 rounded-full text-sm font-semibold"
-                        style="
-                            background:
-                            rgba(212,160,23,.15);
+                    <p class="admin-muted">
+                        Aktif
+                    </p>
 
-                            color:
-                            var(--color-kuning);
-                        ">
+                    <h3
+                        class="text-5xl font-bold mt-2"
+                        style="color:#16a34a;">
 
+                        {{ $kategoriAktif ?? 0 }}
+
+                    </h3>
+
+                </div>
+
+                <div>
+
+                    <p class="admin-muted">
+                        Lokasi
+                    </p>
+
+                    <h3
+                        class="text-5xl font-bold mt-2"
+                        style="color: var(--color-kuning);">
+
+                        {{ $totalLokasi ?? 0 }}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <a href="{{ route('admin.donasiKategori.index') }}"
+               class="inline-block mt-10 px-8 py-4 rounded-2xl text-white font-semibold"
+               style="
+                    background:
+                    linear-gradient(
+                        135deg,
+                        var(--color-merah),
+                        var(--color-coklat)
+                    );
+               ">
+
+                Kelola Donasi
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- DONATUR -->
+    <div class="admin-card rounded-[32px] overflow-hidden">
+
+        <div
+            class="h-2"
+            style="
+                background:
+                linear-gradient(
+                    90deg,
+                    var(--color-merah),
+                    var(--color-kuning)
+                );
+            ">
+        </div>
+
+        <div class="p-8">
+
+            <span
+                class="uppercase tracking-[6px] text-sm"
+                style="color: var(--color-coklat);">
+
+                Donatur
+
+            </span>
+
+            <h2
+                class="text-4xl font-bold mt-6"
+                style="color: var(--color-hitam);">
+
+                Data Donatur
+
+            </h2>
+
+            <p
+                class="mt-6 text-lg leading-9"
+                style="color: var(--color-coklat);">
+
+                Kelola data donatur, riwayat donasi,
+                verifikasi pembayaran, dan status
+                transaksi donasi.
+
+            </p>
+
+            <!-- Statistik -->
+            <div class="grid grid-cols-3 gap-8 mt-10">
+
+                <div>
+
+                    <p class="admin-muted">
+                        Total Donatur
+                    </p>
+
+                    <h3
+                        class="text-5xl font-bold mt-2"
+                        style="color: var(--color-kuning);">
+
+                        {{ $totalDonatur ?? 0 }}
+
+                    </h3>
+
+                </div>
+
+                <div>
+
+                    <p class="admin-muted">
                         Pending
+                    </p>
 
-                    </span>
+                    <h3
+                        class="text-5xl font-bold mt-2"
+                        style="color:#2563eb;">
 
-                </td>
+                        {{ $donasiPending ?? 0 }}
 
-                <td class="p-4 text-center">
+                    </h3>
 
-                    <button
-                        class="px-4 py-2 rounded-lg text-white font-medium"
-                        style="
-                            background-color:
-                            var(--color-merah);
-                        ">
+                </div>
 
-                        Verifikasi
+                <div>
 
-                    </button>
+                    <p class="admin-muted">
+                        Selesai
+                    </p>
 
-                </td>
+                    <h3
+                        class="text-5xl font-bold mt-2"
+                        style="color:#16a34a;">
 
-            </tr>
+                        {{ $donasiSelesai ?? 0 }}
 
-        </tbody>
+                    </h3>
 
-    </table>
+                </div>
+
+            </div>
+
+            <a href="{{ route('admin.donasis.index') }}"
+               class="inline-block mt-10 px-8 py-4 rounded-2xl text-white font-semibold"
+               style="
+                    background:
+                    linear-gradient(
+                        135deg,
+                        var(--color-kuning),
+                        var(--color-coklat)
+                    );
+               ">
+
+                Kelola Donatur
+
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 

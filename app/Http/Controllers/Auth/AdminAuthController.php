@@ -31,7 +31,7 @@ class AdminAuthController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect('/admin/dashboard');
+            return redirect()->route('admin.dashboard');
         }
 
         return back()

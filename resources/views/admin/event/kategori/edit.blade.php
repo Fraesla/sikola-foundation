@@ -19,7 +19,7 @@
 
         <div class="flex gap-3">
 
-            <a href="{{ route('admin.events.index') }}"
+            <a href="{{ url()->previous() }}"
                class="px-6 py-3 rounded-xl border bg-white hover:shadow-md">
 
                 ← Kembali

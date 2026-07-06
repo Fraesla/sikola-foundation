@@ -13,8 +13,12 @@
             Kelola seluruh event organisasi.
         </p>
     </div>
+    <a href="{{ url('/admin/events/show') }}"
+        class="px-6 py-3 rounded-2xl bg-white shadow">
+            ← Kembali
+    </a>
 
-    <a href="{{ route('admin.events.create') }}"
+    <a href="{{ url()->previous() }}"
        class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-semibold shadow-lg hover:scale-105 transition duration-300"
        style="
             background: linear-gradient(

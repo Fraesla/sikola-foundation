@@ -2,7 +2,105 @@
 
 @section('content')
 
-<!-- HERO SLIDER -->
+<!-- HERO SLIDER kalau ada data banner-->
+@if($banners->count())
+<section class="relative">
+
+    <div class="swiper heroSwiper">
+
+        <div class="swiper-wrapper">
+
+            @foreach($banners as $hero)
+
+            <div class="swiper-slide">
+
+                <div class="relative h-[700px]">
+
+                    <img src="{{ asset('storage/'.$hero->gambar) }}"
+                         class="absolute inset-0 w-full h-full object-cover"
+                         alt="{{ $hero->judul }}">
+
+                    <div class="absolute inset-0 bg-black/60"></div>
+
+                    <div class="relative z-10 h-full flex items-center">
+
+                        <div class="container mx-auto px-6">
+
+                            <div class="max-w-4xl">
+
+                                <span
+                                    class="inline-flex px-4 py-2 rounded-full text-sm font-semibold"
+                                    style="
+                                        background-color: var(--color-kuning);
+                                        color: var(--color-hitam);
+                                    ">
+                                    ✨ Sikola Foundation
+                                </span>
+
+                                <h1 class="mt-6 text-5xl md:text-7xl font-bold text-white">
+                                    {{ $hero->judul }}
+                                </h1>
+
+                                <p class="mt-6 text-lg text-gray-200">
+                                    {{ $hero->deskripsi }}
+                                </p>
+
+                                <div class="mt-8 flex gap-4">
+
+                                    <a href="/donasi"
+                                       class="px-8 py-4 rounded-xl font-semibold"
+                                       style="
+                                            background-color: var(--color-merah);
+                                            color:white;
+                                       ">
+                                        Donasi Sekarang
+                                    </a>
+
+                                    <a href="#program"
+                                       class="px-8 py-4 rounded-xl font-semibold"
+                                       style="
+                                            background-color: var(--color-kuning);
+                                            color: var(--color-hitam);
+                                       ">
+                                        Lihat Program
+                                    </a>
+
+                                    @if($hero->url_tautan)
+                                    <a href="{{ $hero->url_tautan }}"
+                                       class="px-8 py-4 rounded-xl font-semibold"
+                                       style="
+                                            background-color: var(--color-hitam);
+                                            color: var(--color-putih);
+                                       ">
+                                        Selengkapnya
+                                    </a>
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev hero-prev"></div>
+        <div class="swiper-button-next hero-next"></div>
+
+    </div>
+
+</section>
+<!-- HERO SLIDER  jika nggak ada data banner-->
+@else
 <section class="relative">
 
     <div class="swiper heroSwiper">
@@ -175,6 +273,7 @@
     </div>
 
 </section>
+@endif
 
 <!-- PROGRAM -->
 <section id="program" class="py-24 bg-white" style="background-color: var(--color-putih);">

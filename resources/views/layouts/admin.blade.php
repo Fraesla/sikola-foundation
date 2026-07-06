@@ -84,7 +84,7 @@
             <nav class="p-4 space-y-2">
 
                 <!-- Dashboard -->
-                <a href="{{ url('/admin/dashboard') }}"
+                <a href="{{ url('/admin') }}"
                    class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300
                    {{ ($activePage ?? '') == 'dashboard' ? 'menu-active' : 'hover:bg-white/10' }}">
 
@@ -102,16 +102,16 @@
                 </a>
 
                 <!-- Event -->
-                <a href="{{ url('/admin/events') }}"
+                <a href="{{ url('/admin/events/show') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
                     {{ ($activePage ?? '') == 'event' ? 'menu-active' : 'hover:bg-white/10' }}">
 
-                    📅 Event
+                    📅 Event & Peserta
 
                 </a>
 
                 <!-- Relawan -->
-                <a href="{{ url('/admin/relawan') }}"
+                <a href="{{ url('/admin/relawans') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
                     {{ ($activePage ?? '') == 'relawan' ? 'menu-active' : 'hover:bg-white/10' }}">
 
@@ -124,7 +124,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
                     {{ ($activePage ?? '') == 'donasi' ? 'menu-active' : 'hover:bg-white/10' }}">
 
-                    💰 Donasi
+                    💰 Donasi & Donatur
 
                 </a>
 
@@ -156,20 +156,27 @@
                 </a>
 
                 <!-- Logout -->
-                <div class="pt-6 border-t border-slate-800 mt-6">
+                <!-- <div class="pt-6 border-t border-slate-800 mt-6">
 
-                    <a href="{{ url('/login') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-xl menu-logout">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
 
-                        🚪 Logout
+                        <button type="submit"
+                            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl menu-logout text-left">
 
-                    </a>
+                            🚪 Logout
 
-                </div>
+                        </button>
+                    </form>
+
+                </div> -->
 
             </nav>
 
         </aside>
+        @php
+            $user = auth()->user();
+        @endphp
 
         <div class="flex-1 flex flex-col">
 
@@ -193,55 +200,189 @@
                     </div>
 
                     <div class="flex items-center gap-4">
+                        {{-- NOTIF --}}
+                        <div class="relative">
 
-                        <button
-                            class="relative p-2 rounded-lg hover:bg-slate-100">
+                            <button id="notifButton"
+                                class="relative p-2 rounded-lg hover:bg-slate-100">
 
-                            🔔
+                                🔔
 
-                            <span
-                                class="absolute -top-1 -right-1 w-5 h-5 text-xs rounded-full flex items-center justify-center"
-                                style="
-                                    background-color: var(--color-merah);
-                                    color: var(--color-putih);
-                                ">
+                                @if($totalNotif)
 
-                                3
+                                <span
+                                    class="absolute -top-1 -right-1
+                                           w-5 h-5 rounded-full
+                                           flex items-center justify-center
+                                           text-xs
+                                           bg-red-600 text-white">
 
-                            </span>
+                                    {{ $totalNotif }}
 
-                        </button>
+                                </span>
 
-                        <div class="flex items-center gap-3">
+                                @endif
 
-                            <img
-                                src="https://i.pravatar.cc/100"
-                                class="w-10 h-10 rounded-full">
+                            </button>
 
-                            <div>
+                            {{-- Dropdown --}}
+                            <div id="notifDropdown" class="hidden absolute right-0 mt-3 w-96 bg-white rounded-2xl shadow-2xl border z-50">
+                                    <div class="p-5 border-b">
+                                        <h5 class="font-bold text-lg">Notifikasi</h5>
+                                        <div class="max-h-[420px] overflow-y-auto">
+                                            @if($pendingDonasi)
+                                                <a href="{{ route('admin.donasi.index') }}" class="flex p-4 hover:bg-orange-50">
+                                                    <div class="text-2xl me-3">💰</div>
+                                                    <div>
+                                                        <div class="font-semibold">{{ $pendingDonasi }} Donasi Pending</div>
+                                                        <div class="text-sm text-gray-500">Menunggu verifikasi pembayaran</div>
+                                                    </div>
+                                                </a>
+                                            @endif
 
-                                <div
-                                    class="font-semibold"
-                                    style="color: var(--color-hitam);">
+                                            @if($pendingOrder)
+                                                <a href="{{ route('admin.order.index') }}"class="flex p-4 hover:bg-blue-50">
+                                                    <div class="text-2xl me-3">🛒</div>
+                                                    <div>
+                                                        <div class="font-semibold">{{ $pendingOrder }} Order Baru</div>
+                                                        <div class="text-sm text-gray-500">Segera diproses</div>
+                                                    </div>
+                                                </a>
+                                            @endif
 
-                                    Administrator
+                                            @if($pendingRegistrasi)
+                                                <a href="{{ route('admin.event-registrasi.index') }}"class="flex p-4 hover:bg-green-50">
+                                                    <div class="text-2xl me-3">🙋</div>
+                                                    <div>
+                                                        <div class="font-semibold">{{ $pendingRegistrasi }} Registrasi Event</div>
+                                                        <div class="text-sm text-gray-500">Menunggu persetujuan admin</div>
+                                                    </div>
+                                                </a>
+                                            @endif
+
+                                            @if($totalNotif==0)
+                                                <div class="text-center py-5 text-gray-400"> Tidak ada notifikasi</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                            </div>
+
+                        </div>
+                        <div class="relative">
+
+                            <button
+                                id="profileButton"
+                                class="flex items-center gap-3">
+                                <?php if ($user->avatar == NULL): ?>
+                                    <img src="https://i.pravatar.cc/100" class="w-10 h-10 rounded-full">
+                                <?php else: ?>
+                                    <img
+                                    src="{{ $user->avatar ? asset('storage/'.$user->avatar) : asset('images/default-user.png') }}"
+                                    class="w-11 h-11 rounded-full object-cover">
+                                <?php endif ?>
+                                
+
+                                <div class="text-left">
+
+                                    <div class="font-semibold">
+                                        <?php if ($user->name==NULL): ?>
+                                            Administrator
+                                        <?php else: ?>
+                                            {{ $user->name }}
+                                        <?php endif ?>
+                                    </div>
+
+                                    <div class="text-xs text-slate-500">
+
+                                        {{ ucfirst($user->role) }}
+
+                                    </div>
 
                                 </div>
 
-                                <div
-                                    class="text-xs"
-                                    style="color: var(--color-coklat);">
+                            </button>
 
-                                    Super Admin
+                            <div
+                                id="profileMenu"
+                                class="hidden absolute right-0 mt-3 w-72 bg-white rounded-2xl shadow-xl border z-50">
+
+                                <!-- Header -->
+
+                                <div class="p-5 border-b">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <?php if ($user->avatar == NULL): ?>
+                                            <img src="https://i.pravatar.cc/100" class="w-10 h-10 rounded-full">
+                                        <?php else: ?>
+                                            <img src="{{ $user->avatar ? asset('storage/'.$user->avatar) : asset('images/default-user.png') }}" class="w-11 h-11 rounded-full object-cover">
+                                        <?php endif ?>
+                                        <div>
+
+                                            <div class="font-semibold">
+                                                <?php if ($user->name==NULL): ?>
+                                                    Administrator
+                                                <?php else: ?>
+                                                    {{ $user->name }}
+                                                <?php endif ?>
+                                            </div>
+
+                                            <div class="text-sm text-slate-500">
+
+                                                {{ $user->email }}
+
+                                            </div>
+
+                                            <div class="text-xs text-orange-600">
+
+                                                {{ ucfirst($user->role) }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
+
+                                <!-- Menu -->
+
+                                <a href="{{ route('admin.profile') }}"
+                                   class="flex items-center gap-3 px-5 py-3 hover:bg-slate-50 {{ ($activePage ?? '') == 'profile' ? 'menu-active' : 'hover:bg-white/10' }}">
+
+                                    👤 Profil Saya
+
+                                </a>
+
+                                <a href="{{ route('admin.password') }}"
+                                   class="flex items-center gap-3 px-5 py-3 hover:bg-slate-50 {{ ($activePage ?? '') == 'password' ? 'menu-active' : 'hover:bg-white/10' }}">
+
+                                    🔒 Ubah Password
+
+                                </a>
+
+                                <hr>
+
+                                <form action="{{ route('logout') }}"
+                                      method="POST">
+
+                                    @csrf
+
+                                    <button
+                                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl menu-logout text-red-500 text-left hover:text-blue-600">
+
+                                        🚪 Logout
+
+                                    </button>
+
+                                </form>
 
                             </div>
 
                         </div>
 
                     </div>
-
+                    
                 </div>
 
             </header>
@@ -263,6 +404,49 @@
 
     @stack('scripts')
 
+<script>
+
+const profileBtn = document.getElementById('profileButton');
+const profileMenu = document.getElementById('profileMenu');
+
+profileBtn.addEventListener('click', function (e) {
+
+    e.stopPropagation();
+
+    profileMenu.classList.toggle('hidden');
+
+});
+
+document.addEventListener('click', function () {
+
+    profileMenu.classList.add('hidden');
+
+});
+
+const notifButton =
+document.getElementById('notifButton');
+
+const notifDropdown =
+document.getElementById('notifDropdown');
+
+notifButton.addEventListener('click',function(){
+
+notifDropdown.classList.toggle('hidden');
+
+});
+
+document.addEventListener('click',function(e){
+
+if(!notifButton.contains(e.target) &&!notifDropdown.contains(e.target))
+{
+
+notifDropdown.classList.add('hidden');
+
+}
+
+});
+
+</script>
 </body>
 
 </html>

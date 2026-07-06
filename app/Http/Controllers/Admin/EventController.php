@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\EventRegistrasi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -42,7 +45,7 @@ class EventController extends Controller
         $selesaiEvent = Event::where('status', 'selesai')->count();
 
         return view(
-            'admin.event.index',
+            'admin.event.kategori.index',
             compact(
                 'events',
                 'totalEvent',
@@ -53,9 +56,30 @@ class EventController extends Controller
         );
     }
 
+    public function show()
+    {
+        return view('admin.event.dashboard', [
+
+            // EVENT
+            'totalEvent' => Event::count(),
+
+            'eventAktif' => Event::where('status','terbuka')->count(),
+
+            'totalKuota' => Event::sum('kuota'),
+
+            // PESERTA
+            'totalPeserta' => EventRegistrasi::count(),
+
+            'pendingPeserta' => EventRegistrasi::where('status','mendaftar')->count(),
+
+            'hadirPeserta' => EventRegistrasi::where('status','hadir')->count(),
+
+        ]);
+    } 
+
     public function create()
     {
-        return view('admin.event.create');
+        return view('admin.event.kategori.create');
     }
 
     public function store(Request $request)
@@ -95,7 +119,7 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        return view('admin.event.edit', compact('event'));
+        return view('admin.event.kategori.edit', compact('event'));
     }
 
     public function update(Request $request, Event $event)
@@ -141,5 +165,62 @@ class EventController extends Controller
 
         return back()
             ->with('success', 'Event berhasil dihapus');
+    }
+    public function konfirmasiHadir(Event $event, EventRegistrasi $registrasi)
+    {
+        if ($registrasi->status != 'dikonfirmasi') {
+            return back()->with(
+                'error',
+                'Peserta belum dikonfirmasi.'
+            );
+        }
+
+        if ($registrasi->status == 'hadir') {
+            return back()->with(
+                'error',
+                'Peserta sudah hadir.'
+            );
+        }
+
+        DB::transaction(function () use ($event, $registrasi) {
+
+            $reward = $event->poin_reward;
+
+            $registrasi->update([
+                'status'          => 'hadir',
+                'poin_diberikan'  => $reward
+            ]);
+
+            $registrasi->user()->increment(
+                'total_poin',
+                $reward
+            );
+
+        });
+
+        return back()->with(
+            'success',
+            'Peserta berhasil dihadirkan dan reward diberikan.'
+        );
+    }
+    public function konfirmasiAlfa(Event $event, EventRegistrasi $registrasi)
+    {
+        if ($registrasi->status != 'dikonfirmasi') {
+
+            return back()->with(
+                'error',
+                'Peserta belum dikonfirmasi.'
+            );
+
+        }
+
+        $registrasi->update([
+            'status' => 'tidak'
+        ]);
+
+        return back()->with(
+            'success',
+            'Peserta ditandai tidak hadir.'
+        );
     }
 }

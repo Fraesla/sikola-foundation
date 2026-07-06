@@ -18,7 +18,7 @@
     <div class="flex items-center gap-3">
 
         {{-- Tombol Kembali --}}
-        <a href="{{ route('admin.konten') }}"
+        <a href="{{ url()->previous() }}"
            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition shadow-sm">
 
             <span>←</span>

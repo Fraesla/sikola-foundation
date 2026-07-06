@@ -5,7 +5,7 @@
 <!-- HERO -->
 <section class="relative">
 
-    <a href="{{ route('berita.index') }}"
+    <a href="{{ url()->previous() }}"
         class="absolute top-8 left-8 z-30 px-5 py-3 rounded-xl flex items-center gap-2"
         style="
             background: rgba(255,255,255,.12);

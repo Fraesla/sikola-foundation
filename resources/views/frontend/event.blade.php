@@ -2,7 +2,94 @@
 
 @section('content')
 
-<!-- HERO -->
+@if($bannerEvent->count())
+
+<section class="relative">
+
+    <div class="swiper eventSwiper">
+
+        <div class="swiper-wrapper">
+
+            @foreach($bannerEvent as $banner)
+
+            <div class="swiper-slide">
+
+                <section class="relative h-[420px] md:h-[500px] overflow-hidden">
+
+                    <img src="{{ asset('storage/'.$banner->gambar) }}"
+                         class="absolute inset-0 w-full h-full object-cover">
+
+                    <div class="absolute inset-0 bg-black/60"></div>
+
+                    <div class="relative z-20 h-full">
+
+                        <div class="relative z-20 flex items-center justify-center h-full">
+
+                            <!-- Tombol Back -->
+                            <div class="absolute top-6 left-6 md:top-8 md:left-8 z-30">
+                                <a href="{{ url()->previous() }}"
+                                   class="inline-flex items-center gap-3 px-6 py-3 rounded-xl"
+                                   style="
+                                        background: rgba(255,255,255,.12);
+                                        backdrop-filter: blur(10px);
+                                        border: 1px solid rgba(212,160,23,.5);
+                                        color: white;
+                                   ">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="w-5 h-5"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-width="2"
+                                              d="M15 19l-7-7 7-7"/>
+                                    </svg>
+
+                                    Back
+                                </a>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="container mx-auto px-6 text-center text-white">
+
+                                <span class="uppercase tracking-[4px]"
+                                      style="color: var(--color-kuning);">
+                                    Event Sikola Foundation
+                                </span>
+
+                                <h1 class="text-4xl md:text-6xl font-bold mt-4">
+                                    {{ $banner->judul }}
+                                </h1>
+
+                                <p class="mt-5 max-w-3xl mx-auto text-lg">
+                                    {{ $banner->deskripsi }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+        <div class="swiper-pagination"></div>
+
+    </div>
+
+</section>
+
+@else
+
+<!-- HERO DEFAULT -->
 <section
     class="relative py-24"
     style="
@@ -16,7 +103,6 @@
 
     <div class="container mx-auto px-6">
 
-        <!-- Back Button -->
         <a href="{{ url('/#program') }}"
            class="absolute top-8 left-8 z-30 inline-flex items-center gap-3 px-5 py-3 rounded-xl"
            style="
@@ -40,33 +126,36 @@
             Back
         </a>
 
-        <!-- Hero Content -->
         <div class="text-center text-white">
 
-            <span
-                class="uppercase tracking-[4px]"
-                style="color: var(--color-kuning);">
+            <span class="uppercase tracking-[4px]"
+                  style="color: var(--color-kuning);">
+
                 Event Sikola Foundation
+
             </span>
 
             <h1 class="text-5xl md:text-6xl font-bold mt-4">
                 Kegiatan & Agenda Yayasan
             </h1>
 
-            <p
-                class="mt-5 max-w-3xl mx-auto text-lg"
-                style="color: rgba(249,246,240,.9);">
+            <p class="mt-5 max-w-3xl mx-auto text-lg"
+               style="color: rgba(249,246,240,.9);">
+
                 Ikuti berbagai kegiatan pendidikan, sosial,
                 seminar, workshop, dan program pemberdayaan
                 masyarakat yang diselenggarakan oleh
                 Sikola Foundation.
+
             </p>
 
         </div>
 
     </div>
 
-</section>
+</section> 
+
+@endif
 
 <!-- FILTER -->
 <section

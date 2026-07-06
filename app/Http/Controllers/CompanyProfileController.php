@@ -7,22 +7,39 @@ use App\Models\Event;
 use App\Models\Postingan;
 use App\Models\TeamMember;
 use App\Models\Merchandise;
+use App\Models\Banner;
+use App\Models\DonationCategory;
 
 class CompanyProfileController extends Controller
 {
     public function index()
     {
-        return view('frontend/home');
+        $banners = Banner::where('urutan', 1)
+                    ->where('is_aktif', true)
+                    ->orderBy('id', 'desc')
+                    ->get();
+
+        return view('frontend.home', compact('banners'));
     }
 
     public function beranda()
     {
-        return view('frontend/home');
+        $banners = Banner::where('urutan', 1)
+                    ->where('is_aktif', true)
+                    ->orderBy('id', 'desc')
+                    ->get();
+
+        return view('frontend.home', compact('banners'));
     }
 
     public function tentang()
     {
-        return view('frontend/tentang');
+        $bannerTentang = Banner::where('urutan', 2)
+                    ->where('is_aktif', true)
+                    ->orderBy('id', 'desc')
+                    ->get();
+
+        return view('frontend.tentang', compact('bannerTentang'));
     }
 
     public function beritaIndex(Request $request)
@@ -44,9 +61,14 @@ class CompanyProfileController extends Controller
             ->paginate(5)
             ->withQueryString();
 
+        $bannerBerita = Banner::where('urutan', 6)
+                    ->where('is_aktif', true)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
         return view(
             'frontend.berita',
-            compact('posts')
+            compact('posts','bannerBerita')
         );
     }
 
@@ -95,7 +117,12 @@ class CompanyProfileController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        return view('frontend.event', compact('events'));
+        $bannerEvent = Banner::where('urutan', 3)
+                        ->where('is_aktif', true)
+                        ->orderBy('id', 'asc')
+                        ->get();
+
+        return view('frontend.event', compact('events','bannerEvent'));
     } 
 
     public function eventShow($slug)
@@ -108,7 +135,20 @@ class CompanyProfileController extends Controller
 
     public function donasi()
     {
-        return view('frontend/donasi');
+        $bannerDonasi = Banner::where('urutan', 4)
+                    ->where('is_aktif', 1)
+                    ->orderBy('created_at')
+                    ->get();
+
+        $kategoriDonasi = DonationCategory::where('is_aktif',1)
+                            ->latest()
+                            ->get();
+
+
+        return view('frontend.donasi', compact(
+            'bannerDonasi',
+            'kategoriDonasi'
+        ));
     }
 
     public function merchandise(Request $request)
@@ -129,10 +169,15 @@ class CompanyProfileController extends Controller
                         ->select('kategori')
                         ->distinct()
                         ->pluck('kategori');
+        
+        $bannerMerchandise = Banner::where('urutan', 7)
+                        ->where('is_aktif', true)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
 
         return view(
             'frontend.merchandise',
-            compact('merchandises', 'categories')
+            compact('merchandises', 'categories','bannerMerchandise')
         );
     }
 
@@ -142,17 +187,34 @@ class CompanyProfileController extends Controller
                     ->orderBy('urutan')
                     ->get();
 
-        return view('frontend.tim', compact('teams'));
+        $bannerTeam = Banner::where('urutan', 8)
+                    ->where('is_aktif', true)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return view('frontend.tim', compact('teams','bannerTeam'));
     }
 
     public function relawan()
     {
-        return view('frontend/relawan');
+        $bannerRelawan = Banner::where('urutan', 5)
+                            ->where('is_aktif', true)
+                            ->orderBy('id')
+                            ->get();
+
+        return view('frontend.relawan', compact('bannerRelawan'));
     }
 
     public function kontak()
     {
-        return view('frontend/kontak');
+        $bannerKontak = Banner::where('urutan', 9)
+                            ->where('is_aktif', true)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+
+        return view('frontend.kontak', compact(
+            'bannerKontak'
+        ));
     }
 
     public function login()

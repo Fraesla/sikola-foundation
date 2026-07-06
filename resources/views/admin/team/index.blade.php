@@ -17,7 +17,7 @@
 
 <div class="flex gap-3">
 
-    <a href="{{ route('admin.konten') }}"
+    <a href="{{ url()->previous() }}"
        class="px-5 py-3 rounded-xl border bg-white">
         ← Kembali
     </a>
