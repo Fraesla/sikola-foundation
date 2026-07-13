@@ -415,6 +415,14 @@
 
                         </option>
 
+                        <option
+                            value="tolak"
+                            @selected(request('status')=='tolak')>
+
+                            Tolak
+
+                        </option>
+
                     </select>
 
                 </div>
@@ -696,6 +704,18 @@
 
                             </span>
 
+                         @elseif($item->status=='tolak')
+
+                            <span
+                                class="px-4 py-2 rounded-full
+                                       bg-red-100
+                                       text-red-700
+                                       font-semibold">
+
+                                ❌ Tolak
+
+                            </span>
+
                         @else
 
                             <span
@@ -794,9 +814,9 @@
 
                                 </form>
 
-                                {{-- TOLAK {{ route('admin.event_registrasi.tolak',$item->id) }}--}}
+                                {{-- TOLAK --}}
                                 <form
-                                    action="#"
+                                    action="{{ route('admin.events.tolak',$item->id) }}"
                                     method="POST"
                                     onsubmit="return confirm('Yakin ingin menolak pendaftaran peserta ini?')">
 

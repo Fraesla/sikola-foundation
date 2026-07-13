@@ -231,7 +231,7 @@
 
                 </div>
 
-                <div>
+                <!-- <div>
 
                     <label class="font-semibold block mb-2">
                         Poin Reward Volunteer
@@ -242,7 +242,7 @@
                            value="50"
                            class="w-full rounded-xl border px-4 py-3">
 
-                </div>
+                </div> -->
 
             </div>
 

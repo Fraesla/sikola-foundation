@@ -274,7 +274,9 @@
 
     </a>
 
-    <a href="#"
+       <a href="{{ route('admin.orders.index', [
+            'status' => 'diproses'
+        ]) }}"
        class="rounded-3xl p-6 bg-white hover:-translate-y-1 transition"
        style="box-shadow:var(--shadow);">
 
@@ -290,7 +292,7 @@
             Update nomor resi dan status kirim.
         </p>
 
-    </a>
+    </a> 
 
 </div>
 

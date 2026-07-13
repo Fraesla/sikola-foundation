@@ -144,6 +144,7 @@
                         : asset('images/default-donasi.jpg') }}"
                 class="w-32 h-32 rounded-3xl object-cover shadow-md">
 
+
             <div class="flex-1">
 
                 {{-- KODE + STATUS --}}
@@ -216,12 +217,31 @@
 
                 {{-- NOMINAL --}}
                 
-                <h2 class="text-4xl font-bold
-                           mb-2 text-slate-900">
+               @if($donasi->tipe == 'bulanan' && $donasi->langganan)
 
-                    Rp {{ number_format($donasi->jumlah,0,',','.') }}
+                    <small class="text-slate-500">
+                        Target Bulanan
+                    </small>
 
-                </h2>
+                    <h2 class="text-4xl font-bold text-slate-900">
+                        Rp {{ number_format($donasi->langganan->jumlah_bulanan,0,',','.') }}
+                    </h2>
+
+                    <small class="text-slate-500 mt-3 block">
+                        Total Terkumpul
+                    </small>
+
+                    <h3 class="text-2xl font-bold text-green-600">
+                        Rp {{ number_format($donasi->langganan->total_terkumpul,0,',','.') }}
+                    </h3>
+
+                @else
+
+                    <h2 class="text-4xl font-bold text-slate-900">
+                        Rp {{ number_format($donasi->jumlah,0,',','.') }}
+                    </h2>
+
+                @endif
 
                 {{-- JENIS --}}
                 <p class="font-semibold text-lg">
@@ -276,8 +296,11 @@
 
                 <h3 class="font-semibold">
 
-                    {{ $donasi->poin_diberikan }}
-                    poin
+                    @if($donasi->tipe == 'sekali')
+                        {{ $donasi->poin_diberikan }} poin
+                    @else
+                        {{ $donasi->langganan->total_poin_aktif }} Poin
+                    @endif
 
                 </h3>
 
@@ -289,57 +312,163 @@
         {{-- ================================= --}}
         {{-- KANAN --}}
         {{-- ================================= --}}
-        <div class="border-l border-slate-200
-                    pl-8">
+        <div class="border-l border-slate-200 pl-8">
 
             <div class="flex flex-wrap gap-4">
 
+                {{-- ================================= --}}
                 {{-- DETAIL --}}
-                <a href="{{ route('relawan.donasi.show',$donasi->id) }}"
-                   class="px-7 py-4 rounded-2xl
-                          border border-slate-300
-                          hover:bg-slate-50">
+                {{-- ================================= --}}
+                @if($donasi->tipe == 'sekali')
+                    <a href="{{ route('relawan.donasi.show', $donasi->id) }}"
+                       class="px-7 py-4 rounded-2xl
+                              border border-slate-300
+                              hover:bg-slate-50">
 
-                    👁 Detail
+                        👁 Detail
 
-                </a>
+                    </a>
+                @else
+                    <a href="{{ route('relawan.donasi.detail', $donasi->id) }}"
+                       class="px-7 py-4 rounded-2xl
+                              border border-slate-300
+                              hover:bg-slate-50">
+
+                        👁 Detail Bulanan
+
+                    </a>
+                @endif
 
 
-                {{-- BELUM BAYAR --}}
+                {{-- ================================= --}}
+                {{-- DONASI BULANAN (SETELAH DONASI PERTAMA DIKONFIRMASI) --}}
+                {{-- ================================= --}}
                 @if(
-                    $donasi->status=='menunggu'
-                    && !$donasi->bukti_transfer
+                    $donasi->tipe == 'bulanan'
+                    && $donasi->langganan_id
+                    && $donasi->status == 'dikonfirmasi'
+                    && \Carbon\Carbon::parse($donasi->tanggal_akhir)->lte(now())
                 )
 
-                    <a href="{{ route('relawan.donasi.bayar',$donasi->id) }}"
+                    <a href="{{ route('relawan.langganan.bulanan', $donasi->id) }}"
                        class="px-7 py-4 rounded-2xl
                               text-white font-semibold"
+                       style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">
 
-                       style="
-                            background:
-                            linear-gradient(
-                                135deg,
-                                var(--color-merah),
-                                var(--color-coklat)
-                            );
-                       ">
-
-                        💳 Bayar
+                        🔄 Bayar Donasi Bulanan
 
                     </a>
 
-                    <!-- <a href="{{ route('relawan.donasi.upload',$donasi->id) }}"
-                       class="px-7 py-4 rounded-2xl
-                              bg-blue-50
-                              text-blue-600
-                              border border-blue-200">
+                @endif
 
-                        ⬆ Upload Bukti
 
-                    </a> -->
+                {{-- ================================= --}}
+                {{-- AKHIRI LANGGANAN --}}
+                {{-- ================================= --}}
+                @if($donasi->tipe == 'bulanan' && $donasi->langganan)
 
+                    @if($donasi->langganan->is_aktif)
+
+                        <form
+                            method="POST"
+                            action="{{ route('relawan.donasi.akhiri', $donasi->id) }}"
+                            class="mt-3">
+
+                            @csrf
+                            @method('PATCH')
+
+                            <button
+                                type="submit"
+                                onclick="return confirm('Yakin ingin mengakhiri langganan?')"
+                                class="w-full rounded-2xl
+                                       bg-red-50
+                                       border border-red-200
+                                       text-red-600
+                                       font-semibold
+                                       py-3
+                                       hover:bg-red-100
+                                       transition">
+
+                                ✖ Akhiri Langganan
+
+                            </button>
+
+                        </form>
+
+                    @else
+
+                        <form
+                            method="POST"
+                            action="{{ route('relawan.donasi.aktifkan', $donasi->id) }}"
+                            class="mt-3">
+
+                            @csrf
+                            @method('PATCH')
+
+                            <button
+                                type="submit"
+                                onclick="return confirm('Aktifkan kembali langganan ini?')"
+                                class="w-full rounded-2xl
+                                       bg-green-50
+                                       border border-green-200
+                                       text-green-700
+                                       font-semibold
+                                       py-3
+                                       hover:bg-green-100
+                                       transition">
+
+                                ✔ Aktifkan Langganan
+
+                            </button>
+
+                        </form>
+
+                    @endif
+
+                @endif
+
+
+                {{-- ================================= --}}
+                {{-- BELUM BAYAR --}}
+                {{-- ================================= --}}
+                @if(
+                    $donasi->status == 'menunggu'
+                    && !$donasi->bukti_transfer
+                )
+
+                    {{-- DONASI SEKALI --}}
+                    @if($donasi->tipe == 'sekali')
+
+                        <a href="{{ route('relawan.donasi.bayar', $donasi->id) }}"
+                           class="px-7 py-4 rounded-2xl
+                                  text-white font-semibold"
+                           style="background:linear-gradient(135deg,#16a34a,#15803d);">
+
+                            💳 Bayar Donasi
+
+                        </a>
+
+                    @endif
+
+
+                    {{-- DONASI BULANAN PERTAMA --}}
+                    @if($donasi->tipe == 'bulanan')
+
+                        <a href="{{ route('relawan.langganan.bulanan', $donasi->id) }}"
+                           class="px-7 py-4 rounded-2xl
+                                  text-white font-semibold"
+                           style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">
+
+                            🔄 Bayar Langganan Pertama
+
+                        </a>
+
+                    @endif
+
+
+                    {{-- BATALKAN --}}
                     <form method="POST"
-                          action="{{ route('relawan.donasi.batal',$donasi->id) }}">
+                          action="{{ route('relawan.donasi.batal', $donasi->id) }}">
 
                         @csrf
                         @method('DELETE')
@@ -352,7 +481,7 @@
                                    text-red-600
                                    border border-red-100">
 
-                            ✖ Batalkan
+                                ✖ Batalkan
 
                         </button>
 
@@ -361,9 +490,11 @@
                 @endif
 
 
+                {{-- ================================= --}}
                 {{-- MENUNGGU VERIFIKASI --}}
+                {{-- ================================= --}}
                 @if(
-                    $donasi->status=='menunggu'
+                    $donasi->status == 'menunggu'
                     && $donasi->bukti_transfer
                 )
 
@@ -381,18 +512,48 @@
                 @endif
 
 
+                {{-- ================================= --}}
                 {{-- SUKSES --}}
-                @if($donasi->status=='dikonfirmasi')
+                {{-- ================================= --}}
+                @if($donasi->status == 'dikonfirmasi')
 
-                    <button
-                        class="px-7 py-4 rounded-2xl
-                               border border-green-300
-                               text-green-600
-                               font-semibold">
+                    @if($donasi->tipe == 'sekali')
 
-                        ✔ Selesai
+                        <button
+                            class="px-7 py-4 rounded-2xl
+                                   border border-green-300
+                                   text-green-600
+                                   font-semibold">
 
-                    </button>
+                            ✔ Donasi Selesai
+
+                        </button>
+
+                    @else
+
+                        @if($donasi->tipe == 'bulanan' && $donasi->langganan)
+
+                            <div class="mb-4">
+
+                                @if($donasi->langganan->is_aktif)
+
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
+                                        🟢 Langganan Aktif
+                                    </span>
+
+                                @else
+
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-semibold">
+                                        🔴 Langganan Tidak Aktif
+                                    </span>
+
+                                @endif
+
+                            </div>
+
+                        @endif
+
+                    @endif
 
                 @endif
 

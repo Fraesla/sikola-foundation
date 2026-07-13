@@ -2,21 +2,32 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\DonationCategory;
 use App\Models\Donasi;
 use App\Models\DonasiLangganan;
+use App\Services\DonasiService;
+use App\Models\RiwayatLanggananPembayaran;
 use App\Models\User;
+use App\Services\PoinService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\KategoriPoin;
 use App\Notifications\DonasiBaruNotification;
 
 class DonasiController extends Controller
 {
-    public function index(Request $request)
+    protected PoinService $poinService;
+
+    public function __construct(PoinService $poinService)
+    {
+        $this->poinService = $poinService;
+    }
+    public function index(Request $request, DonasiService $donasiService)
     {
         $query = Donasi::with(['user','kategori','langganan']);
 
@@ -73,7 +84,7 @@ class DonasiController extends Controller
         $donasis = $query->latest()->paginate(5)->withQueryString();
 
         // Statistik
-        $totalDonasi = Donasi::where('status', 'dikonfirmasi')->sum('jumlah');
+        $totalDonasi = $donasiService->totalDana();
 
         $pending = Donasi::where('status', 'menunggu')->count();
 
@@ -116,23 +127,296 @@ class DonasiController extends Controller
             compact('donasi')
         );
     }
+
+    public function detail(Donasi $donasi)
+    {
+        $donasi->load([
+            'user',
+            'kategori'
+        ]);
+
+        return view(
+            'admin.donasi.donatur.detail',
+            compact('donasi')
+        );
+    }
+
+    public function langganan(Request $request, Donasi $donasi)
+    {
+        $donasi->load([
+            'user',
+            'kategori',
+            'langganan'
+        ]);
+
+        $riwayat = RiwayatLanggananPembayaran::with([
+                'donasi.user',
+                'langganan'
+            ])
+            ->where('langganan_id', $donasi->langganan->id)
+            ->when($request->search, function ($q) use ($request) {
+
+                $q->whereHas('donasi.user', function ($qq) use ($request) {
+
+                    $qq->where(
+                        'name',
+                        'like',
+                        '%'.$request->search.'%'
+                    );
+
+                });
+
+            })
+            ->when($request->status, function ($q) use ($request) {
+
+                $q->where('status', $request->status);
+
+            })
+            ->latest()
+            ->paginate(5)
+            ->withQueryString();
+
+        // ===============================
+        // RINGKASAN
+        // ===============================
+
+        $target = $donasi->langganan->jumlah_bulanan;
+
+        $riwayatSemua = RiwayatLanggananPembayaran::where(
+            'langganan_id',
+            $donasi->langganan->id
+        )->get();
+
+        $totalDonasi = $riwayatSemua
+            ->where('status', 'dikonfirmasi')
+            ->sum('jumlah');
+
+        $totalPoin = $riwayatSemua
+            ->where('status', 'dikonfirmasi')
+            ->sum('poin');
+
+        $totalBonus = $riwayatSemua
+            ->where('status', 'dikonfirmasi')
+            ->sum('bonus');
+
+        $progress = $target > 0
+            ? min(($totalDonasi / $target) * 100, 100)
+            : 0;
+
+        return view(
+            'admin.donasi.donatur.langganan',
+            compact(
+                'donasi',
+                'riwayat',
+                'target',
+                'totalDonasi',
+                'totalPoin',
+                'totalBonus',
+                'progress'
+            )
+        );
+    }
+
+    public function langgananKonfirmasi(RiwayatLanggananPembayaran $riwayat)
+    {
+        if ($riwayat->status == 'dikonfirmasi') {
+
+            return back()->with(
+                'warning',
+                'Pembayaran sudah dikonfirmasi.'
+            );
+
+        }
+
+        DB::transaction(function () use ($riwayat) {
+
+            $langganan = $riwayat->langganan;
+            $donasi    = $riwayat->donasi;
+            $user      = $donasi->user;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Hitung poin dari config
+            |--------------------------------------------------------------------------
+            */
+
+            $poin = app(PoinService::class)
+                ->hitungPoinLangganan($riwayat);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update pembayaran
+            |--------------------------------------------------------------------------
+            */
+
+            $riwayat->update([
+
+                'status'            => 'dikonfirmasi',
+
+                'poin'              => $poin,
+
+                'bonus'             => 0,
+
+                'dikonfirmasi_oleh' => auth()->id(),
+
+                'dikonfirmasi_at'   => now(),
+
+            ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Hitung total donasi periode
+            |--------------------------------------------------------------------------
+            */
+
+            $totalDonasi = RiwayatLanggananPembayaran::where(
+                    'langganan_id',
+                    $langganan->id
+                )
+                ->where('periode', $riwayat->periode)
+                ->where('status', 'dikonfirmasi')
+                ->sum('jumlah');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Bonus hanya sekali jika target tercapai
+            |--------------------------------------------------------------------------
+            */
+
+            $bonusSudahAda = RiwayatLanggananPembayaran::where(
+                    'langganan_id',
+                    $langganan->id
+                )
+                ->where('periode', $riwayat->periode)
+                ->where('bonus', '>', 0)
+                ->exists();
+
+            if (
+                !$bonusSudahAda &&
+                $totalDonasi >= $langganan->jumlah_bulanan
+            ) {
+
+                $riwayat->update([
+
+                    'bonus' => config('poin.donasi_bulanan.bonus', 10),
+
+                    'bonus_periode' => $riwayat->periode,
+
+                ]);
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Berikan poin yang belum pernah diberikan
+            |--------------------------------------------------------------------------
+            */
+
+            $rewardBelum = RiwayatLanggananPembayaran::where(
+                    'langganan_id',
+                    $langganan->id
+                )
+                ->where('periode', $riwayat->periode)
+                ->where('status', 'dikonfirmasi')
+                ->whereNull('rewarded_at')
+                ->get();
+
+            foreach ($rewardBelum as $item) {
+
+                $reward = $item->poin + $item->bonus;
+
+                app(PoinService::class)->tambahPoin(
+
+                    $user,
+
+                    $reward,
+
+                    KategoriPoin::DONASI_BULANAN,
+
+                    $item,
+
+                    "Pembayaran langganan {$item->periode}"
+
+                );
+
+                $item->update([
+
+                    'rewarded_at' => now()
+
+                ]);
+
+            }
+
+        });
+
+        return back()->with(
+            'success',
+            'Pembayaran berhasil dikonfirmasi.'
+        );
+    }
+    public function langgananTolak(Request $request,RiwayatLanggananPembayaran $riwayat)
+    {
+
+        $request->validate([
+
+            'alasan_tolak'=>'required'
+
+        ]);
+
+        $riwayat->update([
+
+            'status'=>'ditolak',
+
+            'alasan_tolak'=>$request->alasan_tolak,
+
+            'dikonfirmasi_oleh'=>auth()->id(),
+
+            'dikonfirmasi_at'=>now(),
+
+        ]);
+
+        return back()->with(
+
+            'success',
+
+            'Pembayaran ditolak.'
+
+        );
+
+    }
     public function konfirmasi(Donasi $donasi)
     {
         DB::transaction(function () use ($donasi) {
 
-            // Hindari double verifikasi
+            // Hindari double konfirmasi
             if ($donasi->status == 'dikonfirmasi') {
                 return;
             }
 
             /*
             |--------------------------------------------------------------------------
-            | Hitung poin
-            | 1 poin = Rp 10.000
+            | Hitung poin dari config
             |--------------------------------------------------------------------------
             */
 
-            $poin = floor($donasi->jumlah / 10000);
+           $poin = app(PoinService::class)->hitungPoinDonasi($donasi);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Jika donasi bulanan
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $donasi->tipe == 'bulanan'
+                && $donasi->tanggal_akhir
+            ) {
+
+                $donasi->tanggal_akhir = Carbon::parse(
+                    $donasi->tanggal_akhir
+                )->addMonth();
+
+            }
 
             /*
             |--------------------------------------------------------------------------
@@ -141,44 +425,49 @@ class DonasiController extends Controller
             */
 
             $donasi->update([
-                'status'              => 'dikonfirmasi',
-                'poin_diberikan'      => $poin,
-                'dikonfirmasi_oleh'   => auth()->id(),
-                'dikonfirmasi_at'     => now(),
-                'alasan_tolak'        => null
+
+                'status'            => 'dikonfirmasi',
+
+                'poin_diberikan'    => $poin,
+
+                'dikonfirmasi_oleh' => auth()->id(),
+
+                'dikonfirmasi_at'   => now(),
+
+                'alasan_tolak'      => null,
+
             ]);
 
             /*
             |--------------------------------------------------------------------------
-            | Tambahkan poin user
+            | Tambah poin user
             |--------------------------------------------------------------------------
             */
 
-            $user = $donasi->user;
+            $kategori = $donasi->tipe == 'bulanan'
+                        ? KategoriPoin::DONASI_BULANAN
+                        : KategoriPoin::DONASI_SEKALI;
 
-            $user->increment('total_poin', $poin);
 
-            /*
-            |--------------------------------------------------------------------------
-            | Jika ada service tier
-            |--------------------------------------------------------------------------
-            */
+            app(PoinService::class)->tambahPoin(
 
-            // app(TierService::class)->recalculate($user);
+                $donasi->user,
 
-            /*
-            |--------------------------------------------------------------------------
-            | Kirim notifikasi
-            |--------------------------------------------------------------------------
-            */
+                $poin,
 
-            // $user->notify(new DonasiBerhasilNotification($donasi));
+                $kategori,
+
+                $donasi,
+
+                "Donasi {$donasi->kode}"
+
+            );
 
         });
 
         return back()->with(
             'success',
-            'Donasi berhasil dikonfirmasi'
+            'Donasi berhasil dikonfirmasi.'
         );
     } 
     public function tolak(Request $request, Donasi $donasi)

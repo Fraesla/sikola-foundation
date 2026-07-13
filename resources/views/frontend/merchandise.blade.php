@@ -247,22 +247,33 @@
 
                     </div>
 
-                    <form action="{{ route('pembeli.keranjang.store') }}"method="POST">
-                        @csrf
+                    <div class="grid grid-cols-2 gap-3 mt-5">
 
-                        <input type="hidden"
-                           name="merchandise_id"
-                           value="{{ $item->id }}">
+                        {{-- Tambah Keranjang --}}
+                        <form action="{{ route('pembeli.keranjang.store') }}" method="POST">
+                            @csrf
+
+                            <input type="hidden"
+                                   name="merchandise_id"
+                                   value="{{ $item->id }}">
+
+                            <button
+                                type="submit"
+                                class="w-full py-3 rounded-xl font-semibold"
+                                style="background:var(--color-merah);color:white;">
+                                🛒 Keranjang
+                            </button>
+                        </form>
+
+                        {{-- Beli Sekarang --}}
                         <button
-                            class="block text-center w-full mt-5 py-3 rounded-xl font-semibold transition"
-                            style="
-                                background-color: var(--color-merah);
-                                color: var(--color-putih);
-                            ">
-                            🛒 Tambah ke Keranjang
+                            type="button"
+                            onclick="checkoutNow({{ $item->id }},{{ $item->stok }})"
+                            class="w-full py-3 rounded-xl font-semibold bg-green-600 hover:bg-green-700 text-white">
+                            ⚡ Beli
                         </button>
 
-                    </form>
+                    </div>
 
                 </div>
 
@@ -305,5 +316,100 @@
     </div>
 
 </section>
+<div id="checkoutModal"
+     class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
 
+    <div class="bg-white rounded-3xl p-8 w-[420px]">
+
+        <h2 class="text-2xl font-bold">
+            Checkout Produk
+        </h2>
+
+        <p class="text-slate-500 mt-2">
+            Berapa jumlah yang ingin dibeli?
+        </p>
+
+        <form action="{{ route(auth()->user()->role . '.checkout.langsung') }}" method="POST">
+
+            @csrf
+
+            <input type="hidden"
+                   id="checkoutProduct"
+                   name="merchandise_id">
+
+            <div class="mt-5">
+
+                <label class="font-semibold">
+                    Jumlah
+                </label>
+
+                <input
+                    type="number"
+                    id="checkoutQty"
+                    name="qty"
+                    value="1"
+                    min="1"
+                    class="w-full mt-2 rounded-xl border p-3">
+
+                <small
+                    id="stokInfo"
+                    class="text-slate-500">
+                </small>
+
+            </div>
+
+            <div class="flex gap-3 mt-8">
+
+                <button
+                    type="button"
+                    onclick="closeCheckout()"
+                    class="flex-1 py-3 rounded-xl bg-slate-200">
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="flex-1 py-3 rounded-xl bg-green-600 text-white font-bold">
+                    Checkout
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+function checkoutNow(id, stok)
+{
+    document
+        .getElementById('checkoutModal')
+        .classList
+        .remove('hidden');
+
+    document
+        .getElementById('checkoutProduct')
+        .value = id;
+
+    let qty = document.getElementById('checkoutQty');
+
+    qty.value = 1;
+    qty.max = stok;
+
+    document
+        .getElementById('stokInfo')
+        .innerHTML = "Stok tersedia : <b>"+stok+"</b>";
+}
+
+function closeCheckout()
+{
+    document
+        .getElementById('checkoutModal')
+        .classList
+        .add('hidden');
+}
+
+</script>
 @endsection

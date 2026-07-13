@@ -40,7 +40,7 @@ class MerchandiseController extends Controller
             $query->latest();
         }
 
-        $products = $query->paginate(10)
+        $products = $query->paginate(5)
             ->withQueryString();
 
         return view(

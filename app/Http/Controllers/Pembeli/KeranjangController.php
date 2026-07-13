@@ -84,6 +84,103 @@ class KeranjangController extends Controller
         );
     }
 
+    
+
+    public function updateQtyManual(Request $request,Cart $cart)
+    {
+        $request->validate([
+
+            'qty'=>'required|integer|min:1'
+
+        ]);
+
+        $qty=min(
+
+            $request->qty,
+
+            $cart->product->stok
+
+        );
+
+        $cart->update([
+
+            'qty'=>$qty
+
+        ]);
+
+        return response()->json([
+
+            'success'=>true,
+
+            'qty'=>$qty,
+
+            'subtotal'=>$qty*$cart->product->harga
+
+        ]);
+    }
+
+    public function updateAjax(Request $request, Cart $cart)
+    {
+        // Pastikan hanya pemilik keranjang yang bisa mengubah
+        if($cart->user_id != auth()->id()){
+            abort(403);
+        }
+
+        // 1. Tambahkan 'manual' ke dalam aturan validasi
+        // 2. Tambahkan validasi untuk angka 'qty' jika action-nya manual
+        $request->validate([
+            'action' => 'required|in:plus,minus,manual',
+            'qty'    => 'required_if:action,manual|integer|min:1'
+        ]);
+
+        $qty = $cart->qty;
+
+        // Proses berdasarkan aksi
+        if($request->action == 'plus'){
+            if($qty < $cart->product->stok){
+                $qty++;
+            }
+        } elseif($request->action == 'minus'){
+            if($qty > 1){
+                $qty--;
+            }
+        } elseif($request->action == 'manual'){
+            // Jika diketik manual, pastikan tidak melebihi stok yang ada di database
+            $qty = min($request->qty, $cart->product->stok);
+        }
+
+        // Simpan perubahan ke database
+        $cart->update([
+            'qty' => $qty
+        ]);
+
+        // Kembalikan response JSON untuk diperbarui oleh JavaScript di tampilan
+        return response()->json([
+            'success'  => true,
+            'qty'      => $qty,
+            'subtotal' => $qty * $cart->product->harga
+        ]);
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        $request->validate([
+
+            'ids'=>'required|array'
+
+        ]);
+
+        Cart::where('user_id',auth()->id())
+            ->whereIn('id',$request->ids)
+            ->delete();
+
+        return response()->json([
+
+            'success'=>true
+
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

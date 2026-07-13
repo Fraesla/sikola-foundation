@@ -102,7 +102,7 @@ class DaftarEventController extends Controller
             DB::transaction(function() use ($registrasi){
 
                 $registrasi->update([
-                    'status'=>'tidak'
+                    'status'=>'tolak'
                 ]);
 
                 Event::where('id',$registrasi->event_id)
@@ -113,7 +113,7 @@ class DaftarEventController extends Controller
         }else{
 
             $registrasi->update([
-                'status'=>'tidak'
+                'status'=>'tolak'
             ]);
 
         }

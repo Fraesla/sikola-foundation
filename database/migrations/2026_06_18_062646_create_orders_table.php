@@ -33,6 +33,7 @@ return new class extends Migration
             $table->unsignedInteger('poin_diberikan')->default(0);
             $table->text('catatan')->nullable();
             $table->text('alasan_batal')->nullable();
+            $table->text('bukti_refund')->nullable();
             $table->foreignId('dikonfirmasi_oleh')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('dikonfirmasi_at')->nullable();
             $table->timestamps();

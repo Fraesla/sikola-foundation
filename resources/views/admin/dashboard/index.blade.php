@@ -6,7 +6,7 @@
 
 <!-- Welcome -->
 <div
-    class="rounded-3xl p-8 mb-8"
+    class="rounded-3xl p-10 mb-8 overflow-hidden relative"
     style="
         background:
         linear-gradient(
@@ -17,11 +17,11 @@
         color: var(--color-putih);
     ">
 
-    <h1 class="text-3xl font-bold">
+    <h1 class="text-4xl mt-3  leading-none font-bold">
         Dashboard Admin
     </h1>
 
-    <p class="mt-3 opacity-90">
+    <p class="mt-3 text-lg  opacity-90">
         Selamat datang di panel administrasi
         Sikola Foundation.
     </p>
@@ -29,18 +29,17 @@
 </div>
 
 <!-- Statistik -->
-<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
     <!-- Donasi -->
     <div
-        class="rounded-3xl p-6"
+        class="rounded-3xl bg-white shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between min-h-[180px]"
         style="
             background-color: white;
             box-shadow: var(--shadow);
         ">
 
         <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
             style="
                 background-color: rgba(204,34,34,.12);
                 color: var(--color-merah);
@@ -49,7 +48,7 @@
         </div>
 
         <p
-            class="mt-4 text-sm"
+            class="mt-5 text-sm font-medium tracking-wide uppercase text-slate-500"
             style="color: var(--color-coklat);">
 
             Total Donasi
@@ -57,7 +56,7 @@
         </p>
 
         <h2
-            class="text-3xl font-bold mt-2"
+            class="text-4xl mt-3 leading-none font-bold"
             style="color: var(--color-hitam);">
 
             Rp {{ number_format($totalDonasi,0,',','.') }}
@@ -68,14 +67,14 @@
 
     <!-- Order -->
     <div
-        class="rounded-3xl p-6"
+        class="rounded-3xl bg-white shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between min-h-[180px]"
         style="
             background-color: white;
             box-shadow: var(--shadow);
         ">
 
         <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
             style="
                 background-color: rgba(212,160,23,.15);
                 color: var(--color-kuning);
@@ -84,7 +83,7 @@
         </div>
 
         <p
-            class="mt-4 text-sm"
+            class="mt-5 text-sm font-medium tracking-wide uppercase text-slate-500"
             style="color: var(--color-coklat);">
 
             Total Order
@@ -92,7 +91,7 @@
         </p>
 
         <h2
-            class="text-3xl font-bold mt-2"
+            class="text-4xl mt-3 leading-none font-bold"
             style="color: var(--color-hitam);">
 
             {{ number_format($totalOrder) }}
@@ -103,14 +102,14 @@
 
     <!-- Relawan -->
     <div
-        class="rounded-3xl p-6"
+        class="rounded-3xl bg-white shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between min-h-[180px]"
         style="
             background-color: white;
             box-shadow: var(--shadow);
         ">
 
         <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
             style="
                 background-color: rgba(139,94,42,.15);
                 color: var(--color-coklat);
@@ -119,7 +118,7 @@
         </div>
 
         <p
-            class="mt-4 text-sm"
+            class="mt-5 text-sm font-medium tracking-wide uppercase text-slate-500"
             style="color: var(--color-coklat);">
 
             Relawan Baru
@@ -127,7 +126,7 @@
         </p>
 
         <h2
-            class="text-3xl font-bold mt-2"
+            class="text-4xl mt-3 leading-none font-bold"
             style="color: var(--color-hitam);">
 
             {{ number_format($totalRelawan) }}
@@ -138,14 +137,15 @@
 
     <!-- Pending -->
     <div
-        class="rounded-3xl p-6"
+        class="rounded-3xl bg-white shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between min-h-[180px]
+"
         style="
             background-color: white;
             box-shadow: var(--shadow);
         ">
 
         <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
             style="
                 background-color: rgba(204,34,34,.12);
                 color: var(--color-merah);
@@ -154,7 +154,7 @@
         </div>
 
         <p
-            class="mt-4 text-sm"
+            class="mt-5 text-sm font-medium tracking-wide uppercase text-slate-500"
             style="color: var(--color-coklat);">
 
             Pending
@@ -162,7 +162,7 @@
         </p>
 
         <h2
-            class="text-3xl font-bold mt-2"
+            class="text-4xl mt-3 leading-none font-bold"
             style="color: var(--color-merah);">
 
             {{ number_format($pending) }}
@@ -193,7 +193,11 @@
 
     </div>
 
-    <canvas id="donationChart" height="100"></canvas>
+    <div class="relative h-96 bg-white rounded-3xl shadow-md p-8mt-8">
+
+        <canvas id="donationChart"></canvas>
+
+    </div>
 
 </div>
 
@@ -213,10 +217,10 @@
 
     </h3>
 
-    <div class="space-y-4">
+    <div class="grid md:grid-cols-3 gap-5">
 
         <div
-            class="p-4 rounded-2xl"
+            class="p-5 rounded-2xl border-l-4 bg-red-50 border-red-500"
             style="
                 background-color: rgba(204,34,34,.08);
                 border-left:4px solid var(--color-merah);
@@ -229,7 +233,7 @@
         </div>
 
         <div
-            class="p-4 rounded-2xl"
+            class="p-5 rounded-2xl border-l-4 bg-green-50 border-green-500"
             style="
                 background-color: rgba(212,160,23,.10);
                 border-left:4px solid var(--color-kuning);
@@ -242,7 +246,7 @@
         </div>
 
         <div
-            class="p-4 rounded-2xl"
+            class="p-5 rounded-2xl border-l-4 bg-yellow-50 border-yellow-500"
             style="
                 background-color: rgba(139,94,42,.10);
                 border-left:4px solid var(--color-coklat);
@@ -267,25 +271,47 @@
 
 const ctx = document.getElementById('donationChart');
 
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: @json($labels),
+new Chart(ctx,{
+    type:'bar',
 
-        datasets: [{
-            label:'Donasi',
+    data:{
+        labels:@json($labels),
+
+        datasets:[{
+
+            label:'Total Donasi',
+
             data:@json($data),
+
+            borderRadius:10,
+
             backgroundColor:'#CC2222',
-            borderRadius:8
+
+            maxBarThickness:35
+
         }]
     },
-    options: {
-        plugins: {
-            legend: {
-                display: false
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                display:false
+            }
+        },
+
+        scales:{
+            y:{
+                beginAtZero:true
             }
         }
+
     }
+
 });
 
 </script>

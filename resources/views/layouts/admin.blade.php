@@ -146,6 +146,15 @@
 
                 </a>
 
+                <!-- Pengguna -->
+                <a href="{{ url('/admin/tier') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl
+                    {{ ($activePage ?? '') == 'tier' ? 'menu-active' : 'hover:bg-white/10' }}">
+
+                    🏅 Tier
+
+                </a>
+
                 <!-- Laporan -->
                 <a href="{{ url('/admin/laporan') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
@@ -231,7 +240,7 @@
                                         <h5 class="font-bold text-lg">Notifikasi</h5>
                                         <div class="max-h-[420px] overflow-y-auto">
                                             @if($pendingDonasi)
-                                                <a href="{{ route('admin.donasi.index') }}" class="flex p-4 hover:bg-orange-50">
+                                                <a href="{{ route('admin.donasis.index') }}" class="flex p-4 hover:bg-orange-50">
                                                     <div class="text-2xl me-3">💰</div>
                                                     <div>
                                                         <div class="font-semibold">{{ $pendingDonasi }} Donasi Pending</div>
@@ -241,7 +250,7 @@
                                             @endif
 
                                             @if($pendingOrder)
-                                                <a href="{{ route('admin.order.index') }}"class="flex p-4 hover:bg-blue-50">
+                                                <a href="{{ route('admin.orders.index') }}"class="flex p-4 hover:bg-blue-50">
                                                     <div class="text-2xl me-3">🛒</div>
                                                     <div>
                                                         <div class="font-semibold">{{ $pendingOrder }} Order Baru</div>
@@ -251,7 +260,7 @@
                                             @endif
 
                                             @if($pendingRegistrasi)
-                                                <a href="{{ route('admin.event-registrasi.index') }}"class="flex p-4 hover:bg-green-50">
+                                                <a href="{{ route('admin.eventDaftar.index') }}"class="flex p-4 hover:bg-green-50">
                                                     <div class="text-2xl me-3">🙋</div>
                                                     <div>
                                                         <div class="font-semibold">{{ $pendingRegistrasi }} Registrasi Event</div>

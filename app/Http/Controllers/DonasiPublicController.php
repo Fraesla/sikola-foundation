@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Donasi;
 use App\Models\DonationCategory;
 use App\Models\DonasiLangganan;
+use App\Models\RiwayatLanggananPembayaran;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -113,6 +115,15 @@ class DonasiPublicController extends Controller
             compact('donasi')
         );
     }
+    public function detail($id)
+    {
+        $donasi = Donasi::with('kategori')->where('user_id', auth()->id())->findOrFail($id);
+
+        return view(
+            $this->roleView('donasi-detail-langganan'),
+            compact('donasi')
+        );
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -172,9 +183,10 @@ class DonasiPublicController extends Controller
         $donasi = Donasi::create([
             'user_id' => auth()->id(),
             'donation_category_id' => $request->donation_category_id,
-            'type' => 'sekali',
+            'tipe' => 'sekali',
             'jumlah' => $request->jumlah,
             'pesan' => $request->pesan,
+            'poin_diberikan' => $request->jumlah / 10000,
             'status' => 'menunggu'
         ]);
 
@@ -195,8 +207,9 @@ class DonasiPublicController extends Controller
 
         // cek apakah user masih memiliki langganan aktif
         $cek = DonasiLangganan::where('user_id', auth()->id())
-                    ->where('is_aktif', 1)
-                    ->first();
+                ->where('donation_category_id', $request->donation_category_id)
+                ->where('is_aktif', 1)
+                ->first();
 
         if($cek)
         {
@@ -257,6 +270,7 @@ class DonasiPublicController extends Controller
             // simpan data langganan
             $langganan = DonasiLangganan::create([
                 'user_id'         => auth()->id(),
+                'donation_category_id' => $request->donation_category_id,
                 'jumlah_bulanan'  => $request->jumlah,
                 'tanggal_mulai'   => now(),
                 'tanggal_akhir'   => now()->addMonth(),
@@ -268,10 +282,11 @@ class DonasiPublicController extends Controller
                 'user_id'                => auth()->id(),
                 'donation_category_id'   => $request->donation_category_id,
                 'langganan_id'           => $langganan->id,
-                'type'                   => 'bulanan',
+                'tipe'                   => 'bulanan',
                 'jumlah'                => $request->jumlah,
                 'pesan'                  => $request->pesan,
-                'status'                 => 'menunggu'
+                'poin_diberikan'         => 0,
+                'status'                 => 'dikonfirmasi'
             ]);
 
             DB::commit();
@@ -292,6 +307,112 @@ class DonasiPublicController extends Controller
                 $e->getMessage()
             );
         }
+    }
+
+    public function langganan(Donasi $donasi)
+    {
+        abort_if(
+            $donasi->user_id != auth()->id(),
+            403
+        );
+
+        $donasi->load([
+            'kategori',
+            'langganan'
+        ]);
+
+        $langganan = $donasi->langganan;
+
+        if (!$langganan) {
+            abort(404,'Data langganan tidak ditemukan.');
+        }
+
+        $riwayat = RiwayatLanggananPembayaran::where(
+            'langganan_id',
+            $langganan->id
+        )
+        ->latest()
+        ->get();
+
+        return view(
+             $this->roleView('donasi-langganan'),
+            compact(
+                'donasi',
+                'langganan',
+                'riwayat'
+            )
+        );
+    }
+
+    public function langgananStore(Request $request, Donasi $donasi)
+    {
+        abort_if($donasi->user_id != auth()->id(), 403);
+
+        $langganan = $donasi->langganan;
+
+        if (!$langganan) {
+            abort(404, 'Data langganan tidak ditemukan.');
+        }
+
+        $kategori = $donasi->kategori;
+
+        $request->validate([
+            'jumlah' => [
+                'required',
+                'numeric',
+                'min:'.$kategori->minimal_donasi,
+                Rule::when(
+                    $kategori->maksimal_donasi,
+                    'max:'.$kategori->maksimal_donasi
+                ),
+            ],
+
+            'bukti_transfer' => [
+                'required',
+                'image',
+                'max:2048'
+            ]
+        ]);
+
+        DB::transaction(function () use ($request, $langganan, $donasi) {
+
+            $path = $request
+                ->file('bukti_transfer')
+                ->store('langganan', 'public');
+
+            RiwayatLanggananPembayaran::create([
+
+                'langganan_id'   => $langganan->id,
+
+                'donasi_id'      => $donasi->id,
+
+                // periode aktif langganan
+                'periode'        => $langganan->tanggal_mulai,
+
+                'jumlah'         => $request->jumlah,
+
+                // dihitung saat admin konfirmasi
+                'poin'           => 0,
+
+                // bonus juga nanti
+                'bonus'          => 0,
+
+                'bukti_transfer' => $path,
+
+                'status'         => 'menunggu',
+
+                'alasan_tolak'   => null,
+
+            ]);
+
+        });
+
+        return redirect()
+            ->route($this->roleRoute('langganan.bulanan'), $donasi->id)
+            ->with(
+                'success',
+                'Pembayaran berhasil dikirim dan menunggu konfirmasi admin.'
+            );
     }
 
     public function bayar($id)
@@ -354,5 +475,101 @@ class DonasiPublicController extends Controller
                 'success',
                 'Bukti transfer berhasil diupload. Silahkan tunggu verifikasi admin.'
             );
+    }
+
+    public function akhiriLangganan(Donasi $donasi)
+    {
+        abort_if(
+            $donasi->user_id != auth()->id(),
+            403
+        );
+
+        if ($donasi->tipe != 'bulanan' || !$donasi->langganan_id) {
+
+            return back()->with(
+                'error',
+                'Donasi ini bukan langganan.'
+            );
+
+        }
+
+        $langganan = $donasi->langganan;
+
+        if (!$langganan) {
+
+            return back()->with(
+                'error',
+                'Data langganan tidak ditemukan.'
+            );
+
+        }
+
+        if (!$langganan->is_aktif) {
+
+            return back()->with(
+                'warning',
+                'Langganan sudah dihentikan.'
+            );
+
+        }
+
+        DB::transaction(function () use ($langganan) {
+
+            $langganan->update([
+                'is_aktif' => 0
+            ]);
+
+        });
+
+        return back()->with(
+            'success',
+            'Langganan berhasil dihentikan.'
+        );
+    }
+
+    public function aktifkanLangganan(Donasi $donasi)
+    {
+        abort_if(
+            $donasi->user_id != auth()->id(),
+            403
+        );
+
+        if ($donasi->tipe != 'bulanan' || !$donasi->langganan_id) {
+
+            return back()->with(
+                'error',
+                'Donasi ini bukan langganan.'
+            );
+
+        }
+
+        $langganan = $donasi->langganan;
+
+        if (!$langganan) {
+
+            return back()->with(
+                'error',
+                'Data langganan tidak ditemukan.'
+            );
+
+        }
+
+        if ($langganan->is_aktif) {
+
+            return back()->with(
+                'warning',
+                'Langganan sudah aktif.'
+            );
+
+        }
+
+        $langganan->update([
+            'is_aktif' => 1
+        ]);
+
+        return back()->with(
+            'success',
+            'Langganan berhasil diaktifkan kembali.'
+        );
     }
 }

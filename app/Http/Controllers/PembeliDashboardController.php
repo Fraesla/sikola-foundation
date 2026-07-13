@@ -55,16 +55,12 @@ class PembeliDashboardController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    private function getTotalBelanja($user)
+   private function getTotalBelanja($user)
     {
         return $user->orders()
-
-            ->whereIn('status',[
-                'diproses',
-                'dikirim',
-                'selesai'
-            ])
-
+            ->where('status', 'selesai')
+            ->whereNull('dikonfirmasi_oleh')
+            ->where('poin_diberikan', '>', 0)
             ->sum('total_harga');
     }
 

@@ -1,5 +1,5 @@
 @extends('layouts.admin',[
-    'activePage' => 'order'
+    'activePage' => 'merchandise'
 ])
 
 @section('content')
@@ -97,7 +97,7 @@
 
 
 {{-- FILTER --}}
-<form class="card-admin p-5 mb-6">
+<form class="card-admin p-5 mb-6" method="GET">
 
     <div class="flex flex-col lg:flex-row gap-4 justify-between">
 
@@ -127,28 +127,34 @@
                     Semua Status
                 </option>
 
-                <option value="menunggu_pembayaran">
-                    Menunggu Pembayaran
-                </option>
-
-                <option value="menunggu_konfirmasi">
+                <option value="menunggu_konfirmasi"
+                    {{ request('status') == 'menunggu_konfirmasi' ? 'selected' : '' }}>
                     Menunggu Konfirmasi
                 </option>
 
-                <option value="diproses">
+                <option value="dikonfirmasi"
+                    {{ request('status') == 'dikonfirmasi' ? 'selected' : '' }}>
+                    Dikonfirmasi
+                </option>
+
+                <option value="diproses"
+                    {{ request('status') == 'diproses' ? 'selected' : '' }}>
                     Diproses
                 </option>
 
-                <option value="dikirim">
+                <option value="dikirim"
+                    {{ request('status') == 'dikirim' ? 'selected' : '' }}>
                     Dikirim
                 </option>
 
-                <option value="selesai">
-                    Selesai
+                <option value="dibatalkan"
+                    {{ request('status') == 'dibatalkan' ? 'selected' : '' }}>
+                    Dibatalkan
                 </option>
 
-                <option value="dibatalkan">
-                    Dibatalkan
+                <option value="selesai"
+                    {{ request('status') == 'selesai' ? 'selected' : '' }}>
+                    Selesai
                 </option>
 
             </select>
@@ -157,11 +163,11 @@
                     onchange="this.form.submit()"
                     class="rounded-xl border px-4 py-3">
 
-                <option value="latest">
+                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>
                     Terbaru
                 </option>
 
-                <option value="oldest">
+                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
                     Terlama
                 </option>
 
@@ -321,25 +327,46 @@
             </small>
 
             <div class="mt-3">
-
-                <span class="px-5 py-2 rounded-full
-                @if($order->status=='menunggu_konfirmasi')
-                    bg-yellow-100 text-yellow-700
-                @elseif($order->status=='dikonfirmasi')
-                    bg-blue-100 text-blue-700
-                @elseif($order->status=='diproses')
-                    bg-indigo-100 text-indigo-700
-                @elseif($order->status=='dikirim')
-                    bg-green-100 text-green-700
-                @elseif($order->status=='selesai')
-                    bg-emerald-100 text-emerald-700
-                @endif">
-
-                    {{ ucwords(str_replace('_',' ',$order->status)) }}
-
+                 <span class="px-5 py-2 rounded-full
+                    @if($order->status == 'menunggu_konfirmasi')
+                        bg-yellow-100 text-yellow-700
+                    @elseif($order->status == 'dikonfirmasi')
+                        bg-blue-100 text-blue-700
+                    @elseif($order->status == 'diproses')
+                        bg-indigo-100 text-indigo-700
+                    @elseif($order->status == 'dikirim')
+                        bg-green-100 text-green-700
+                    @elseif($order->status == 'dibatalkan')
+                        bg-red-100 text-red-700
+                    @elseif($order->status == 'selesai')
+                        @if($order->dikonfirmasi_oleh)
+                            bg-purple-100 text-purple-700
+                        @elseif(empty($order->bukti_pembayaran))
+                            bg-orange-100 text-orange-700
+                        @else
+                            bg-emerald-100 text-emerald-700
+                        @endif
+                    @endif">
+                    @if($order->status == 'selesai')
+                        @if($order->dikonfirmasi_oleh)
+                            Refund Selesai
+                        @elseif(empty($order->bukti_pembayaran))
+                            Pesanan Selesai dibatalkan
+                        @else
+                            Selesai Pengiriman
+                        @endif
+                    @elseif($order->status == 'dibatalkan')
+                        @if($order->dikonfirmasi_oleh)
+                            Transfer ditolak
+                        @else
+                            dibatalkan
+                        @endif
+                    @else
+                        {{ ucwords(str_replace('_',' ',$order->status)) }}
+                    @endif
                 </span>
-
             </div>
+
 
         </div>
 
@@ -361,6 +388,41 @@
 
                                 </a>
 
+                                {{-- LOGIKA DIBATALKAN: REFUND ATAU SELESAI --}}
+                                @if($order->status == 'dibatalkan')
+                                    @if($order->bukti_pembayaran)
+                                        @if($order->dikonfirmasi_oleh)
+                                            <div class="rounded-3xl bg-red-50 border border-red-200 p-6 text-center">
+
+                                                <div class="w-16 h-16 mx-auto rounded-full bg-red-100 flex items-center justify-center text-3xl">
+                                                    ❌
+                                                </div>
+
+                                                <span class="inline-flex mt-5 px-5 py-2 rounded-full bg-red-600 text-white font-bold">
+                                                    Transfer Ditolak
+                                                </span>
+                                                <p class="mt-2 text-slate-500">
+                                                    Bukti transfer tidak sesuai.
+                                                </p>
+                                            </div>
+                                        @else
+                                        <form action="{{ route('admin.orders.refund', $order->id) }}" method="GET">
+                                            @csrf
+                                            <button type="submit" class="w-full px-5 py-3 rounded-2xl bg-red-600 text-white font-bold hover:bg-red-700 transition">
+                                                💸 Proses Refund
+                                            </button>
+                                        </form>
+                                        @endif
+                                    @else
+                                        <form action="{{ route('admin.orders.selesai',$order->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="w-full px-5 py-3 rounded-2xl bg-green-600 text-white font-bold hover:bg-green-700 transition" onsubmit="return confirm('Yakin orderan ini diselesaikan ?')">
+                                                ✅ Selesaikan Pesanan
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endif
+
 
                                 {{-- VERIFIKASI PEMBAYARAN --}}
                                 @if($order->status == 'menunggu_konfirmasi')
@@ -373,7 +435,7 @@
                                         <button
                                             class="w-full px-5 py-3 rounded-2xl
                                                    bg-green-100 text-green-700
-                                                   font-semibold hover:bg-green-200">
+                                                   font-semibold hover:bg-green-200" onsubmit="return confirm('Yakin Pembayaran sudah benar ?')">
 
                                             ✓ Verifikasi Pembayaran
 
@@ -381,6 +443,59 @@
 
                                     </form>
 
+                                    <div x-data="{ openBatal: false }">
+                                        <button @click="openBatal = true"
+                                                class="w-full py-3 rounded-xl font-bold text-sm transition-all hover:-translate-y-0.5"
+                                                style="background: rgba(204,34,34,.05); border: 1px solid rgba(204,34,34,.2); color: var(--color-merah);">
+                                            ❌ Tolak Pembayaran
+                                        </button>
+
+                                        {{-- MODAL BATAL --}}
+                                        <template x-teleport="body">
+                                            <div x-show="openBatal" x-cloak x-transition.opacity class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                                                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="openBatal = false"></div>
+                                                
+                                                <div @click.away="openBatal = false" x-transition.scale
+                                                     class="bg-white w-full max-w-lg rounded-[28px] overflow-hidden shadow-2xl relative z-10">
+                                                    
+                                                    <div class="p-8 border-b border-slate-100">
+                                                        <h3 class="text-2xl font-extrabold" style="color: var(--color-hitam); font-family: var(--font-display);">Tolak Pembayaran</h3>
+                                                        <p class="mt-2 text-sm font-medium" style="color: var(--color-coklat);">Apakah Anda yakin ingin menolak bukti pembayaran ini?</p>
+                                                    </div>
+
+                                                    <form action="{{ route('admin.orders.tolak',$order->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        
+                                                        <div class="p-8 space-y-4">
+                                                            <div>
+                                                                <label class="block font-bold mb-2 text-sm" style="color: var(--color-hitam);">Alasan ditolak</label>
+                                                                <textarea name="alasan_batal" rows="4" required
+                                                                          class="w-full rounded-2xl border border-slate-200 p-4 text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-red-100 focus:border-red-500 transition-all resize-none"
+                                                                          placeholder="Contoh: Ingin mengubah alamat pengiriman, salah pilih produk..."></textarea>
+                                                            </div>
+                                                            <div class="p-4 rounded-xl bg-red-50 border border-red-100 flex gap-3 items-start">
+                                                                <svg class="w-5 h-5 text-red-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                                                <p class="text-xs font-bold text-red-700 leading-relaxed">Pesanan yang sudah ditolak tidak dapat dipulihkan. Dana yang sudah masuk akan masuk ke proses refund.</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="p-6 bg-slate-50 flex gap-3">
+                                                            <button type="button" @click="openBatal = false"
+                                                                    class="flex-1 py-3.5 rounded-xl border border-slate-300 font-bold text-sm text-slate-700 hover:bg-slate-100 transition-all">
+                                                                Kembali
+                                                            </button>
+                                                            <button type="submit"
+                                                                    class="flex-1 py-3.5 rounded-xl font-bold text-sm text-white shadow-md transition-all hover:-translate-y-0.5"
+                                                                    style="background: linear-gradient(135deg, var(--color-merah), #991b1b);">
+                                                                Ya, Batalkan
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
                                 @endif
 
 
@@ -832,4 +947,4 @@
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse/dist/cdn.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/csp/dist/cdn.min.js"></script>
 
-@endsection
+@endsection 

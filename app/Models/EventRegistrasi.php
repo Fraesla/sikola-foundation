@@ -28,4 +28,11 @@ class EventRegistrasi extends Model
     {
         return $this->belongsTo(Event::class, 'event_id', 'id');
     }
+    public function riwayatPoin()
+    {
+        return $this->morphMany(
+            RiwayatPoin::class,
+            'referensi'
+        );
+    }
 }

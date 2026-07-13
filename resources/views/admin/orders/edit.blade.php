@@ -1,5 +1,5 @@
 @extends('layouts.admin',[
-    'activePage' => 'order'
+    'activePage' => 'merchandise'
 ])
 
 @section('content')

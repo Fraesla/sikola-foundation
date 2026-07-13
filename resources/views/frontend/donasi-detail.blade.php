@@ -226,9 +226,14 @@
 
                         </div>
 
-                        
+                         @php
+                            $prefix = auth()->user()->role == 'relawan'
+                                ? 'relawan'
+                                : 'donatur';
+                        @endphp
 
-                        <form id="formDonasi" method="POST">
+                        <form id="formDonasi"
+                              method="POST">
                             @csrf
 
                             <input type="hidden"
@@ -271,8 +276,6 @@
                                 name="pesan"
                                 placeholder="Pesan (opsional)"
                                 class="w-full rounded-xl border p-4 mb-6"></textarea>
-
-                            
 
                             <button type="submit"
                                     class="block w-full py-4 rounded-2xl text-white font-semibold"
@@ -347,6 +350,34 @@
                             <h4 class="font-bold">
                                 {{ $item->user->name ?? 'Hamba Allah' }}
                             </h4>
+
+                            @if($item->tipe == 'bulanan')
+
+                                <span
+                                    class="text-xs
+                                           px-2 py-1
+                                           rounded-full
+                                           bg-blue-100
+                                           text-blue-700">
+
+                                    Bulanan
+
+                                </span>
+
+                            @else
+
+                                <span
+                                    class="text-xs
+                                           px-2 py-1
+                                           rounded-full
+                                           bg-green-100
+                                           text-green-700">
+
+                                    Sekali
+
+                                </span>
+
+                            @endif
 
                             <p class="text-slate-500 text-sm">
                                 {{ $item->created_at->diffForHumans() }}
@@ -480,38 +511,37 @@ document.querySelectorAll('.nominal-btn').forEach(button => {
 
 });
 
-let jenis = 'sekali';
+document.addEventListener('DOMContentLoaded', function () {
 
-document.querySelectorAll('.jenis-btn').forEach(btn => {
+    const form = document.getElementById('formDonasi');
 
-    btn.addEventListener('click', function(){
+    document.querySelectorAll('.jenis-btn').forEach(btn => {
 
-        document.querySelectorAll('.jenis-btn')
-            .forEach(x => x.classList.remove('active'));
+        btn.addEventListener('click', function(){
 
-        this.classList.add('active');
+            document.querySelectorAll('.jenis-btn')
+                .forEach(x => x.classList.remove('active'));
 
-        jenis = this.dataset.jenis;
+            this.classList.add('active');
 
-        document.getElementById('jenis_donasi')
-            .value = jenis;
+            document.getElementById('jenis_donasi').value =
+                this.dataset.jenis;
+        });
+
     });
 
-});
+    form.addEventListener('submit', function(){
 
-document.getElementById('formDonasi')
-.addEventListener('submit', function(){
+        const jenis = document.getElementById('jenis_donasi').value;
 
-    if(jenis === 'bulanan')
-    {
-        this.action =
-            "{{ route('donatur.donasi.langganan') }}";
-    }
-    else
-    {
-        this.action =
-            "{{ route('donatur.donasi.sekali') }}";
-    }
+        this.action = jenis === 'bulanan'
+            ? "{{ route($prefix.'.donasi.langganan') }}"
+            : "{{ route($prefix.'.donasi.sekali') }}";
+
+        console.log(jenis);
+        console.log(this.action);
+
+    });
 
 });
 

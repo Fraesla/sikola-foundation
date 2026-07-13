@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventRegistrasi;
 use App\Models\User;
+use App\Services\PoinService;
+use App\KategoriPoin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+    protected PoinService $poinService;
+
+    public function __construct(PoinService $poinService)
+    {
+        $this->poinService = $poinService;
+    }
     public function index(Request $request)
     {
         $query = Event::with('creator');
@@ -107,7 +115,7 @@ class EventController extends Controller
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
             'kuota' => $request->kuota,
-            'poin_reward' => $request->poin_reward,
+            'poin_reward' => config('poin.event.default_reward'),
             'status' => $request->status,
             'created_by' => Auth::id(),
         ]);
@@ -169,38 +177,76 @@ class EventController extends Controller
     public function konfirmasiHadir(Event $event, EventRegistrasi $registrasi)
     {
         if ($registrasi->status != 'dikonfirmasi') {
+
             return back()->with(
                 'error',
                 'Peserta belum dikonfirmasi.'
             );
+
         }
 
         if ($registrasi->status == 'hadir') {
+
             return back()->with(
                 'error',
                 'Peserta sudah hadir.'
             );
+
         }
 
         DB::transaction(function () use ($event, $registrasi) {
 
-            $reward = $event->poin_reward;
+            /*
+            |--------------------------------------------------------------------------
+            | Ambil reward event
+            |--------------------------------------------------------------------------
+            */
+
+            $reward = $event->poin_reward
+                ?? config('poin.event.default_reward');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update registrasi
+            |--------------------------------------------------------------------------
+            */
 
             $registrasi->update([
-                'status'          => 'hadir',
-                'poin_diberikan'  => $reward
+
+                'status' => 'hadir',
+
+                'poin_diberikan' => $reward,
+
             ]);
 
-            $registrasi->user()->increment(
-                'total_poin',
-                $reward
+            /*
+            |--------------------------------------------------------------------------
+            | Tambahkan poin melalui service
+            |--------------------------------------------------------------------------
+            */
+
+            app(PoinService::class)->tambahPoin(
+
+                $registrasi->user,
+
+                $reward,
+
+                KategoriPoin::EVENT,
+
+                $registrasi,
+
+                "Mengikuti event {$event->judul}"
+
             );
 
         });
 
         return back()->with(
+
             'success',
-            'Peserta berhasil dihadirkan dan reward diberikan.'
+
+            "Peserta berhasil dihadirkan poin."
+
         );
     }
     public function konfirmasiAlfa(Event $event, EventRegistrasi $registrasi)
@@ -215,7 +261,7 @@ class EventController extends Controller
         }
 
         $registrasi->update([
-            'status' => 'tidak'
+            'status' => 'tidak_hadir'
         ]);
 
         return back()->with(

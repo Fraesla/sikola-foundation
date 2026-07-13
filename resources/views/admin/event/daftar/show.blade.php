@@ -330,6 +330,14 @@
 
                         </span>
 
+                    @elseif($registrasi->status=='tolak')
+
+                        <span class="status-badge status-tidak">
+
+                            Tolak
+
+                        </span>
+
                     @else
 
                         <span class="status-badge status-tidak">
@@ -387,6 +395,9 @@
 
                         @elseif($registrasi->status=='dikonfirmasi')
                             <span class="status-badge status-konfirmasi">Dikonfirmasi</span>
+
+                        @elseif($registrasi->status=='tolak')
+                            <span class="status-badge status-tidak">Tolak</span>
 
                         @elseif($registrasi->status=='hadir')
                             <span class="status-badge status-hadir">Hadir</span>

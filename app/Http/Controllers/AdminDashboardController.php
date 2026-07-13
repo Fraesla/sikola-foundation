@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Donasi;
 use App\Models\Order;
+use App\Models\RiwayatLanggananPembayaran;
+use App\Services\DonasiService;
 use App\Models\EventRegistrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,72 +18,75 @@ use Illuminate\Support\Facades\Storage;
 class AdminDashboardController extends Controller
 {
 
-    public function index()
+    public function index(DonasiService $donasiService)
     {
-        // Total Donasi Berhasil
-        $totalDonasi = Donasi::where('status', 'dikonfirmasi')
-            ->sum('jumlah');
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL DONASI
+        |--------------------------------------------------------------------------
+        */
 
-        // Total Order
+        $totalDonasi = $donasiService->totalDana();
+
+        /*
+        |--------------------------------------------------------------------------
+        | GRAFIK DONASI
+        |--------------------------------------------------------------------------
+        */
+
+        $chart = $donasiService->chartTahunan();
+
+        $labels = $chart['labels'];
+
+        $data = $chart['data'];
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL ORDER
+        |--------------------------------------------------------------------------
+        */
+
         $totalOrder = Order::count();
 
-        // Total Relawan
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL RELAWAN
+        |--------------------------------------------------------------------------
+        */
+
         $totalRelawan = User::where('role', 'relawan')->count();
 
-        // Pending
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL PENDING
+        |--------------------------------------------------------------------------
+        */
+
+        $pendingDonasi = Donasi::where('status', 'menunggu')->count();
+
+        $pendingOrder = Order::where('status', 'menunggu_konfirmasi')->count();
+
+        $pendingRelawan = EventRegistrasi::where('status', 'mendaftar')->count();
+
         $pending =
-            Donasi::where('status','menunggu')->count()
-            + Order::where('status','menunggu_konfirmasi')->count()
-            + EventRegistrasi::where('status','mendaftar')->count();
+            $pendingDonasi
+            + $pendingOrder
+            + $pendingRelawan;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Grafik Donasi Bulanan
-        |--------------------------------------------------------------------------
-        */
-
-        $chart = Donasi::selectRaw("
-                    MONTH(created_at) as bulan,
-                    SUM(jumlah) as total
-                ")
-                ->where('status','dikonfirmasi')
-                ->whereYear('created_at', now()->year)
-                ->groupBy('bulan')
-                ->pluck('total','bulan');
-
-        $labels = [];
-        $data = [];
-
-        for($i=1;$i<=12;$i++){
-
-            $labels[] = date('M', mktime(0,0,0,$i,1));
-
-            $data[] = $chart[$i] ?? 0;
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Pending Notification
-        |--------------------------------------------------------------------------
-        */
-
-        $pendingDonasi = Donasi::where('status','menunggu')->count();
-
-        $pendingOrder = Order::where('status','menunggu_konfirmasi')->count();
-
-        $pendingRelawan = EventRegistrasi::where('status','mendaftar')->count();
-
-        return view('admin.dashboard.index', compact(
-            'totalDonasi',
-            'totalOrder',
-            'totalRelawan',
-            'pending',
-            'labels',
-            'data',
-            'pendingDonasi',
-            'pendingOrder',
-            'pendingRelawan'
-        ));
+        return view(
+            'admin.dashboard.index',
+            compact(
+                'totalDonasi',
+                'totalOrder',
+                'totalRelawan',
+                'pending',
+                'labels',
+                'data',
+                'pendingDonasi',
+                'pendingOrder',
+                'pendingRelawan'
+            )
+        );
     }
 
     public function profile()

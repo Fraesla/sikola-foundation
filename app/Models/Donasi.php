@@ -15,26 +15,23 @@ class Donasi extends Model
         'user_id',
         'donation_category_id',
         'langganan_id',
-        'tanggal_lahir',
         'tipe',
         'jumlah',
         'pesan',
         'bukti_transfer',
         'status',
         'alasan_tolak',
-        'point_diberikan',
-        'dikonformasi_oleh',
-        'dikonformasi_at',
+        'poin_diberikan',
+        'dikonfirmasi_oleh',
+        'dikonfirmasi_at',
         'created_at',
         'updated_at'
     ];
 
+    // Donasi.php
     public function langganan()
     {
-        return $this->belongsTo(
-            DonasiLangganan::class,
-            'langganan_id'
-        );
+        return $this->hasOne(DonasiLangganan::class, 'id', 'langganan_id');
     }
 
     public function kategori()
@@ -47,5 +44,25 @@ class Donasi extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function getGambarProgramAttribute()
+    {
+        if ($this->tipe == 'bulanan') {
+
+            return $this->langganan?->gambar
+                ? asset('storage/'.$this->langganan->gambar)
+                : asset('images/default-langganan.jpg');
+        }
+
+        return $this->kategori?->gambar
+            ? asset('storage/'.$this->kategori->gambar)
+            : asset('images/default-donasi.jpg');
+    }
+    public function riwayatPoin()
+    {
+        return $this->morphMany(
+            RiwayatPoin::class,
+            'referensi'
+        );
     }
 }

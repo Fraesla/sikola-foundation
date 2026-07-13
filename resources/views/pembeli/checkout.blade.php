@@ -4,300 +4,251 @@
 
 @section('content')
 
-<div class="grid lg:grid-cols-3 gap-8">
+<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-sans" style="background-color: var(--color-putih);">
+    
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8">
 
-    {{-- FORM CHECKOUT --}}
-    <div class="lg:col-span-2">
+        {{-- FORM CHECKOUT (KIRI) --}}
+        <div class="lg:col-span-8">
+            <div class="card-admin p-8 lg:p-10">
 
-        <div class="admin-card p-8 rounded-3xl">
-
-            <div class="mb-8">
-
-                <h1 class="text-4xl font-bold"
-                    style="color: var(--color-hitam);">
-
-                    Checkout Pesanan
-
-                </h1>
-
-                <p class="mt-2"
-                   style="color: var(--color-coklat);">
-
-                    Lengkapi data pengiriman Anda.
-
-                </p>
-
-            </div>
-
-            <form action="{{ route('pembeli.orders.store') }}"
-                  method="POST">
-
-                @csrf
-
-                <div class="grid md:grid-cols-2 gap-6">
-
-                    {{-- Nama --}}
-                    <div>
-                        <label class="font-semibold">
-                            Nama Penerima
-                        </label>
-
-                        <input type="text"
-                               name="nama_penerima"
-                               value="{{ old('nama_penerima') }}"
-                               class="w-full mt-2 rounded-2xl border border-slate-200 px-5 py-4">
-
-                        @error('nama_penerima')
-                            <small class="text-red-500">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-
-                    {{-- Telp --}}
-                    <div>
-                        <label class="font-semibold">
-                            No Telepon
-                        </label>
-
-                        <input type="text"
-                               name="telp_penerima"
-                               value="{{ old('no_telp_penerima') }}"
-                               class="w-full mt-2 rounded-2xl border border-slate-200 px-5 py-4">
-
-                        @error('no_telp_penerima')
-                            <small class="text-red-500">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-
-                    {{-- Alamat --}}
-                    <div class="md:col-span-2">
-
-                        <label class="font-semibold">
-                            Alamat Lengkap
-                        </label>
-
-                        <textarea name="alamat"
-                                  rows="5"
-                                  class="w-full mt-2 rounded-2xl border border-slate-200 px-5 py-4">{{ old('alamat_pengiriman') }}</textarea>
-
-                        @error('alamat_pengiriman')
-                            <small class="text-red-500">
-                                {{ $message }}
-                            </small>
-                        @enderror
-
-                    </div>
-
-                    {{-- Kota --}}
-                    <div>
-
-                        <label class="font-semibold">
-                            Kota / Kabupaten
-                        </label>
-
-                        <input type="text"
-                               name="kota"
-                               value="{{ old('kota') }}"
-                               class="w-full mt-2 rounded-2xl border border-slate-200 px-5 py-4">
-
-                    </div>
-
-                    {{-- Provinsi --}}
-                    <div>
-                        <label>Provinsi</label>
-
-                        <select name="provinsi"
-                                id="provinsi"
-                                class="w-full rounded-xl mt-2">
-
-                            <option value="">Pilih Provinsi</option>
-                            <option value="Sumatera Barat">Sumatera Barat</option>
-                            <option value="Riau">Riau</option>
-                            <option value="Jambi">Jambi</option>
-                            <option value="DKI Jakarta">DKI Jakarta</option>
-                            <option value="Jawa Barat">Jawa Barat</option>
-                            <option value="Jawa Tengah">Jawa Tengah</option>
-                            <option value="Jawa Timur">Jawa Timur</option>
-                            <option value="Kalimantan">Kalimantan</option>
-                            <option value="Papua">Papua</option>
-
-                        </select>
-                    </div>
-
-                    {{-- Kode Pos --}}
-                    <div>
-
-                        <label class="font-semibold">
-                            Kode Pos
-                        </label>
-
-                        <input type="text"
-                               name="kode_pos"
-                               value="{{ old('kode_pos') }}"
-                               class="w-full mt-2 rounded-2xl border border-slate-200 px-5 py-4">
-
-                    </div>
-
+                <div class="mb-10">
+                    <h1 class="text-3xl font-extrabold tracking-tight" style="color: var(--color-hitam); font-family: var(--font-display);">
+                        Checkout Pesanan
+                    </h1>
+                    <p class="mt-2 text-sm md:text-base" style="color: var(--color-coklat);">
+                        Lengkapi data pengiriman Anda dengan benar untuk memastikan paket sampai tujuan.
+                    </p>
                 </div>
 
-                <button
-                    class="mt-8 w-full py-4 rounded-2xl text-white font-bold text-lg transition hover:opacity-90"
-                    style="
-                        background:
-                        linear-gradient(
-                            135deg,
-                            var(--color-merah),
-                            var(--color-coklat)
-                        );
-                    ">
+                <form action="{{ route('pembeli.orders.store') }}" method="POST">
+                    @csrf
 
-                    🛍 Buat Pesanan
+                    <div class="grid md:grid-cols-2 gap-6">
 
-                </button>
+                        {{-- Nama --}}
+                        <div>
+                            <label class="block text-sm font-bold mb-2" style="color: var(--color-hitam);">
+                                Nama Penerima
+                            </label>
+                            <input type="text"
+                                   name="nama_penerima"
+                                   value="{{ old('nama_penerima') }}"
+                                   placeholder="Contoh: Budi Santoso"
+                                   class="w-full rounded-xl border border-slate-200 bg-slate-50 focus:bg-white px-4 py-3.5 text-sm transition-all text-slate-800">
+                            @error('nama_penerima')
+                                <small class="text-red-500 font-medium mt-1 block">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-            </form>
+                        {{-- Telp --}}
+                        <div>
+                            <label class="block text-sm font-bold mb-2" style="color: var(--color-hitam);">
+                                No Telepon / WhatsApp
+                            </label>
+                            <input type="text"
+                                   name="telp_penerima"
+                                   value="{{ old('telp_penerima') }}"
+                                   placeholder="Contoh: 081234567890"
+                                   class="w-full rounded-xl border border-slate-200 bg-slate-50 focus:bg-white px-4 py-3.5 text-sm transition-all text-slate-800">
+                            @error('telp_penerima')
+                                <small class="text-red-500 font-medium mt-1 block">{{ $message }}</small>
+                            @enderror
+                        </div>
 
+                        {{-- Alamat --}}
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold mb-2" style="color: var(--color-hitam);">
+                                Alamat Lengkap
+                            </label>
+                            <textarea name="alamat"
+                                      rows="4"
+                                      placeholder="Nama Jalan, Gedung, No. Rumah, RT/RW, Kelurahan, Kecamatan"
+                                      class="w-full rounded-xl border border-slate-200 bg-slate-50 focus:bg-white px-4 py-3.5 text-sm transition-all text-slate-800">{{ old('alamat') }}</textarea>
+                            @error('alamat')
+                                <small class="text-red-500 font-medium mt-1 block">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Provinsi --}}
+                        <div>
+                            <label class="block text-sm font-bold mb-2" style="color: var(--color-hitam);">
+                                Provinsi
+                            </label>
+                            <select name="provinsi"
+                                    id="provinsi"
+                                    class="w-full rounded-xl border border-slate-200 bg-slate-50 focus:bg-white px-4 py-3.5 text-sm transition-all text-slate-800 cursor-pointer">
+                                <option value="" disabled selected>Pilih Provinsi Pengiriman</option>
+                                <option value="Sumatera Barat">Sumatera Barat</option>
+                                <option value="Riau">Riau</option>
+                                <option value="Jambi">Jambi</option>
+                                <option value="DKI Jakarta">DKI Jakarta</option>
+                                <option value="Jawa Barat">Jawa Barat</option>
+                                <option value="Jawa Tengah">Jawa Tengah</option>
+                                <option value="Jawa Timur">Jawa Timur</option>
+                                <option value="Kalimantan">Kalimantan</option>
+                                <option value="Papua">Papua</option>
+                            </select>
+                            @error('provinsi')
+                                <small class="text-red-500 font-medium mt-1 block">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Kota --}}
+                        <div>
+                            <label class="block text-sm font-bold mb-2" style="color: var(--color-hitam);">
+                                Kota / Kabupaten
+                            </label>
+                            <input type="text"
+                                   name="kota"
+                                   value="{{ old('kota') }}"
+                                   placeholder="Contoh: Kota Padang"
+                                   class="w-full rounded-xl border border-slate-200 bg-slate-50 focus:bg-white px-4 py-3.5 text-sm transition-all text-slate-800">
+                            @error('kota')
+                                <small class="text-red-500 font-medium mt-1 block">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Kode Pos --}}
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold mb-2" style="color: var(--color-hitam);">
+                                Kode Pos
+                            </label>
+                            <input type="text"
+                                   name="kode_pos"
+                                   value="{{ old('kode_pos') }}"
+                                   placeholder="Contoh: 25111"
+                                   class="w-full md:w-1/2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white px-4 py-3.5 text-sm transition-all text-slate-800">
+                            @error('kode_pos')
+                                <small class="text-red-500 font-medium mt-1 block">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <div class="mt-10 pt-8 border-t border-slate-100 flex justify-end">
+                        <button type="submit" class="btn-primary w-full md:w-auto px-10 py-4 flex items-center justify-center gap-2 text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                            Buat Pesanan Sekarang
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        {{-- RINGKASAN PESANAN (KANAN) --}}
+        <div class="lg:col-span-4">
+            <div class="card-admin p-6 md:p-8 sticky top-8">
+
+                <h3 class="text-xl font-extrabold mb-6" style="color: var(--color-hitam); font-family: var(--font-display);">
+                    Ringkasan Pesanan
+                </h3>
+
+                <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2 scrollbar-thin">
+                    @foreach($cartItems as $item)
+                    <div class="flex items-center gap-4 group">
+                        <div class="relative">
+                            <img src="{{ asset('storage/'.$item->product->gambar[0]) }}"
+                                 class="w-16 h-16 rounded-xl object-cover shadow-sm transition-transform group-hover:scale-105" 
+                                 style="border: 1px solid rgba(212,160,23,.2);">
+                            <span class="absolute -top-2 -right-2 bg-slate-800 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full shadow">
+                                {{ $item->qty }}
+                            </span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-slate-900 line-clamp-1">
+                                {{ $item->product->nama }}
+                            </h4>
+                            <p class="text-xs font-semibold mt-1" style="color: var(--color-merah);">
+                                Rp {{ number_format($item->product->harga,0,',','.') }}
+                            </p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                <div class="my-6 border-t border-dashed" style="border-color: rgba(212,160,23,.3);"></div>
+
+                <div class="space-y-4 font-medium text-sm" style="color: var(--color-coklat);">
+                    <div class="flex justify-between">
+                        <span>Total Item</span>
+                        <strong style="color: var(--color-hitam);">{{ $cartItems->sum('qty') }} Barang</strong>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>Subtotal Produk</span>
+                        <span style="color: var(--color-hitam);">
+                            Rp {{ number_format($cartItems->sum(fn($i) => $i->qty * $i->product->harga), 0,',','.') }}
+                        </span>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <span>Ongkos Kirim</span>
+                        <span id="ongkirText" class="px-2 py-1 bg-green-50 text-green-700 rounded-md font-bold text-xs">
+                            Pilih Provinsi
+                        </span>
+                    </div>
+                </div>
+
+                <div class="my-6 border-t border-slate-100"></div>
+
+                <div class="flex justify-between items-end">
+                    <span class="text-sm font-bold" style="color: var(--color-hitam);">Total Tagihan</span>
+                    <span id="totalText" class="text-2xl font-extrabold" style="color: var(--color-merah);">
+                        Rp {{ number_format($cartItems->sum(fn($i)=> $i->qty * $i->product->harga), 0,',','.') }}
+                    </span>
+                </div>
+
+                {{-- Kotak Transfer Premium --}}
+                <div class="mt-8 p-5 rounded-2xl border border-dashed flex items-start gap-4 transition-all"
+                     style="background: rgba(212,160,23,.03); border-color: var(--color-kuning);">
+                    <div class="p-2 rounded-lg" style="background: rgba(212,160,23,.1);">
+                        <svg class="w-6 h-6" style="color: var(--color-kuning);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm mb-1" style="color: var(--color-hitam);">Transfer Pembayaran</h4>
+                        <p class="text-xs font-medium leading-relaxed" style="color: var(--color-coklat);">
+                            Bank BCA<br>
+                            <span class="text-base font-bold tracking-wide" style="color: var(--color-merah);">123 456 7890</span><br>
+                            a.n Sikola Foundation
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
-
-    {{-- RINGKASAN --}}
-    <div>
-
-        <div class="admin-card p-8 rounded-3xl sticky top-5">
-
-            <h3 class="text-2xl font-bold mb-6">
-
-                Ringkasan Pesanan
-
-            </h3>
-
-            @foreach($cartItems as $item)
-
-            <div class="flex items-center gap-4 mb-5">
-
-                <img src="{{ asset('storage/'.$item->product->gambar[0]) }}"
-                     class="w-16 h-16 rounded-xl object-cover">
-
-                <div class="flex-1">
-
-                    <h4 class="font-semibold">
-                        {{ $item->product->nama }}
-                    </h4>
-
-                    <small class="text-slate-500">
-                        {{ $item->qty }} x
-                        Rp {{ number_format($item->product->harga,0,',','.') }}
-                    </small>
-
-                </div>
-
-            </div>
-
-            @endforeach
-
-            <hr class="my-6">
-
-            <div class="space-y-4">
-
-                <div class="flex justify-between">
-
-                    <span>Total Item</span>
-
-                    <strong>
-                        {{ $cartItems->sum('qty') }}
-                    </strong>
-
-                </div>
-
-                <div class="flex justify-between mb-4">
-                    <span>Subtotal</span>
-
-                    <span>
-                        Rp {{ number_format(
-                            $cartItems->sum(fn($i) =>
-                            $i->qty * $i->product->harga),
-                        0,',','.') }}
-                    </span>
-                </div>
-
-                <div class="flex justify-between mb-4">
-                    <span>Ongkir</span>
-
-                    <span id="ongkirText">
-                        Rp 0
-                    </span>
-                </div>
-
-                <div class="flex justify-between text-2xl font-bold">
-                    <span>Total</span>
-
-                    <span id="totalText">
-                        Rp {{ number_format(
-                            $cartItems->sum(fn($i)=>
-                            $i->qty * $i->product->harga),
-                        0,',','.') }}
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="mt-8 p-5 rounded-2xl"
-                 style="background: rgba(212,160,23,.08);">
-
-                <h4 class="font-bold mb-2">
-
-                    Transfer Pembayaran
-
-                </h4>
-
-                <p class="text-sm text-slate-600">
-
-                    BCA : <strong>1234567890</strong><br>
-                    a/n Sikola Foundation
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
+
 <script>
-
-const provinsi = document.getElementById('provinsi');
-
-const ongkirMap = {
-    'Sumatera Barat':15000,
-    'Riau':20000,
-    'Jambi':20000,
-    'DKI Jakarta':25000,
-    'Jawa Barat':25000,
-    'Jawa Tengah':30000,
-    'Jawa Timur':30000,
-    'Kalimantan':40000,
-    'Papua':60000
-};
-
-const subtotal =
-{{ $cartItems->sum(fn($i)=>$i->qty * $i->product->harga) }};
-
-provinsi.addEventListener('change',function(){
-
-    let ongkir = ongkirMap[this.value] || 0;
-
-    document.getElementById('ongkirText').innerHTML =
-        'Rp ' + ongkir.toLocaleString('id-ID');
-
-    document.getElementById('totalText').innerHTML =
-        'Rp ' + (subtotal + ongkir).toLocaleString('id-ID');
-
-});
-
+    const provinsi = document.getElementById('provinsi');
+    
+    const ongkirMap = {
+        'Sumatera Barat': 15000,
+        'Riau': 20000,
+        'Jambi': 20000,
+        'DKI Jakarta': 25000,
+        'Jawa Barat': 25000,
+        'Jawa Tengah': 30000,
+        'Jawa Timur': 30000,
+        'Kalimantan': 40000,
+        'Papua': 60000
+    };
+    
+    const subtotal = {{ $cartItems->sum(fn($i)=>$i->qty * $i->product->harga) }};
+    
+    provinsi.addEventListener('change', function() {
+        let ongkir = ongkirMap[this.value] || 0;
+        
+        let ongkirElement = document.getElementById('ongkirText');
+        ongkirElement.innerHTML = 'Rp ' + ongkir.toLocaleString('id-ID');
+        ongkirElement.classList.remove('bg-green-50', 'text-green-700');
+        ongkirElement.classList.add('text-slate-800'); // Merubah gaya jika provinsi sudah dipilih
+    
+        document.getElementById('totalText').innerHTML = 'Rp ' + (subtotal + ongkir).toLocaleString('id-ID');
+    });
 </script>
+
 @endsection

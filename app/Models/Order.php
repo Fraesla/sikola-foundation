@@ -24,8 +24,9 @@ class Order extends Model
         'poin_diberikan',
         'catatan',
         'alasan_batal',
-        'dikonformasi_oleh',
-        'dikonformasi_at',
+        'bukti_refund',
+        'dikonfirmasi_oleh',
+        'dikonfirmasi_at',
     ];
     protected static function booted(): void
     {
@@ -39,4 +40,12 @@ class Order extends Model
 
     public function user()  { return $this->belongsTo(User::class); }
     public function items() { return $this->hasMany(OrderItem::class); }
+    public function riwayatPoin()
+    {
+        return $this->morphMany(
+            RiwayatPoin::class,
+            'referensi'
+        );
+    }
+    
 }

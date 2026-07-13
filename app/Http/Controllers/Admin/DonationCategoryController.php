@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DonationCategory;
+use App\Services\DonasiService;
+use App\Models\RiwayatLanggananPembayaran;
 use App\Models\Donasi;
 use App\Models\Banner;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -97,30 +100,15 @@ class DonationCategoryController extends Controller
         ));
     }
 
-    public function donasiShow($slug)
+    public function donasiShow($slug, DonasiService $service)
     {
-        $kategori = DonationCategory::where('slug',$slug)
-                        ->firstOrFail();
+        $kategori = DonationCategory::whereSlug($slug)->firstOrFail();
 
-        $terkumpul = Donasi::where(
-            'donation_category_id',
-            $kategori->id
-        )
-        ->where('status','dikonfirmasi')
-        ->sum('jumlah');
+        $terkumpul = $service->totalDanaKategori($kategori->id);
 
-        $jumlahDonatur = Donasi::where(
-            'donation_category_id',
-            $kategori->id
-        )->count();
+        $jumlahDonatur = $service->totalDonaturKategori($kategori->id);
 
-        $donasiTerbaru = Donasi::where(
-            'donation_category_id',
-            $kategori->id
-        )
-        ->latest()
-        ->take(10)
-        ->get();
+        $donasiTerbaru = $service->donaturTerbaru($kategori->id);
 
         return view(
             'frontend.donasi-detail',

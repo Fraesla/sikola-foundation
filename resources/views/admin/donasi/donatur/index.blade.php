@@ -284,14 +284,31 @@
 
                 <div class="mt-5">
 
-                    <h2
-                        class="text-4xl font-bold"
+                     @if($donasi->tipe == 'bulanan' && $donasi->langganan)
 
-                        style="color:var(--color-merah)">
+                        <small class="text-slate-500">
+                            Target Bulanan
+                        </small>
 
-                        Rp {{ number_format($donasi->jumlah,0,',','.') }}
+                        <h2 class="text-4xl font-bold text-slate-900">
+                            Rp {{ number_format($donasi->langganan->jumlah_bulanan,0,',','.') }}
+                        </h2>
 
-                    </h2>
+                        <small class="text-slate-500 mt-3 block">
+                            Total Terkumpul
+                        </small>
+
+                        <h3 class="text-2xl font-bold text-green-600">
+                            Rp {{ number_format($donasi->langganan->total_terkumpul,0,',','.') }}
+                        </h3>
+
+                    @else
+
+                        <h2 class="text-4xl font-bold" style="color:var(--color-merah)">
+                            Rp {{ number_format($donasi->jumlah,0,',','.') }}
+                        </h2>
+
+                    @endif
 
                     <p class="text-slate-600 mt-1">
 
@@ -356,11 +373,16 @@
                         Poin Reward
 
                     </small>
+                    
 
                     <h4
                         class="font-bold text-xl mt-1 text-green-600">
 
-                        {{ floor($donasi->jumlah/10000) }} Poin
+                        @if($donasi->tipe == 'sekali')
+                            {{ $donasi->poin_diberikan }} poin
+                        @else
+                            {{ $donasi->langganan->total_poin_aktif }} Poin
+                        @endif
 
                     </h4>
 
@@ -372,14 +394,37 @@
 
 
         {{-- ================================= --}}
-        {{-- ACTION --}}
+        {{-- ACTION <!-- @php
+
+                    $poin = 0;
+
+                    if ($donasi->tipe == 'bulanan' && $donasi->langganan) {
+
+                        $poin = $donasi->langganan->riwayat
+                            ->where('status','dikonfirmasi')
+                            ->where('periode',$donasi->langganan->tanggal_mulai)
+                            ->sum(function($item){
+
+                                return $item->poin + $item->bonus;
+
+                            });
+
+                    }else{
+
+                        $poin = $donasi->poin_diberikan;
+
+                    }
+
+                    @endphp 
+                    {{ $donasi->langganan->riwayatAktif->sum(fn($r) => $r->poin + $r->bonus) }}
+                    {{ $donasi->langganan->total_poin_aktif }} Poin-->--}}
         {{-- ================================= --}}
         <div class="lg:col-span-4">
 
             <div class="flex flex-col gap-3">
 
                 <div class="flex gap-2">
-
+                    @if($donasi->tipe == 'sekali')
                     <a href="{{ route(
                         'admin.donasis.show',
                         $donasi->id
@@ -390,6 +435,18 @@
                         👁 Detail
 
                     </a>
+                    @else
+                        <a href="{{ route(
+                            'admin.donasis.detail',
+                            $donasi->id
+                        ) }}"
+                           class="flex-1 text-center px-4 py-3
+                                  rounded-2xl border">
+
+                            👁 Detail Bulanan
+
+                        </a>
+                    @endif
 
                     @if($donasi->bukti_transfer)
 
@@ -412,78 +469,112 @@
                 </div>
 
 
-                @if(
-                    $donasi->status=='menunggu'
-                    && $donasi->bukti_transfer
-                )
+                @if($donasi->status == 'menunggu' && $donasi->bukti_transfer)
 
-                <div class="grid grid-cols-2 gap-2">
+                    @if($donasi->tipe == 'bulanan')
 
-                    {{-- VERIFIKASI --}}
-                    <form method="POST"
-                          action="{{ route(
-                            'admin.donasis.konfirmasi',
-                            $donasi->id
-                          ) }}">
+                        <div class="grid grid-cols-2 gap-2">
 
-                        @csrf
+                            <form method="POST"
+                                  action="{{ route('admin.donasis.konfirmasi', $donasi->id) }}">
 
-                        <button
-                            onclick="return confirm(
-                                'Apakah anda terima donasi ini ?'
-                            )"
+                                @csrf
 
-                            class="w-full px-4 py-3 rounded-2xl
-                                   text-white font-semibold"
+                                <button
+                                    onclick="return confirm('Terima langganan donasi ini?')"
+                                    class="w-full px-4 py-3 rounded-2xl
+                                           text-white font-semibold"
+                                    style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">
 
-                            style="
-                                background:
-                                linear-gradient(
-                                    135deg,
-                                    #16a34a,
-                                    #15803d
-                                );
-                            ">
+                                    🔄 Verifikasi Langganan
 
-                            ✔ Verifikasi
+                                </button>
 
-                        </button>
+                            </form>
 
-                    </form>
+                            <button
+                                type="button"
+                                onclick="rejectDonation({{ $donasi->id }})"
+                                class="px-4 py-3 rounded-2xl
+                                       bg-red-100
+                                       text-red-600
+                                       font-semibold">
 
+                                ✖ Tolak
 
-                    {{-- TOLAK --}}
-                    <button
-                        onclick="openRejectModal(
-                            {{ $donasi->id }}
-                        )"
+                            </button>
 
-                        class="px-4 py-3 rounded-2xl
-                               bg-red-100
-                               text-red-600
-                               font-semibold">
+                        </div>
 
-                        ✖ Tolak
+                    @else
 
-                    </button>
+                        <div class="grid grid-cols-2 gap-2">
 
-                </div>
+                            <form method="POST"
+                                  action="{{ route('admin.donasis.konfirmasi', $donasi->id) }}">
+
+                                @csrf
+
+                                <button
+                                    onclick="return confirm('Apakah anda terima donasi ini?')"
+                                    class="w-full px-4 py-3 rounded-2xl
+                                           text-white font-semibold"
+                                    style="background:linear-gradient(135deg,#16a34a,#15803d);">
+
+                                    ✔ Verifikasi
+
+                                </button>
+
+                            </form>
+
+                            <button
+                                type="button"
+                                onclick="rejectDonation({{ $donasi->id }})"
+                                class="px-4 py-3 rounded-2xl
+                                       bg-red-100
+                                       text-red-600
+                                       font-semibold">
+
+                                ✖ Tolak
+
+                            </button>
+
+                        </div>
+
+                    @endif
 
                 @endif
 
 
                 {{-- STATUS SUDAH SELESAI --}}
-                @if($donasi->status=='dikonfirmasi')
+                @if($donasi->status == 'dikonfirmasi')
 
-                <div class="w-full py-3 rounded-2xl
-                            text-center
-                            bg-green-100
-                            text-green-700
-                            font-bold">
+                    @if($donasi->tipe == 'bulanan')
 
-                    ✅ Donasi Selesai
+                        <a href="{{ route('admin.langganan.bulanan', $donasi->id) }}"
+                           class="block w-full py-3 rounded-2xl
+                                  text-center
+                                  text-white
+                                  font-bold"
+                           style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">
 
-                </div>
+                            🔄 Cek Langganan
+
+                        </a>
+
+                    @else
+
+                            <div class="w-full py-3 rounded-2xl
+                                        text-center
+                                        bg-green-100
+                                        text-green-700
+                                        font-bold">
+
+                                ✅ Donasi Selesai
+
+                            </div>
+
+                    @endif
 
                 @endif
 
@@ -534,7 +625,6 @@
             @endif
 
         </div>
-
     </div>
 
 
@@ -605,7 +695,7 @@
 
             </h2>
 
-            <form id="rejectForm" method="POST">
+            <form id="rejectForm" method="POST" style="display:none;">
 
                 @csrf
 
@@ -666,7 +756,7 @@
 </div>
 @endsection
 @push('scripts')
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
 function openRejectModal(id)
@@ -686,6 +776,67 @@ function closeRejectModal()
     document
         .getElementById('rejectModal')
         .classList.add('hidden');
+}
+
+function rejectDonation(id)
+{
+    Swal.fire({
+
+        title: 'Tolak Donasi',
+
+        text: 'Masukkan alasan penolakan donasi.',
+
+        icon: 'warning',
+
+        input: 'textarea',
+
+        inputLabel: 'Alasan Penolakan',
+
+        inputPlaceholder: 'Contoh: Bukti pembayaran tidak valid...',
+
+        inputAttributes: {
+            maxlength: 255
+        },
+
+        showCancelButton: true,
+
+        confirmButtonText: 'Tolak Donasi',
+
+        cancelButtonText: 'Batal',
+
+        confirmButtonColor: '#dc2626',
+
+        cancelButtonColor: '#64748b',
+
+        inputValidator: (value) => {
+
+            if (!value) {
+                return 'Alasan penolakan wajib diisi.';
+            }
+
+        }
+
+    }).then((result) => {
+
+        if(result.isConfirmed){
+
+            let form = document.getElementById('rejectForm');
+
+            form.action = `/admin/donasis/${id}/tolak`;
+
+            form.innerHTML = `
+                @csrf
+                <input
+                    type="hidden"
+                    name="alasan_tolak"
+                    value="${result.value}">
+            `;
+
+            form.submit();
+
+        }
+
+    });
 }
 
 </script>

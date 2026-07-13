@@ -6,6 +6,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Services\PoinService;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
@@ -16,7 +17,7 @@ class GoogleController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback(Request $request)
+    public function callback(Request $request,PoinService $poinService)
     {
         try {
 
@@ -24,66 +25,86 @@ class GoogleController extends Controller
                             ->stateless()
                             ->user();
 
-            // Cari user berdasarkan email
             $user = User::where('email', $googleUser->email)->first();
 
-            // Jika user belum ada
+            /*
+            |--------------------------------------------------------------------------
+            | USER BARU
+            |--------------------------------------------------------------------------
+            */
+
             if (!$user) {
 
                 $user = User::create([
+
                     'name'      => $googleUser->name,
                     'email'     => $googleUser->email,
                     'google_id' => $googleUser->id,
                     'avatar'    => $googleUser->avatar,
                     'password'  => null,
 
-                    // default pembeli
-                    'role'      => 'pembeli'
-                ]);
+                    // default role
+                    'role'      => 'pembeli',
 
-                // bonus poin user baru
-                app(TierService::class)
-                    ->tambahPoin($user, 10);
-            }
-
-            // Jika user sudah ada cukup update data google
-            else {
-
-                $user->update([
-                    'google_id' => $googleUser->id,
-                    'avatar'    => $googleUser->avatar,
-                    'name'      => $googleUser->name,
                 ]);
 
                 /*
-                 JANGAN UPDATE ROLE DI SINI
-                 supaya jika role = donatur
-                 tetap menjadi donatur
+                |--------------------------------------------------------------------------
+                | BONUS USER BARU
+                |--------------------------------------------------------------------------
                 */
+
+                $this->poinService->tambahPoin(
+                    $user,
+                    config('poin.welcome_bonus'),
+                    'registrasi',
+                    null,
+                    'Bonus registrasi'
+
+                );
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | USER SUDAH ADA
+            |--------------------------------------------------------------------------
+            */
+
+            else {
+
+                $user->update([
+
+                    'google_id' => $googleUser->id,
+                    'avatar'    => $googleUser->avatar,
+                    'name'      => $googleUser->name,
+
+                ]);
+
             }
 
             Auth::login($user);
 
-            // Redirect berdasarkan role
-            switch ($user->role) {
+            return match ($user->role) {
 
-                case 'relawan':
-                    return redirect('/relawan');
+                'admin'    => redirect('/admin'),
 
-                case 'donatur':
-                    return redirect('/donatur');
+                'relawan' => redirect('/relawan'),
 
-                default:
-                    return redirect('/pembeli');
-            }
+                'donatur' => redirect('/donatur'),
 
-        } catch (Exception $e) {
+                default   => redirect('/pembeli'),
+
+            };
+
+        } catch (\Exception $e) {
 
             return redirect('/')
                 ->with(
                     'error',
                     'Login Google gagal. Silakan coba lagi.'
                 );
+
         }
     }
 

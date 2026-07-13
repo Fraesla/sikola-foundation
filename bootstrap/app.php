@@ -19,4 +19,18 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->withSchedule(function ($schedule) {
+
+        $schedule
+            ->command('langganan:update-periode')
+            ->dailyAt('00:05');
+
+        $schedule
+            ->command('donasi:generate-bulanan')
+            ->dailyAt('00:10');
+
+    })
+    ->create();
+
+

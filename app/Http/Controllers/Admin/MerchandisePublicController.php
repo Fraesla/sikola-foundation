@@ -7,6 +7,7 @@ use App\Models\Merchandise;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\PoinService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\DB;
 
 class MerchandisePublicController extends Controller
 {
+    protected PoinService $poinService;
+
+    public function __construct(PoinService $poinService)
+    {
+        $this->poinService = $poinService;
+    }
 
     private function roleView($view)
     {
@@ -48,16 +55,78 @@ class MerchandisePublicController extends Controller
         );
     }
 
-    public function create()
+    public function checkoutLangsung(Request $request)
     {
-        $cartItems = Cart::where('user_id',auth()->id())
-                        ->with('product')
-                        ->get();
+        $request->validate([
+            'merchandise_id' => 'required|exists:merchandises,id',
+            'qty'            => 'required|integer|min:1',
+        ]);
 
-        if($cartItems->count() == 0){
-            return redirect()
-                    ->route('pembeli.keranjang.index');
+        $product = Merchandise::findOrFail($request->merchandise_id);
+
+        if ($request->qty > $product->stok) {
+            return back()->with(
+                'error',
+                'Jumlah melebihi stok.'
+            );
         }
+
+        $cartItems = collect([
+            (object) [
+                'id'      => null,
+                'product' => $product,
+                'qty'     => $request->qty,
+            ]
+        ]);
+
+        session([
+            'checkout_type' => 'direct',
+
+            'checkout_product' => [
+                'merchandise_id' => $product->id,
+                'qty'            => $request->qty,
+            ]
+        ]);
+
+        return view(
+            $this->roleView('checkout'),
+            compact('cartItems')
+        );
+    }
+
+    public function create(Request $request)
+    {
+        $ids = $request->cart_ids;
+
+        if (empty($ids)) {
+
+            return redirect()
+                ->route($this->roleRoute('keranjang.index'))
+                ->with(
+                    'error',
+                    'Pilih minimal satu barang.'
+                );
+        }
+
+        $cartItems = Cart::where('user_id', auth()->id())
+            ->whereIn('id', $ids)
+            ->with('product')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+
+            return redirect()
+                ->route($this->roleRoute('keranjang.index'))
+                ->with(
+                    'error',
+                    'Barang tidak ditemukan.'
+                );
+        }
+
+        session([
+            'checkout_type'     => 'cart',
+            'checkout_cart_ids' => $ids,
+        ]);
 
         return view(
             $this->roleView('checkout'),
@@ -68,31 +137,99 @@ class MerchandisePublicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_penerima'=>'required',
-            'telp_penerima'=>'required',
-            'alamat'=>'required',
-            'kota'=>'required'
+            'nama_penerima' => 'required',
+            'telp_penerima' => 'required',
+            'alamat'        => 'required',
+            'kota'          => 'required',
         ]);
 
         DB::beginTransaction();
 
-        try{
+        try {
 
-            $cartItems = Cart::where('user_id',auth()->id())
-                            ->with('product')
-                            ->get();
+            $checkoutType = session('checkout_type');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Ambil Barang
+            |--------------------------------------------------------------------------
+            */
+
+            if ($checkoutType == 'cart') {
+
+                $ids = session('checkout_cart_ids');
+
+                $cartItems = Cart::where('user_id', auth()->id())
+                    ->whereIn('id', $ids)
+                    ->with('product')
+                    ->get();
+
+            } else {
+
+                $checkout = session('checkout_product');
+
+                $product = Merchandise::findOrFail(
+                    $checkout['merchandise_id']
+                );
+
+                $cartItems = collect([
+                    (object) [
+                        'product' => $product,
+                        'qty'     => $checkout['qty'],
+                    ]
+                ]);
+
+            }
+
+            if ($cartItems->isEmpty()) {
+
+                throw new \Exception(
+                    'Barang checkout tidak ditemukan.'
+                );
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Validasi Stok
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($cartItems as $item) {
+
+                if ($item->qty > $item->product->stok) {
+
+                    throw new \Exception(
+                        "{$item->product->nama} stok tidak mencukupi."
+                    );
+
+                }
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Hitung Total
+            |--------------------------------------------------------------------------
+            */
 
             $total = 0;
 
-            foreach($cartItems as $cart){
+            foreach ($cartItems as $item) {
+
                 $total +=
-                    $cart->qty *
-                    $cart->product->harga;
+                    $item->qty *
+                    $item->product->harga;
+
             }
 
-            $grandTotal = $total + $ongkir;
+            /*
+            |--------------------------------------------------------------------------
+            | Ongkir
+            |--------------------------------------------------------------------------
+            */
 
-            $ongkir = match($request->provinsi) {
+            $ongkir = match ($request->provinsi) {
 
                 'Sumatera Barat' => 15000,
                 'Riau'           => 20000,
@@ -105,61 +242,107 @@ class MerchandisePublicController extends Controller
                 'Papua'          => 60000,
 
                 default => 20000,
+
             };
 
+            $grandTotal = $total + $ongkir;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Buat Order
+            |--------------------------------------------------------------------------
+            */
+
             $order = Order::create([
-                'user_id'             => auth()->id(),
-                'kode_order'          => 'ORD-'.date('YmdHis'),
-                'nama_penerima'       => $request->nama_penerima,
-                'no_telp_penerima'    => $request->telp_penerima,
-                'alamat_pengiriman'   => $request->alamat,
-                'kota'                => $request->kota,
-                'provinsi'            => $request->provinsi,
-                'kode_pos'            => $request->kode_pos,
-                'ongkos_kirim'        => $ongkir,
-                'total_harga'         => $total,
-                'status'              => 'menunggu_pembayaran'
+
+                'user_id'           => auth()->id(),
+                'kode_order'        => 'ORD-' . now()->format('YmdHis'),
+                'nama_penerima'     => $request->nama_penerima,
+                'no_telp_penerima'  => $request->telp_penerima,
+                'alamat_pengiriman' => $request->alamat,
+                'kota'              => $request->kota,
+                'provinsi'          => $request->provinsi,
+                'kode_pos'          => $request->kode_pos,
+                'ongkos_kirim'      => $ongkir,
+                'total_harga'       => $grandTotal,
+                'status'            => 'menunggu_pembayaran',
+
             ]);
 
-            foreach($cartItems as $cart){
+            /*
+            |--------------------------------------------------------------------------
+            | Detail Order + Kurangi Stok
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($cartItems as $item) {
 
                 OrderItem::create([
-                    'order_id'        => $order->id,
-                    'merchandise_id'  => $cart->merchandise_id,
-                    'nama_produk'     => $cart->product->nama,
-                    'harga_satuan'    => $cart->product->harga,
-                    'kuantitas'       => $cart->qty,
-                    'subtotal'        => $cart->qty * $cart->product->harga
+
+                    'order_id'       => $order->id,
+                    'merchandise_id' => $item->product->id,
+                    'nama_produk'    => $item->product->nama,
+                    'harga_satuan'   => $item->product->harga,
+                    'kuantitas'      => $item->qty,
+                    'subtotal'       => $item->qty * $item->product->harga,
+
                 ]);
+
+                $item->product->decrement(
+                    'stok',
+                    $item->qty
+                );
+
             }
 
-            Cart::where(
-                'user_id',
-                auth()->id()
-            )->delete();
+            /*
+            |--------------------------------------------------------------------------
+            | Jika checkout dari cart
+            |--------------------------------------------------------------------------
+            */
+
+            if ($checkoutType == 'cart') {
+
+                Cart::where('user_id', auth()->id())
+                    ->whereIn('id', session('checkout_cart_ids'))
+                    ->delete();
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Hapus Session
+            |--------------------------------------------------------------------------
+            */
+
+            session()->forget([
+                'checkout_type',
+                'checkout_cart_ids',
+                'checkout_product',
+            ]);
 
             DB::commit();
 
             return redirect()
-                    ->route(
-                        $this->roleRoute('orders.show'),
-                        $order->id
-                    )
-                    ->with(
-                        'success',
-                        'Checkout berhasil'
-                    );
+                ->route(
+                    $this->roleRoute('orders.show'),
+                    $order
+                )
+                ->with(
+                    'success',
+                    'Checkout berhasil.'
+                );
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
 
-            DB::rollback();
+            DB::rollBack();
 
             return back()->with(
                 'error',
                 $e->getMessage()
             );
         }
-    } 
+    }
     public function show($id)
     {
         $order = Order::with('items.merchandise')
@@ -218,7 +401,7 @@ class MerchandisePublicController extends Controller
 
         return redirect()
                 ->route(
-                    'pembeli.orders.index',
+                    $this->roleRoute('orders.index'),
                     $order->id
                 )
                 ->with(
@@ -232,25 +415,34 @@ class MerchandisePublicController extends Controller
             return back();
         }
 
-        $totalPoin = $order->items->sum(function ($item) {
+        $totalBelanja = $order->total_harga;
 
-            return ($item->merchandise->poin_reward ?? 0)
-                    * $item->kuantitas;
-        });
+        // 1 poin setiap Rp20.000
+        $poin = $this->poinService->hitungPoin($totalBelanja, 'order');
+
+        app(PoinService::class)->tambahPoin(
+
+            $order->user,
+            $poin,
+            'merchandise',
+            $order,
+            "Belanja Order #{$order->kode_order}"
+
+        );
 
         $order->update([
+
             'status' => 'selesai',
             'tanggal_selesai' => now(),
-            'poin_diberikan' => $totalPoin
-        ]);
+            'poin_diberikan' => $poin
 
-        auth()->user()->increment('total_poin', $totalPoin);
+        ]);
 
         return back()->with(
             'success',
-            "Pesanan berhasil diselesaikan. +{$totalPoin} poin"
+            "Pesanan berhasil diselesaikan. +{$poin} poin."
         );
-    }
+    } 
     public function batal(Request $request, Order $order)
     {
         if($order->status == 'selesai')

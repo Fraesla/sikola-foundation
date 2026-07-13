@@ -6,5 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tier extends Model
 {
-    //
+    protected $table = 'tiers';
+
+    protected $fillable = [
+        'nama',
+        'min_poin',
+        'max_poin',
+        'badge_icon',
+        'warna_hex',
+        'deskripsi',
+        'keuntungan',
+        'urutan',
+        'created_at',
+        'updated_at',
+    ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
