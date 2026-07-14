@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             TierSeeder::class,
+            BannerSeeder::class,
+            MerchandiseCategorySeeder::class,
+            DonationCategorySeeder::class,
+            EventCategorySeeder::class
         ]);
     }
 }

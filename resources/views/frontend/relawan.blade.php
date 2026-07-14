@@ -285,7 +285,7 @@
                     box-shadow: var(--shadow);
                  ">
 
-                <form action="{{ url('relawan/daftar') }}"
+                <form action="{{ url('donatur/relawan/daftar') }}"
                       method="POST"
                       enctype="multipart/form-data">
 

@@ -7,6 +7,7 @@ use App\Models\Banner;
 use App\Models\Relawan;
 use App\Models\Event;
 use App\Models\EventRegistrasi;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,15 +26,18 @@ class RelawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required',
-            'foto_ktp' => 'required|image|max:2048'
+            'nik' => 'required|digits_between:16,20',
+            'foto_ktp' => 'required|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         $foto = null;
 
-        if($request->hasFile('foto_ktp')){
-            $foto = $request->file('foto_ktp')
-                            ->store('relawan','public');
+        if ($request->hasFile('foto_ktp')) {
+
+            $foto = $request
+                ->file('foto_ktp')
+                ->store('relawan/ktp', 'private');
+
         }
 
         Relawan::create([
@@ -54,7 +58,7 @@ class RelawanController extends Controller
 
         return redirect()
             ->back()
-            ->with('success','Pendaftaran relawan berhasil dikirim.');
+            ->with('success', 'Pendaftaran relawan berhasil dikirim.');
     }
 
     public function daftarEvent(Event $event)

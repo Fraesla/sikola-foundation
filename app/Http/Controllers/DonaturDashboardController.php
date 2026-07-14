@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Donasi;
 use App\Models\DonationCategory;
 use App\Models\Merchandise;
+use App\Models\Tier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -420,11 +421,11 @@ class DonaturDashboardController extends Controller
         }
 
         $nextTier = \App\Models\Tier::where(
-            'minimal_poin',
+            'min_poin',
             '>',
-            $tier->minimal_poin
+            $tier->min_poin
         )
-        ->orderBy('minimal_poin')
+        ->orderBy('min_poin')
         ->first();
 
         $progress = 100;
@@ -432,9 +433,9 @@ class DonaturDashboardController extends Controller
 
         if ($nextTier) {
 
-            $current = $tier->minimal_poin;
+            $current = $tier->min_poin;
 
-            $next = $nextTier->minimal_poin;
+            $next = $nextTier->min_poin;
 
             $point = $user->total_poin;
 

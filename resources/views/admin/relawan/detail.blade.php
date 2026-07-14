@@ -45,7 +45,7 @@
             <div>
 
                 <img
-                    src="{{ asset('storage/'.$relawan->foto_ktp) }}"
+                    src="{{ route('admin.relawans.ktp', $relawan->id) }}"
                     class="w-52 h-52 rounded-3xl object-cover border-4 border-white shadow-xl">
 
             </div>

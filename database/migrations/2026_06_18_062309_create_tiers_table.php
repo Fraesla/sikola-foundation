@@ -21,6 +21,11 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->json('keuntungan')->nullable();
             $table->unsignedTinyInteger('urutan')->default(1);
+            $table->integer('diskon_merchandise')->default(0);
+            $table->integer('bonus_poin')->default(0);
+            $table->boolean('prioritas_event')->default(false);
+            $table->boolean('gratis_ongkir')->default(false);
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
         });
     }

@@ -89,6 +89,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('orders/{order}/refund',[OrderController::class,'refund'])->name('orders.refund');
     Route::post('/orders/{order}/refund',[OrderController::class,'refundProcess'])->name('orders.refund.process');
     Route::post('orders/{order}/selesai',[OrderController::class,'selesai'])->name('orders.selesai');
+    Route::get('relawans/{relawan}/ktp', [RelawanApprovalController::class, 'lihatKtp'])->name('relawans.ktp');
     Route::post('relawans/{relawan}/setujui',    [RelawanApprovalController::class, 'setujui'])->name('relawans.setujui');
     Route::post('relawans/{relawan}/tolak',      [RelawanApprovalController::class, 'tolak'])->name('relawans.tolak');
     Route::post('/eventDaftar/{registrasi}/konfirmasi',[DaftarEventController::class, 'konfirmasi'])->name('events.konfirmasi');

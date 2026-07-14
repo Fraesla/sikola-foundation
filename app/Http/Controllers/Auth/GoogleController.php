@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\PoinService;
+use App\KategoriPoin;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
@@ -54,10 +55,10 @@ class GoogleController extends Controller
                 |--------------------------------------------------------------------------
                 */
 
-                $this->poinService->tambahPoin(
+                $poinService->tambahPoin(
                     $user,
                     config('poin.welcome_bonus'),
-                    'registrasi',
+                    KategoriPoin::REGISTRASI,
                     null,
                     'Bonus registrasi'
 

@@ -2114,7 +2114,7 @@
 
             </p>
 
-            <a href="{{ route('donatur.program') }}"
+            <a href="{{ route('donasi') }}"
                class="inline-block mt-6 px-6 py-3 rounded-xl text-white font-semibold"
 
                style="background:linear-gradient(135deg,var(--color-merah),var(--color-coklat))">

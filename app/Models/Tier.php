@@ -21,6 +21,13 @@ class Tier extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'keuntungan' => 'array',
+        'prioritas_event' => 'boolean',
+        'gratis_ongkir' => 'boolean',
+        'aktif' => 'boolean',
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class);

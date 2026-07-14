@@ -359,12 +359,24 @@
 
 <script>
 
+const dropzone = document.getElementById('dropzone');
 const input = document.getElementById('gambar');
 const previewContainer = document.getElementById('preview-container');
+const placeholder = document.getElementById('placeholder');
+
+dropzone.addEventListener('click', function () {
+    input.click();
+});
 
 input.addEventListener('change', function () {
 
     previewContainer.innerHTML = '';
+
+    if (this.files.length > 0) {
+        placeholder.classList.add('hidden');
+    } else {
+        placeholder.classList.remove('hidden');
+    }
 
     Array.from(this.files).forEach(file => {
 
@@ -373,15 +385,24 @@ input.addEventListener('change', function () {
         reader.onload = function(e){
 
             previewContainer.innerHTML += `
-                <div class="relative">
+                <div class="relative group">
                     <img src="${e.target.result}"
-                         class="w-full h-40 object-cover rounded-2xl shadow-md">
+                         class="w-40 h-40 object-cover rounded-2xl shadow-md">
+
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition rounded-2xl flex items-center justify-center">
+                        <span class="text-white text-sm">
+                            Preview
+                        </span>
+                    </div>
                 </div>
             `;
+
         }
 
         reader.readAsDataURL(file);
+
     });
+
 });
 
 </script>

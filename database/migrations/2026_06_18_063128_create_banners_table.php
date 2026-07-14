@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->text('deskripsi')->nullable();
-            $table->string('gambar', 500);
+            $table->string('gambar', 500)->nullable();
             $table->string('url_tautan', 500)->nullable();
             $table->unsignedTinyInteger('urutan')->default(1);
             $table->boolean('is_aktif')->default(true);

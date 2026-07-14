@@ -16,91 +16,110 @@ class TierSeeder extends Seeder
         $tiers = [
 
             [
-                'nama'        => 'Perunggu',
-                'min_poin'    => 0,
-                'max_poin'    => 500,
-                'warna_hex'   => '#CD7F32',
-                'urutan'      => 1,
-
-                'deskripsi'   => 'Tier awal untuk seluruh anggota Sikola Foundation.',
-
-                'keuntungan'  => [
+                'nama' => 'Perunggu',
+                'min_poin' => 0,
+                'max_poin' => 500,
+                'badge_icon' => '🥉',
+                'warna_hex' => '#CD7F32',
+                'deskripsi' => 'Tier awal untuk seluruh anggota Sikola Foundation.',
+                'keuntungan' => json_encode([
                     'Mengumpulkan poin',
                     'Riwayat donasi',
                     'Riwayat merchandise',
-                    'Riwayat event',
-                ],
+                    'Riwayat event'
+                ]),
+                'urutan' => 1,
+                'diskon_merchandise' => 0,
+                'bonus_poin' => 0,
+                'prioritas_event' => false,
+                'gratis_ongkir' => false,
+                'aktif' => true,
             ],
 
             [
-                'nama'        => 'Perak',
-                'min_poin'    => 501,
-                'max_poin'    => 2000,
-                'warna_hex'   => '#C0C0C0',
-                'urutan'      => 2,
-
-                'deskripsi'   => 'Anggota aktif yang telah rutin berkontribusi.',
-
-                'keuntungan'  => [
+                'nama' => 'Perak',
+                'min_poin' => 501,
+                'max_poin' => 2000,
+                'badge_icon' => '🥈',
+                'warna_hex' => '#C0C0C0',
+                'deskripsi' => 'Anggota yang rutin berkontribusi.',
+                'keuntungan' => json_encode([
                     'Semua keuntungan Perunggu',
                     'Badge Perak',
-                    'Prioritas informasi event',
-                ],
+                    'Prioritas informasi kegiatan'
+                ]),
+                'urutan' => 2,
+                'diskon_merchandise' => 3,
+                'bonus_poin' => 10,
+                'prioritas_event' => false,
+                'gratis_ongkir' => false,
+                'aktif' => true,
             ],
 
             [
-                'nama'        => 'Emas',
-                'min_poin'    => 2001,
-                'max_poin'    => 5000,
-                'warna_hex'   => '#D4AF37',
-                'urutan'      => 3,
-
-                'deskripsi'   => 'Pendukung setia Sikola Foundation.',
-
-                'keuntungan'  => [
+                'nama' => 'Emas',
+                'min_poin' => 2001,
+                'max_poin' => 5000,
+                'badge_icon' => '🥇',
+                'warna_hex' => '#D4AF37',
+                'deskripsi' => 'Pendukung aktif Sikola Foundation.',
+                'keuntungan' => json_encode([
                     'Semua keuntungan Perak',
-                    'Diskon Merchandise 5%',
-                    'Undangan Event Khusus',
-                    'Badge Emas',
-                ],
+                    'Diskon merchandise',
+                    'Undangan event khusus',
+                    'Badge Emas'
+                ]),
+                'urutan' => 3,
+                'diskon_merchandise' => 5,
+                'bonus_poin' => 25,
+                'prioritas_event' => true,
+                'gratis_ongkir' => false,
+                'aktif' => true,
             ],
 
             [
-                'nama'        => 'Platinum',
-                'min_poin'    => 5001,
-                'max_poin'    => 10000,
-                'warna_hex'   => '#E5E4E2',
-                'urutan'      => 4,
-
-                'deskripsi'   => 'Kontributor utama Sikola Foundation.',
-
-                'keuntungan'  => [
+                'nama' => 'Platinum',
+                'min_poin' => 5001,
+                'max_poin' => 10000,
+                'badge_icon' => '💎',
+                'warna_hex' => '#E5E4E2',
+                'deskripsi' => 'Kontributor utama Sikola Foundation.',
+                'keuntungan' => json_encode([
                     'Semua keuntungan Emas',
-                    'Diskon Merchandise 10%',
-                    'Prioritas Event',
-                    'Nama pada halaman apresiasi',
-                    'Badge Platinum',
-                ],
+                    'Diskon merchandise lebih besar',
+                    'Prioritas event',
+                    'Badge Platinum'
+                ]),
+                'urutan' => 4,
+                'diskon_merchandise' => 10,
+                'bonus_poin' => 50,
+                'prioritas_event' => true,
+                'gratis_ongkir' => true,
+                'aktif' => true,
             ],
 
             [
-                'nama'        => 'Diamond',
-                'min_poin'    => 10001,
-                'max_poin'    => null,
-                'warna_hex'   => '#7DF9FF',
-                'urutan'      => 5,
-
-                'deskripsi'   => 'Tier tertinggi bagi kontributor terbaik Sikola Foundation.',
-
-                'keuntungan'  => [
+                'nama' => 'Diamond',
+                'min_poin' => 10001,
+                'max_poin' => null,
+                'badge_icon' => '💠',
+                'warna_hex' => '#B9F2FF',
+                'deskripsi' => 'Tier tertinggi bagi kontributor terbaik Sikola Foundation.',
+                'keuntungan' => json_encode([
                     'Semua keuntungan Platinum',
-                    'Diskon Merchandise 15%',
-                    'Undangan seluruh Event Premium',
-                    'Prioritas Reward',
-                    'Laporan Tahunan Yayasan',
-                    'Sertifikat Penghargaan',
-                    'Badge Diamond',
-                ],
+                    'Diskon merchandise terbesar',
+                    'Gratis ongkir',
+                    'Prioritas seluruh event',
+                    'Bonus poin setiap transaksi',
+                    'Sertifikat penghargaan',
+                    'Badge Diamond'
+                ]),
+                'urutan' => 5,
+                'diskon_merchandise' => 15,
+                'bonus_poin' => 100,
+                'prioritas_event' => true,
+                'gratis_ongkir' => true,
+                'aktif' => true,
             ],
 
         ];
@@ -113,14 +132,7 @@ class TierSeeder extends Seeder
                     'nama' => $tier['nama'],
                 ],
 
-                [
-                    'min_poin'   => $tier['min_poin'],
-                    'max_poin'   => $tier['max_poin'],
-                    'warna_hex'  => $tier['warna_hex'],
-                    'urutan'     => $tier['urutan'],
-                    'deskripsi'  => $tier['deskripsi'],
-                    'keuntungan' => $tier['keuntungan'],
-                ]
+                $tier
 
             );
 

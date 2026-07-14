@@ -200,7 +200,7 @@
 
                 @if($item->foto_ktp)
 
-                    <a href="{{ asset('storage/'.$item->foto_ktp) }}"
+                    <a href="{{ route('admin.relawans.ktp', $item->id) }}"
                        target="_blank"
                        style="color: var(--color-merah);">
 

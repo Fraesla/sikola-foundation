@@ -56,6 +56,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        chema::dropIfExists('riwayat_langganan_pembayaran');
+        schema::dropIfExists('riwayat_langganan_pembayaran');
     }
 };

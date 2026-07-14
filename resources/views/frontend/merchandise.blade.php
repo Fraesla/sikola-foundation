@@ -329,7 +329,15 @@
             Berapa jumlah yang ingin dibeli?
         </p>
 
-        <form action="{{ route(auth()->user()->role . '.checkout.langsung') }}" method="POST">
+        @php
+            $checkoutRoute = match (true) {
+                !auth()->check() => route('login'),
+                auth()->user()->role === 'admin' => '#',
+                default => route(auth()->user()->role.'.checkout.langsung'),
+            };
+        @endphp
+
+        <form action="{{ $checkoutRoute }}" method="POST">
 
             @csrf
 

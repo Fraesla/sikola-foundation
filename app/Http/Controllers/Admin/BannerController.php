@@ -90,14 +90,16 @@ class BannerController extends Controller
             'is_aktif' => $request->has('is_aktif'),
         ];
 
-        if ($request->hasFile('gambar')) {
-
-            Storage::disk('public')
-                ->delete($banner->gambar);
+        if ($request->hasFile('gambar')) 
+        {
+            if ($banner->gambar && Storage::disk('public')->exists($banner->gambar)) 
+            {
+                Storage::disk('public')->delete($banner->gambar);
+            }
 
             $data['gambar'] = $request
                 ->file('gambar')
-                ->store('banner','public');
+                ->store('banner', 'public');
         }
 
         $banner->update($data);
@@ -105,7 +107,7 @@ class BannerController extends Controller
         return redirect()
             ->route('admin.banners.index')
             ->with('success','Banner berhasil diupdate');
-    }
+    } 
     public function destroy(Banner $banner)
     {
         Storage::disk('public')

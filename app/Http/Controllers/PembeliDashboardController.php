@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\OrderItem;
 use App\Models\Merchandise;
+use App\Models\Tier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProfileRequest;
@@ -208,57 +209,42 @@ class PembeliDashboardController extends Controller
 
     private function getMembership($user)
     {
+        if (!$user->tier_id) {
+            return null;
+        }
+
         $tier = $user->tier;
 
         if (!$tier) {
-
             return null;
-
         }
 
-        $nextTier = \App\Models\Tier::where(
-            'minimal_poin',
-            '>',
-            $tier->minimal_poin
-        )
-
-        ->orderBy('minimal_poin')
-
-        ->first();
+        $nextTier = Tier::where('min_poin', '>', $tier->min_poin)
+            ->orderBy('min_poin')
+            ->first();
 
         $progress = 100;
-
         $remaining = 0;
 
         if ($nextTier) {
 
-            $current = $tier->minimal_poin;
-
-            $next = $nextTier->minimal_poin;
-
+            $current = $tier->min_poin;
+            $next = $nextTier->min_poin;
             $point = $user->total_poin;
 
             $progress = min(
                 100,
-                (($point-$current)/($next-$current))*100
+                (($point - $current) / ($next - $current)) * 100
             );
 
-            $remaining = max(
-                0,
-                $next-$point
-            );
+            $remaining = max(0, $next - $point);
         }
 
         return [
-
-            'tier'=>$tier,
-
-            'nextTier'=>$nextTier,
-
-            'progress'=>$progress,
-
-            'remaining'=>$remaining,
-
+            'tier' => $tier,
+            'nextTier' => $nextTier,
+            'progress' => $progress,
+            'remaining' => $remaining,
         ];
     }
 

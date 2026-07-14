@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('donasis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('dontaion_category_id')
+            $table->foreignId('donation_category_id')
                    ->nullable()
                    ->constrained('donasi_kategori')
                    ->nullOnDelete();
