@@ -111,6 +111,14 @@
                     🛒 Keranjang
 
                 </a>
+                <!-- Reward -->
+                <a href="{{ url('/pembeli/reward') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl
+                    {{ ($activePage ?? '') == 'reward' ? 'menu-active' : 'hover:bg-white/10' }}">
+
+                    🎁 Reward
+
+                </a>
 
                <!--  {{-- Profile --}}
                 <a href="#"

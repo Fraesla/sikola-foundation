@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             MerchandiseCategorySeeder::class,
             DonationCategorySeeder::class,
-            EventCategorySeeder::class
+            EventCategorySeeder::class,
+            RewardSeeder::class
+            // RewardVoucherSeeder::class
         ]);
     }
 }

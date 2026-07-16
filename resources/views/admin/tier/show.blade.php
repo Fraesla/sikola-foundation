@@ -296,7 +296,7 @@
                 class="mt-5
                        text-slate-500">
 
-                Rata-rata Poin
+                Rata-rata Exp
 
             </div>
 
@@ -439,7 +439,7 @@
 
                     <div class="text-slate-500 text-sm">
 
-                        Minimal Poin
+                        Minimal Exp
 
                     </div>
 
@@ -456,7 +456,7 @@
 
                     <div class="text-slate-500 text-sm">
 
-                        Maksimal Poin
+                        Maksimal Exp
 
                     </div>
 

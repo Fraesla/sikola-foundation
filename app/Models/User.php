@@ -15,7 +15,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     protected $fillable = ['name','email','password','google_id','avatar',
-                            'role','tier_id','total_poin','is_active','created_at','updated_at'];
+                            'role','tier_id','total_poin','exp','is_active','created_at','updated_at'];
 
     protected $casts = ['email_verified_at' => 'datetime', 'is_active' => 'boolean'];
 
@@ -37,5 +37,24 @@ class User extends Authenticatable
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+    public function rewardVouchers()
+    {
+        return $this->hasMany(RewardVoucher::class);
+    }
+    /**
+     * Riwayat penukaran reward
+     */
+    public function rewardRedemptions()
+    {
+        return $this->hasMany(RewardRedeem::class);
+    }
+
+    /**
+     * Reward yang diproses oleh admin
+     */
+    public function processedRewardRedemptions()
+    {
+        return $this->hasMany(RewardRedeem::class, 'diproses_oleh');
     }
 }

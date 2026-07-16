@@ -74,7 +74,7 @@
 
         <div class="text-slate-500">
 
-            Rata-rata Poin
+            Rata-rata EXP
 
         </div>
 

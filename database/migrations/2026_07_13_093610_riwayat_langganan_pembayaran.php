@@ -46,6 +46,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->timestamp('dikonfirmasi_at')->nullable();
+            $table->timestamp('rewarded_at')->nullable();
 
             $table->timestamps();
         });

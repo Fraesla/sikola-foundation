@@ -24,6 +24,7 @@ class PoinService
     ): void
     {
         $user->increment('total_poin', $poin);
+        $user->increment('exp', $poin);
 
         RiwayatPoin::create([
 
@@ -50,6 +51,7 @@ class PoinService
     {
 
         $user->decrement('total_poin',$poin);
+        $user->increment('exp', $poin);
 
         RiwayatPoin::create([
 

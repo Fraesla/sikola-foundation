@@ -155,6 +155,15 @@
 
                 </a>
 
+                <!-- Reward -->
+                <a href="{{ url('/admin/reward') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl
+                    {{ ($activePage ?? '') == 'reward' ? 'menu-active' : 'hover:bg-white/10' }}">
+
+                    🎁 Reward
+
+                </a>
+
                 <!-- Laporan -->
                 <a href="{{ url('/admin/laporan') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl
@@ -163,7 +172,7 @@
                     📈 Laporan
 
                 </a>
-
+                
                 <!-- Logout -->
                 <!-- <div class="pt-6 border-t border-slate-800 mt-6">
 

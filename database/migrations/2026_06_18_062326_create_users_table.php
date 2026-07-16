@@ -22,6 +22,7 @@ return new class extends Migration
                    ->default('pembeli');
             $table->foreignId('tier_id')->nullable()->constrained()->nullOnDelete();
             $table->unsignedInteger('total_poin')->default(0);
+            $table->unsignedInteger('exp')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

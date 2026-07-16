@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('donasi_langganans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('donation_category_id')->constrained()->cascadeOnDelete();
             $table->decimal('jumlah_bulanan', 15, 2);
             $table->date('tanggal_mulai');
             $table->date('tanggal_akhir')->nullable();      // null = aktif selamanya

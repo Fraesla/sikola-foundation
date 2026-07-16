@@ -22,7 +22,11 @@ use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\RelawanApprovalController;
 use App\Http\Controllers\Admin\RelawanController;
 use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\RewardController;
+use App\Http\Controllers\Admin\RedeemController;
+use App\Http\Controllers\Admin\RewardVoucherController;
 use App\Http\Controllers\DonasiPublicController;
+use App\Http\Controllers\RewardsController;
 use App\Http\Controllers\TierController;
 use App\Http\Controllers\Admin\DonationCategoryController;
 use App\Http\Controllers\Admin\MerchandisePublicController;
@@ -68,6 +72,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('relawans',      RelawanApprovalController::class);
     Route::resource('pengguna',      PenggunaController::class);
     Route::resource('tier',          TierController::class);
+    Route::resource('rewards',        RewardController::class);
+    Route::resource('redeem',        RedeemController::class);
+    Route::prefix('redeem')->name('redeem.')->group(function () {
+        Route::get('/', [RedeemController::class,'index'])->name('index');
+        Route::post('/', [RedeemController::class,'store'])->name('store');
+        Route::get('/{redeem}', [RedeemController::class,'show'])->name('show');
+        Route::get('{redeem}/proses',[RedeemController::class,'proses'])->name('proses');
+        Route::put('{redeem}/kirim',[RedeemController::class, 'kirim'])->name('kirim');
+        Route::put('{redeem}/batalkan',[RedeemController::class, 'batalkan'])->name('batalkan');
+        // Route::put('{redeem}/selesai',[RedeemController::class, 'selesai'])->name('selesai');
+        // Route::get('/riwayat', [RedeemController::class,'riwayat'])->name('riwayat');
+        // Route::get('/riwayat/{redeem}', [RewardsController::class,'showRedeem'])->name('riwayat.show');
+    });
+    Route::get('reward',    [RewardController::class, 'dashboard'])->name('reward');
     Route::get('produk',              [MerchandiseController::class, 'produk'])->name('produk');
     Route::get('konten',             [KontenController::class, 'index'])->name('konten');
     Route::get('laporan',            [LaporanController::class,'index'])->name('laporan');
@@ -132,6 +150,14 @@ Route::prefix('relawan')->name('relawan.')->middleware(['auth', 'role:relawan'])
     Route::post('donasi/bulanan', [DonasiPublicController::class, 'storeBulanan'])->name('donasi.langganan');
     Route::get('orders/{order}/bayar',[MerchandisePublicController::class,'bayar'])->name('orders.bayar');
     Route::post('orders/{order}/upload-bukti',[MerchandisePublicController::class,'uploadBukti'])->name('orders.upload-bukti');
+    Route::prefix('reward')->name('reward.')->group(function () {
+        Route::get('/', [RewardsController::class,'index'])->name('index');
+        Route::post('/', [RewardsController::class,'store'])->name('store');
+        Route::get('/riwayat', [RewardsController::class,'riwayat'])->name('riwayat');
+        Route::get('/riwayat/{redeem}', [RewardsController::class,'show'])->name('riwayat.show');
+        Route::put('riwayat/{redeem}/selesai',[RewardsController::class, 'selesai'])->name('riwayat.selesai');
+        Route::put('/riwayat/{redeem}/batalkan',[RewardsController::class, 'batalkan'])->name('riwayat.batalkan');
+    });
     Route::get('/orders/{order}/komplain',[MerchandisePublicController::class,'komplain'])->name('orders.komplain');
     Route::get('/orders/{order}/batal',[MerchandisePublicController::class,'batal'])->name('orders.batal');
     Route::post('/orders/{order}/selesai', [MerchandisePublicController::class,'selesai'])->name('orders.selesai');
@@ -163,6 +189,14 @@ Route::prefix('donatur')->name('donatur.')->middleware(['auth', 'role:donatur'])
     Route::resource('orders',     MerchandisePublicController::class);
     Route::get('orders/{order}/bayar',[MerchandisePublicController::class,'bayar'])->name('orders.bayar');
     Route::post('orders/{order}/upload-bukti',[MerchandisePublicController::class,'uploadBukti'])->name('orders.upload-bukti');
+    Route::prefix('reward')->name('reward.')->group(function () {
+        Route::get('/', [RewardsController::class,'index'])->name('index');
+        Route::post('/', [RewardsController::class,'store'])->name('store');
+        Route::get('/riwayat', [RewardsController::class,'riwayat'])->name('riwayat');
+        Route::get('/riwayat/{redeem}', [RewardsController::class,'show'])->name('riwayat.show');
+        Route::put('riwayat/{redeem}/selesai',[RewardsController::class, 'selesai'])->name('riwayat.selesai');
+        Route::put('/riwayat/{redeem}/batalkan',[RewardsController::class, 'batalkan'])->name('riwayat.batalkan');
+    });
     Route::post('/orders/{order}/selesai', [MerchandisePublicController::class,'selesai'])->name('orders.selesai');
     Route::get('/orders/{order}/komplain',[MerchandisePublicController::class,'komplain'])->name('orders.komplain');
     Route::put('/orders/{order}/batal',[MerchandisePublicController::class,'batal'])->name('orders.batal');
@@ -185,6 +219,15 @@ Route::prefix('pembeli')->name('pembeli.')->middleware(['auth', 'role:pembeli'])
     Route::resource('orders', MerchandisePublicController::class);
     Route::get('orders/{order}/bayar',[MerchandisePublicController::class,'bayar'])->name('orders.bayar');
     Route::post('orders/{order}/upload-bukti',[MerchandisePublicController::class,'uploadBukti'])->name('orders.upload-bukti');
+    Route::prefix('reward')->name('reward.')->group(function () {
+        Route::get('/', [RewardsController::class,'index'])->name('index');
+        Route::post('/', [RewardsController::class,'store'])->name('store');
+        Route::get('/riwayat', [RewardsController::class,'riwayat'])->name('riwayat');
+        Route::get('/riwayat/{redeem}', [RewardsController::class,'show'])->name('riwayat.show');
+        Route::put('riwayat/{redeem}/selesai',[RewardsController::class, 'selesai'])->name('riwayat.selesai');
+        Route::put('/riwayat/{redeem}/batalkan',[RewardsController::class, 'batalkan'])->name('riwayat.batalkan');
+    });
+    Route::post('reward/checkout',[MerchandisePublicController::class,'create'])->name('orders.checkout');
     Route::post('/orders/{order}/selesai', [MerchandisePublicController::class,'selesai'])->name('orders.selesai');
     Route::get('/orders/{order}/komplain',[MerchandisePublicController::class,'komplain'])->name('orders.komplain');
     Route::put('/orders/{order}/batal',[MerchandisePublicController::class,'batal'])->name('orders.batal');

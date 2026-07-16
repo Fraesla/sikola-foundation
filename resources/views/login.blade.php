@@ -163,17 +163,30 @@
                             Password
                         </label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            class="w-full rounded-xl px-4 py-3 border focus:outline-none"
-                            style="
-                                border-color: rgba(212,160,23,.25);
-                            ">
+                        <div class="relative">
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="w-full rounded-xl px-4 py-3 pr-12 border focus:outline-none"
+                                style="border-color: rgba(212,160,23,.25);">
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-1 cursor-pointer">
+
+                                <i id="eyeIcon" class="fas fa-eye text-gray-500"></i>
+
+                            </button>
+
+
+                        </div>
 
                     </div>
 
-                    <div
+                    <!-- <div
                         class="flex justify-between items-center mb-6">
 
                         <label class="flex items-center gap-2">
@@ -194,7 +207,7 @@
 
                         </a>
 
-                    </div>
+                    </div> -->
 
                     <button
                         class="w-full py-3 rounded-xl font-semibold transition hover:opacity-90"
@@ -235,3 +248,40 @@
 </section>
 
 @endsection
+@push('scripts')
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const password = document.getElementById('password');
+    const toggle = document.getElementById('togglePassword');
+    const eye = document.getElementById('eyeIcon');
+
+    if (!password || !toggle) return;
+
+    toggle.addEventListener('click', function (e) {
+
+        e.preventDefault();
+
+        if (password.type === 'password') {
+
+            password.type = 'text';
+
+            eye.classList.remove('fa-eye');
+            eye.classList.add('fa-eye-slash');
+
+        } else {
+
+            password.type = 'password';
+
+            eye.classList.remove('fa-eye-slash');
+            eye.classList.add('fa-eye');
+
+        }
+
+    });
+
+});
+
+</script>
+@endpush

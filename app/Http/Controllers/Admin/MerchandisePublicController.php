@@ -7,6 +7,7 @@ use App\Models\Merchandise;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\KategoriPoin;
 use App\Services\PoinService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -424,7 +425,7 @@ class MerchandisePublicController extends Controller
 
             $order->user,
             $poin,
-            'merchandise',
+            KategoriPoin::MERCHANDISE,
             $order,
             "Belanja Order #{$order->kode_order}"
 

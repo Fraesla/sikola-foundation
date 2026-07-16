@@ -33,7 +33,7 @@ class TierController extends Controller
 
             'totalTier' => Tier::count(),
 
-            'totalUser' => \App\Models\User::count(),
+            'totalUser' => \App\Models\User::where('role', '!=', 'admin')->count(),
 
             'tierAwal' => Tier::orderBy('urutan')->first(),
 
@@ -79,7 +79,7 @@ class TierController extends Controller
                                 ->sum('total_poin'),
 
             'rataPoin' => User::where('tier_id',$tier->id)
-                                ->avg('total_poin'),
+                                ->avg('exp'),
 
         ];
 
@@ -113,7 +113,7 @@ class TierController extends Controller
             'totalPoin' => $tier->users()->sum('total_poin'),
 
             'rataPoin' => round(
-                $tier->users()->avg('total_poin')
+                $tier->users()->avg('exp')
             ),
 
             'totalBenefit' => $benefit->count(),

@@ -93,7 +93,7 @@
 
                     <label class="block mb-2 font-semibold">
 
-                        Minimal Poin
+                        Minimal Exp
 
                     </label>
 
@@ -114,7 +114,7 @@
 
                     <label class="block mb-2 font-semibold">
 
-                        Maksimal Poin
+                        Maksimal Exp
 
                     </label>
 

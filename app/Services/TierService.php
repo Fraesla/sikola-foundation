@@ -36,11 +36,11 @@ class TierService
      */
     public function hitungDanPerbaruiTier(User $user): void
     {
-        $tier = Tier::where('min_poin', '<=', $user->total_poin)
+        $tier = Tier::where('min_poin', '<=', $user->exp)
             ->where(function ($query) use ($user) {
 
                 $query->whereNull('max_poin')
-                    ->orWhere('max_poin', '>=', $user->total_poin);
+                    ->orWhere('max_poin', '>=', $user->exp);
 
             })
             ->orderByDesc('min_poin')

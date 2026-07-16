@@ -369,7 +369,7 @@
 
                             <small>
 
-                                {{ $donasi->dikonfirmasi_at->format('d M Y H:i') }}
+                                
 
                             </small>
 
