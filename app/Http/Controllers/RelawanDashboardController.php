@@ -60,7 +60,7 @@ class RelawanDashboardController extends Controller
         $badgeRelawan = 'Silver Volunteer';
 
         $upcomingEvents = Event::whereDate('tanggal_mulai', '>=', today())
-                            ->withCount('registrasi')
+                            ->withCount('registrasis')
                             ->orderBy('tanggal_mulai')
                             ->take(3)
                             ->get();
@@ -213,7 +213,7 @@ class RelawanDashboardController extends Controller
 
         ];
 
-        $programRelawan = Event::withCount('registrasi')
+        $programRelawan = Event::withCount('registrasis')
         ->latest()
         ->take(3)
         ->get();

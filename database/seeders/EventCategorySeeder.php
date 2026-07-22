@@ -13,6 +13,9 @@ class EventCategorySeeder extends Seeder
      /**
      * Run the database seeds.
      */
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         $events = [
@@ -25,6 +28,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-08-10 16:00:00',
                 'kuota' => 300,
                 'poin_reward' => 100,
+                'poin_penalty' => 50,
+                'interval_scan' => 10,
+                'toleransi_scan' => 3,
                 'status' => 'terbuka',
             ],
 
@@ -36,6 +42,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-08-18 15:00:00',
                 'kuota' => 100,
                 'poin_reward' => 75,
+                'poin_penalty' => 50,
+                'interval_scan' => 15,
+                'toleransi_scan' => 5,
                 'status' => 'terbuka',
             ],
 
@@ -47,6 +56,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-09-01 13:00:00',
                 'kuota' => 250,
                 'poin_reward' => 50,
+                'poin_penalty' => 50,
+                'interval_scan' => 10,
+                'toleransi_scan' => 3,
                 'status' => 'terbuka',
             ],
 
@@ -58,6 +70,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-09-16 17:00:00',
                 'kuota' => 150,
                 'poin_reward' => 150,
+                'poin_penalty' => 50,
+                'interval_scan' => 15,
+                'toleransi_scan' => 5,
                 'status' => 'draft',
             ],
 
@@ -69,6 +84,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-10-05 15:00:00',
                 'kuota' => 200,
                 'poin_reward' => 80,
+                'poin_penalty' => 50,
+                'interval_scan' => 10,
+                'toleransi_scan' => 3,
                 'status' => 'terbuka',
             ],
 
@@ -80,6 +98,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-10-20 11:00:00',
                 'kuota' => 500,
                 'poin_reward' => 120,
+                'poin_penalty' => 50,
+                'interval_scan' => 5,
+                'toleransi_scan' => 2,
                 'status' => 'terbuka',
             ],
 
@@ -91,6 +112,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-11-06 16:00:00',
                 'kuota' => 120,
                 'poin_reward' => 100,
+                'poin_penalty' => 50,
+                'interval_scan' => 10,
+                'toleransi_scan' => 3,
                 'status' => 'terbuka',
             ],
 
@@ -102,6 +126,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-11-20 21:00:00',
                 'kuota' => 1000,
                 'poin_reward' => 50,
+                'poin_penalty' => 50,
+                'interval_scan' => 30,
+                'toleransi_scan' => 10,
                 'status' => 'draft',
             ],
 
@@ -113,6 +140,9 @@ class EventCategorySeeder extends Seeder
                 'tanggal_selesai' => '2026-12-12 22:00:00',
                 'kuota' => 800,
                 'poin_reward' => 200,
+                'poin_penalty' => 50,
+                'interval_scan' => 5,
+                'toleransi_scan' => 2,
                 'status' => 'terbuka',
             ],
 
@@ -123,7 +153,10 @@ class EventCategorySeeder extends Seeder
                 'tanggal_mulai' => '2026-12-20 19:00:00',
                 'tanggal_selesai' => '2026-12-20 22:00:00',
                 'kuota' => 300,
-                'poin_reward' => 150,
+                'poin_reward' => 100,
+                'poin_penalty' => 50,
+                'interval_scan' => 10,
+                'toleransi_scan' => 3,
                 'status' => 'selesai',
             ],
 
@@ -141,13 +174,23 @@ class EventCategorySeeder extends Seeder
                 'tanggal_mulai'    => $event['tanggal_mulai'],
                 'tanggal_selesai'  => $event['tanggal_selesai'],
                 'kuota'            => $event['kuota'],
+
+                // Reward & Penalty
                 'poin_reward'      => $event['poin_reward'],
+                'poin_penalty'     => $event['poin_penalty'],
+
+                // Simulasi Absensi
+                'interval_scan'    => $event['interval_scan'],
+                'toleransi_scan'   => $event['toleransi_scan'],
+
                 'status'           => $event['status'],
                 'created_by'       => 1,
+
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
 
             ]);
+
         }
     }
 }

@@ -14,6 +14,9 @@ use App\Http\Controllers\Admin\PostinganController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Relawan\EventController as EventRelawanController;
 use App\Http\Controllers\Admin\DaftarEventController;
+use App\Http\Controllers\Admin\PesertaController;
+use App\Http\Controllers\Admin\AbsensiController;
+use App\Http\Controllers\Admin\AbsensiDetailController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\DonasiController;
 use App\Http\Controllers\Admin\MerchandiseController;
@@ -62,8 +65,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('banners',       BannerController::class);
     Route::resource('postingans',    PostinganController::class);
-    Route::resource('events',        EventController::class);
-    Route::resource('eventDaftar',   DaftarEventController::class);
     Route::resource('team',          TeamController::class);
     Route::resource('donasis',       DonasiController::class);
     Route::resource('donasiKategori',DonationCategoryController::class);
@@ -85,8 +86,56 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
         // Route::get('/riwayat', [RedeemController::class,'riwayat'])->name('riwayat');
         // Route::get('/riwayat/{redeem}', [RewardsController::class,'showRedeem'])->name('riwayat.show');
     });
+    Route::resource('events', EventController::class);
+    Route::post('events/{event}/finalisasi',[EventController::class, 'finalisasi'])->name('events.finalisasi');
+
+    Route::prefix('event-daftar')->name('event.')->controller(DaftarEventController::class)->group(function () {
+            Route::get('/', 'index')->name('daftar');
+            Route::get('/{registrasi}', 'show')->name('show');
+            Route::patch('/{registrasi}/konfirmasi', 'konfirmasi')->name('konfirmasi');
+            Route::patch('/{registrasi}/tolak', 'tolak')->name('tolak');
+    });
+
+    Route::prefix('peserta')->name('peserta.')->controller(PesertaController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{peserta}', 'show')->name('show');
+            Route::get('/{peserta}/absensi', 'detailAbsensi')->name('absensi');
+            Route::put('/{peserta}', 'update')->name('update');
+            Route::delete('/{peserta}', 'destroy')->name('destroy');
+            Route::patch('/{peserta}/status', 'updateStatus')->name('status');
+            Route::patch('/{peserta}/poin', 'updatePoin')->name('poin');
+            Route::post('/{peserta}/sertifikat', 'uploadSertifikat')->name('sertifikat.upload');
+            Route::get('/{peserta}/download', 'downloadSertifikat')->name('sertifikat.download');
+            Route::get('/user/{user}/riwayat', 'riwayat')->name('riwayat');
+            Route::post('/{event}/finalisasi','finalisasi')->name('finalisasi');
+    });
+
+    Route::prefix('absensi')->name('absensi.')->controller(AbsensiController::class)->group(function () {
+
+            Route::get('/', 'index')->name('index');
+            Route::post('/event/{event}/absensi/generate','generate')->name('generate');
+            Route::get('/event/{event}/peserta', 'peserta')->name('peserta');
+            Route::get('/event/{event}/create', 'create')->name('create');
+            Route::post('/event/{event}', 'store')->name('store');
+            Route::get('/{absensi}/edit', 'edit')->name('edit');
+            Route::put('/{absensi}', 'update')->name('update');
+            Route::delete('/{absensi}', 'destroy')->name('destroy');
+            Route::get('/event/{event}/rekap', 'rekap')->name('rekap');
+    });
+
+    Route::prefix('absensi-detail')->name('absensi.detail.')->controller(AbsensiDetailController::class)->group(function () {
+            Route::get('/event/{event}', 'index')->name('index');
+            Route::get('/event/{event}/peserta/{peserta}', 'show')->name('show');
+            Route::post('/event/{event}/peserta/{peserta}', 'store')->name('store');
+            Route::put('/{detail}', 'update')->name('update');
+            Route::delete('/{detail}', 'destroy')->name('destroy');
+
+            Route::post('/event/{event}/generate', 'generate')->name('generate');
+    });
+
     Route::get('reward',    [RewardController::class, 'dashboard'])->name('reward');
     Route::get('produk',              [MerchandiseController::class, 'produk'])->name('produk');
+    Route::post('relawans/{relawan}/tolak',      [RelawanApprovalController::class, 'tolak'])->name('relawans.tolak');
     Route::get('konten',             [KontenController::class, 'index'])->name('konten');
     Route::get('laporan',            [LaporanController::class,'index'])->name('laporan');
     Route::get('/laporan/export/excel',[LaporanController::class,'exportExcel'])->name('laporan.export.excel');
@@ -109,11 +158,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('orders/{order}/selesai',[OrderController::class,'selesai'])->name('orders.selesai');
     Route::get('relawans/{relawan}/ktp', [RelawanApprovalController::class, 'lihatKtp'])->name('relawans.ktp');
     Route::post('relawans/{relawan}/setujui',    [RelawanApprovalController::class, 'setujui'])->name('relawans.setujui');
-    Route::post('relawans/{relawan}/tolak',      [RelawanApprovalController::class, 'tolak'])->name('relawans.tolak');
-    Route::post('/eventDaftar/{registrasi}/konfirmasi',[DaftarEventController::class, 'konfirmasi'])->name('events.konfirmasi');
-    Route::post('/eventDaftar/{registrasi}/tolak',[DaftarEventController::class, 'tolak'])->name('events.tolak');
-    Route::post('events/{event}/hadir/{registrasi}', [EventController::class, 'konfirmasiHadir'])->name('events.hadir');
-    Route::post('events/{event}/alfa/{registrasi}', [EventController::class, 'konfirmasiAlfa'])->name('events.alfa');
+    // Route::post('events/{event}/hadir/{registrasi}', [EventController::class, 'konfirmasiHadir'])->name('events.hadir');
+    // Route::post('events/{event}/alfa/{registrasi}', [EventController::class, 'konfirmasiAlfa'])->name('events.alfa');
     Route::get('/profile',[AdminDashboardController::class,'profile'])->name('profile');
     Route::put('/profile',[AdminDashboardController::class,'updateProfile'])->name('profile.update');
     Route::get('/profile/password',[AdminDashboardController::class,'password'])->name('password');
@@ -140,8 +186,16 @@ Route::prefix('relawan')->name('relawan.')->middleware(['auth', 'role:relawan'])
     Route::put('keranjang/{cart}/manual',[KeranjangController::class,'updateQtyManual'])->name('keranjang.manual');
     Route::put('keranjang/{cart}/ajax',[KeranjangController::class,'updateAjax'])->name('keranjang.ajax');
     Route::delete('keranjang/delete-selected',[KeranjangController::class,'deleteSelected'])->name('keranjang.deleteSelected');
-    Route::resource('events', EventRelawanController::class);
-    Route::get('events/available', [EventRelawanController::class,'available'])->name('events.available');
+    Route::prefix('events')->name('events.')->controller(EventRelawanController::class)->group(function () {
+
+            Route::get('/', 'index')->name('index');
+            Route::get('/{event}', 'show')->name('show');
+            Route::get('/events/available', 'available')->name('available');
+            Route::get('/{event}/create', 'create')->name('create');
+            Route::post('/{event}', 'store')->name('store');
+            Route::get('/{event}/rekap', 'rekap')->name('rekap');
+    });
+    
     Route::delete('events/registrasi/{registrasi}', [EventController::class,'batal'])->name('events.batal');
     Route::post('donasi',         [DonasiPublicController::class, 'store'])->name('donasi.sekali');
     Route::get('donasi/{id}/bayar',         [DonasiPublicController::class, 'bayar'])->name('donasi.bayar');

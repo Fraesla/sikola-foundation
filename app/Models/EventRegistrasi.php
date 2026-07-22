@@ -3,31 +3,41 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Event;
+use App\Models\Peserta;
+use Illuminate\Support\Facades\Auth;
 
 class EventRegistrasi extends Model
 {
     protected $table = 'events_registrasis';
+
     protected $fillable = [
         'event_id',
         'user_id',
         'status',
-        'poin_diberikan',
         'catatan',
-        'created_by',
-        'updated_at'
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Relationship
+    |--------------------------------------------------------------------------
+    */
 
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id', 'id');
+        return $this->belongsTo(Event::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function peserta()
+    {
+        return $this->hasOne(Peserta::class,'event_registrasi_id');
+    }
+
     public function riwayatPoin()
     {
         return $this->morphMany(

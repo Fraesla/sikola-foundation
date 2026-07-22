@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained();
-            $table->enum('status', ['mendaftar','dikonfirmasi','hadir','tidak_hadir'])
+            $table->enum('status', ['mendaftar','dikonfirmasi','ditolak'])
                    ->default('mendaftar');
-            $table->boolean('poin_diberikan')->default(false);
-            $table->text('catatan')->nullable();
             $table->timestamps();
             $table->unique(['event_id', 'user_id']); 
         });

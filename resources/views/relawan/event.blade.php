@@ -395,7 +395,7 @@
 
             $event = $item->event;
 
-            $jumlahPeserta = $event->registrasi()->count();
+            $jumlahPeserta = $event->registrasis()->count();
 
             $persen = $event->kuota > 0
                 ? ($jumlahPeserta / $event->kuota) * 100
@@ -570,7 +570,7 @@
 
                                 /
 
-                                {{ $event->kuota + $jumlahPeserta}}
+                                {{ $event->kuota}}
 
                             </h4>
 
@@ -669,7 +669,7 @@
 
 
                     {{-- ============================================== --}}
-                    {{-- ACTION --}}
+                    {{-- ACTION {{ route('relawan.event.generate',$event) }}--}}
                     {{-- ============================================== --}}
 
                     <div
@@ -683,9 +683,34 @@
                             👁 Detail
 
                         </a>
+                        {{-- CEK STATUS ABSENSI --}}
+                        @if($item->event->status_absensi == 'belum_generate')
+                            <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-orange-50 text-orange-600 font-bold text-xs border border-orange-200 shadow-sm">
+                                <i class="fas fa-clock"></i> Belum Dijadwalkan oleh Admin
+                            </span>
+                        @elseif($item->event->status_absensi == 'siap_absensi')
+                            @if($item->status == 'dikonfirmasi')
+                                <a href="{{ route('relawan.events.create', $item->event->id) }}"
+                                   class="px-6 py-3 rounded-2xl text-white inline-block font-bold"
+                                   style="background: linear-gradient(135deg, var(--color-merah), var(--color-coklat));">
+                                    📝 Absensi Event
+                                </a>
+                            @endif
+                        @endif
+
+                        @if(!empty($item->peserta->sertifikat))
+                            <a href="{{ asset('storage/'.$item->peserta->sertifikat) }}" target="_blank"
+                               class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow transition inline-flex items-center gap-2">
+                                {{-- SVG Icon Download --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                </svg>
+                                Unduh Sertifikat
+                            </a>
+                        @endif
 
 
-                        @if($item->status=='pending')
+                        @if($item->status=='mendaftar')
 
                             <form
                                 method="POST"
@@ -709,29 +734,7 @@
                         @endif
 
 
-                        @if($item->status=='dikonfirmasi')
-
-                            <button
-
-                                class="px-6 py-3 rounded-2xl text-white"
-
-                                style="
-                                    background:
-                                    linear-gradient(
-                                        135deg,
-                                        var(--color-merah),
-                                        var(--color-coklat)
-                                    );
-                                ">
-
-                                🎫 Lihat Tiket
-
-                            </button>
-
-                        @endif
-
-
-                        @if($item->status=='hadir')
+                        @if($item->event->status=='selesai')
 
                             <button
 

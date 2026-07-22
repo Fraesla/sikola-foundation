@@ -30,6 +30,8 @@
             background: var(--color-kuning);
         }
     </style>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     @stack('styles')
 </head>
 
@@ -269,7 +271,7 @@
                                             @endif
 
                                             @if($pendingRegistrasi)
-                                                <a href="{{ route('admin.eventDaftar.index') }}"class="flex p-4 hover:bg-green-50">
+                                                <a href="{{ route('admin.event.daftar') }}"class="flex p-4 hover:bg-green-50">
                                                     <div class="text-2xl me-3">🙋</div>
                                                     <div>
                                                         <div class="font-semibold">{{ $pendingRegistrasi }} Registrasi Event</div>

@@ -231,11 +231,11 @@
                                         ✅ Pesanan Diterima
                                     </button>
                                 </form>
-                                <a href="{{ route('relawan.orders.komplain',$order->id) }}"
+                                <!-- <a href="{{ route('relawan.orders.komplain',$order->id) }}"
                                    class="w-full py-2.5 rounded-xl text-center font-bold text-xs transition-all hover:bg-orange-50"
                                    style="color: var(--color-merah); border: 1px dashed var(--color-merah);">
                                     ⚠ Ajukan Komplain
-                                </a>
+                                </a> -->
                             @endif
 
                             @if($order->status != 'selesai' && $order->status != 'dibatalkan')

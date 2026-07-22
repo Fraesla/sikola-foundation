@@ -24,9 +24,14 @@ class User extends Authenticatable
     public function relawan()       { return $this->hasOne(Relawan::class); }
     public function donasis()       { return $this->hasMany(Donasi::class); }
     public function orders()        { return $this->hasMany(Order::class); }
-    public function eventRegistrasi()
+    public function eventRegistrasis()
     {
         return $this->hasMany(EventRegistrasi::class);
+    }
+
+    public function eventPesertas()
+    {
+        return $this->hasMany(Peserta::class);
     }
     public function langganans()    { return $this->hasMany(DonasiLangganan::class); }
 
